@@ -1,4 +1,4 @@
-package com.adminportal.controller;
+package org.afdemp.uisux.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

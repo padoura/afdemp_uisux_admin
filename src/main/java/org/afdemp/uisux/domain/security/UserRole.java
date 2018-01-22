@@ -1,5 +1,8 @@
 package org.afdemp.uisux.domain.security;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -7,11 +10,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.afdemp.uisux.domain.AbstractSale;
 import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.Wishlist;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -35,6 +42,18 @@ public class UserRole {
 	@OneToOne(fetch = FetchType.EAGER)
 	private ShoppingCart shoppingCart;
 	
+	@OneToMany(mappedBy="userRole", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JsonIgnore
+	private List<AbstractSale> abstractSale;
+	
+	public List<AbstractSale> getAbstractSale() {
+		return abstractSale;
+	}
+
+	public void setAbstractSale(List<AbstractSale> abstractSale) {
+		this.abstractSale = abstractSale;
+	}
+
 	public Wishlist getWishlist() {
 		return wishlist;
 	}
