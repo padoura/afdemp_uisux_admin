@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
-<head th:replace="common/header2 :: common-header" />
+<head th:replace="common/header :: common-header" />
 
 <body>
-	<div th:replace="common/header2 :: navbar" />
+	<div th:replace="common/header :: navbar" />
 
 	<div class="container">
 		<div class="row">
@@ -12,50 +12,54 @@
 				enctype="multipart/form-data">
 				<fieldset>
 					<legend class="center-block">
-						New product Information<span style="font-size: small"> * is a
+						New Book Information<span style="font-size: small"> * is a
 							required field</span>
 					</legend>
 
 
 					<!-- title -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="title">* Name</label>
+						<label class="col-md-2 control-label" for="title">* Title</label>
 
 						<div class="col-md-8">
 							<input type="text" name="title" class="form-control" id="title"
-								th:value="${book.title}" required="required" placeholder="name" />
-							<span class="help-block">Name of the product</span>
+								th:value="${book.title}" required="required" placeholder="Title" />
+							<span class="help-block">Title of the book</span>
 						</div>
 					</div>
 
 					<!-- author -->
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="author">*
-							manufacturer</label>
+							Author</label>
 						<div class="col-md-8">
 							<input type="text" name="author" class="form-control" id="author"
-								th:value="${book.author}" 
-								placeholder="cat" /> <span class="help-block">main manufacturer of the product</span>
+								th:value="${book.author}" required="required"
+								placeholder="Author" /> <span class="help-block">Author
+								of the book</span>
 						</div>
 					</div>
 
 					<!-- publisher -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="publisher">InStockNumbersr</label>
+						<label class="col-md-2 control-label" for="publisher">Publisher</label>
 						<div class="col-md-8">
-							<input type="text" name="InStockNumbers" class="form-control"
+							<input type="text" name="publisher" class="form-control"
 								id="publisher" th:value="${book.publisher}"
-								placeholder="cat2" /> <span class="help-block">InStockNumbers of the product</span>
+								placeholder="Publisher" /> <span class="help-block">Publisher
+								of the book</span>
 						</div>
 					</div>
 
 					<!-- publication date -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="publicationDate">made in</label>
+						<label class="col-md-2 control-label" for="publicationDate">Publication
+							Date</label>
 						<div class="col-md-8">
 							<input type="date" class="form-control" id="publicationDate"
 								name="publicationDate" th:value="${book.publicationDate}"
-								placeholder="country" /> <span class="help-block">country of the product</span>
+								placeholder="ublication Date" /> <span class="help-block">Publication
+								Date of the book</span>
 						</div>
 					</div>
 
@@ -81,37 +85,29 @@
 								<option value="" selected="selected" disabled="disabled">Please
 									select an option...</option>
 								<option value="Management"
-									th:selected="(${book.category}=='Management')">Category1</option>
+									th:selected="(${book.category}=='Management')">Management</option>
 								<option value="Fiction"
-									th:selected="(${book.category}=='Fiction')">Category2</option>
+									th:selected="(${book.category}=='Fiction')">Fiction</option>
 								<option value="Engineering"
-									th:selected="(${book.category}=='Engineering')">Category3</option>
+									th:selected="(${book.category}=='Engineering')">Engineering</option>
 								<option value="Programming"
-									th:selected="(${book.category}=='Programming')">Category4</option>
+									th:selected="(${book.category}=='Programming')">Programming</option>
 								<option value="Arts &amp; Literature"
-									th:selected="(${book.category}=='Arts &amp; Literature')">Category5</option>
+									th:selected="(${book.category}=='Arts &amp; Literature')">Arts
+									&amp; Literature</option>
 							</select>
 						</div>
 					</div>
 
 					<!-- pages -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="pageNumber">price bought</label>
+						<label class="col-md-2 control-label" for="pageNumber">Pages</label>
 
 						<div class="col-md-8">
 							<input type="number" name="numberOfPages" class="form-control"
 								id="pageNumber" th:value="${book.numberOfPages}"
-								placeholder="price bought" /> <span class="help-block">price bougth</span>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="pageNumber">price sold</label>
-
-						<div class="col-md-8">
-							<input type="number" name="numberOfPages" class="form-control"
-								id="pageNumber" th:value="${book.numberOfPages}"
-								placeholder="price sold" /> <span class="help-block">price sold</span>
+								placeholder="Page Number" /> <span class="help-block">Number
+								of pages of the book</span>
 						</div>
 					</div>
 
@@ -188,8 +184,8 @@
 						<div class="col-md-8">
 							<input th:value="${book.inStockNumber}" type="number"
 								name="inStockNumber" class="form-control" id="inStockNumber"
-								placeholder="Number of in-stock " /> <span
-								class="help-block">Number of in-stock </span>
+								placeholder="Number of in-stock copies" /> <span
+								class="help-block">Number of in-stock copies</span>
 						</div>
 					</div>
 
@@ -198,9 +194,9 @@
 						<label class="col-md-2 control-label" for="status">Status</label>
 						<div class="col-md-8">
 							<label><input value="true" type="radio" name="active"
-								checked="checked" /> Enabled </label> <label><input
+								checked="checked" /> Active </label> <label><input
 								value="false" type="radio" name="active" />
-								Disabled </label> <span class="help-block">Whether the product is
+								Inactive </label> <span class="help-block">Whether the book is
 								active or inactive</span>
 						</div>
 					</div>
@@ -219,7 +215,7 @@
 					<!-- upload image -->
 					<div class="form-group">
 						<div class="col-md-2">
-							<label for="bookImage">Upload product image</label>
+							<label for="bookImage">Upload book image</label>
 						</div>
 						<div class="col-md-8">
 							<input id="bookImage" type="file" name="bookImage"
@@ -230,7 +226,7 @@
 					<div class="form-group">
 						<div class="col-md-2"></div>
 						<div class="col-md-8">
-							<button type="submit" class="btn btn-success">Add product</button>
+							<button type="submit" class="btn btn-success">Add Book</button>
 							<a class="btn btn-danger" th:href="@{/}">Cancel</a>
 						</div>
 					</div>
@@ -240,6 +236,6 @@
 	</div>
 
 
-	<div th:replace="common/header2 :: body-bottom-scripts" />
+	<div th:replace="common/header :: body-bottom-scripts" />
 </body>
 </html>
