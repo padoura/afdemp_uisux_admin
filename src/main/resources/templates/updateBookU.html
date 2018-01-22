@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header :: common-header" />
+
+<body>
+	<div th:replace="common/header :: navbar" />
+
+	<div class="container">
+		<div class="row">
+			<form class="form-horizontal" th:action="@{/book/updateBook}" method="post"
+				enctype="multipart/form-data">
+				<fieldset>
+					<legend class="center-block">
+						Update Member Information<span style="font-size: small"> * is a
+							required field</span>
+					</legend>
+					
+					<input hidden="hidden" name="id" th:value="${book.id}" />
+
+
+					<!-- title -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="title">* userName</label>
+
+						<div class="col-md-8">
+							<input type="text" name="title" class="form-control" id="title"
+								th:value="${book.title}" required="required" placeholder="Title" />
+							<span class="help-block">userName</span>
+						</div>
+					</div>
+
+					<!-- author -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="author">*
+							email</label>
+						<div class="col-md-8">
+							<input type="text" name="author" class="form-control" id="author"
+								th:value="${book.author}" required="required"
+								placeholder="Author" /> <span class="help-block">email</span>
+						</div>
+					</div>
+
+					<!-- publisher -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="publisher">firstName</label>
+						<div class="col-md-8">
+							<input type="text" name="publisher" class="form-control"
+								id="publisher" th:value="${book.publisher}"
+								placeholder="Publisher" /> <span class="help-block">firstname of member</span>
+						</div>
+					</div>
+					<!-- publisher -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="publisher">lastName</label>
+						<div class="col-md-8">
+							<input type="text" name="publisher" class="form-control"
+								id="publisher" th:value="${book.publisher}"
+								placeholder="Publisher" /> <span class="help-block">lastname of member</span>
+						</div>
+					</div>
+
+					<!-- status of book -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="status">enabled</label>
+						<div class="col-md-8">
+							<label><input value="true" type="radio" name="active"
+								th:checked="${book.active}" /> enabled </label> <label><input
+								value="false" type="radio" name="active" th:checked="${!book.active}"/>
+								Disabled </label> <span class="help-block">Whether the member is
+								enabled or disabled</span>
+						</div>
+					</div>
+
+
+
+					<!-- pages -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="pageNumber">Phone</label>
+
+						<div class="col-md-8">
+							<input type="number" name="numberOfPages" class="form-control"
+								id="pageNumber" th:value="${book.numberOfPages}"
+								placeholder="Page Number" /> <span class="help-block">phone number</span>
+						</div>
+					</div>
+
+
+
+					<div class="form-group">
+						<div class="col-md-2"></div>
+						<div class="col-md-8">
+							<button type="submit" class="btn btn-success">Update Member</button>
+							<a class="btn btn-danger" th:href="@{/user/bookInfo(id=${book.id})}">Cancel</a>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+
+
+	<div th:replace="common/header :: body-bottom-scripts" />
+</body>
+</html>
