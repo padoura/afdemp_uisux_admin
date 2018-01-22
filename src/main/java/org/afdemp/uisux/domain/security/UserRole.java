@@ -1,6 +1,5 @@
 package org.afdemp.uisux.domain.security;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
+import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.Wishlist;
 
@@ -33,6 +32,25 @@ public class UserRole {
 	@OneToOne(fetch = FetchType.EAGER)
 	private Wishlist wishlist;
 	
+	@OneToOne(fetch = FetchType.EAGER)
+	private ShoppingCart shoppingCart;
+	
+	public Wishlist getWishlist() {
+		return wishlist;
+	}
+
+	public void setWishlist(Wishlist wishlist) {
+		this.wishlist = wishlist;
+	}
+
+	public ShoppingCart getShoppingCart() {
+		return shoppingCart;
+	}
+
+	public void setShoppingCart(ShoppingCart shoppingCart) {
+		this.shoppingCart = shoppingCart;
+	}
+
 	public UserRole(){}
 	
 	public UserRole(User user, Role role) {
@@ -64,7 +82,6 @@ public class UserRole {
 	public Role getRole() {
 		return role;
 	}
-
 
 	public void setRole(Role role) {
 		this.role = role;
