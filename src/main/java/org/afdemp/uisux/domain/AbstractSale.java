@@ -37,12 +37,54 @@ public abstract class AbstractSale {
 	@JsonIgnore
 	private List<CartItem> cartItemList;
 	
+	@OneToMany(mappedBy="abstractSale", fetch=FetchType.LAZY)
+	private List<Transaction> TransactionList;
 
 	
 	@ManyToOne
 	@JoinColumn(name="user_role_id")
 	private UserRole userRole;
 	
+	@ManyToOne
+	@JoinColumn(name="shipping_address_id")
+	private ShippingAddress shippingAddress;
+	
+	@ManyToOne
+	@JoinColumn(name="billing_address_id")
+	private BillingAddress billingAddress;
+	
+	@ManyToOne
+	@JoinColumn(name="payment_id")
+	private Payment payment;
+	
+	
+	
+	
+	
+	public Payment getPayment() {
+		return payment;
+	}
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+	public ShippingAddress getShippingAddress() {
+		return shippingAddress;
+	}
+	public void setShippingAddress(ShippingAddress shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
+	public BillingAddress getBillingAddress() {
+		return billingAddress;
+	}
+	public void setBillingAddress(BillingAddress billingAddress) {
+		this.billingAddress = billingAddress;
+	}
+	public List<Transaction> getTransactionList() {
+		return TransactionList;
+	}
+	public void setTransactionList(List<Transaction> transactionList) {
+		TransactionList = transactionList;
+	}
 	public List<CartItem> getCartItemList() {
 		return cartItemList;
 	}

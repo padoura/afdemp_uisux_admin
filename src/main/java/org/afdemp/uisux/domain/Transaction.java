@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -20,6 +21,18 @@ public class Transaction {
 	
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private Account withdrawAccount;
+	
+	@ManyToOne
+	@JoinColumn(name="abstract_sale_id")
+	private AbstractSale abstractSale;
+	
+	public AbstractSale getAbstractSale() {
+		return abstractSale;
+	}
+
+	public void setAbstractSale(AbstractSale abstractSale) {
+		this.abstractSale = abstractSale;
+	}
 
 	public Long getId() {
 		return id;
