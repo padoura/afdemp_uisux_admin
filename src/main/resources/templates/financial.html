@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header2 :: common-header" />
+
+<body>
+	<div th:replace="common/header2 :: navbar" />
+	
+	<div class="container">
+		<div class="table-responsive">
+			<table id="bookListTable" class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th>email</th>
+						<th>passwordl</th>
+						<th>first_name</th>
+						<th>last_name</th>
+						<th>phone</th>
+						<th>username</th>
+						<th>enabled</th>
+					</tr>
+				</thead>
+				<tbody id="soma">
+					<tr th:each="book : ${bookList}">
+			
+		    
+			
+			
+			<td th:text="${book.title}"></td>
+			<td th:text="${book.author}"></td>
+			<td th:text="${book.category}"></td>
+			<td th:text="${book.listPrice}"></td>
+			<td th:text="${book.ourPrice}"></td>
+			<td th:text="${book.active}"></td>
+			<td th:text="${book.active}"></td>
+		
+			
+			
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	<button th:id="deleteSelected" class="btn btn-danger ">Delete Selected</button>
+	</div>
+	 
+	 
+	 <div class="container">
+  <div class="row">
+    <form id="search" role="form" style="border:0">
+      <div class="col-md-3">
+        <ul class="nav nav-stacked">
+          <li><strong>From Date</strong></li>
+          <li>
+            <input type="text" class="form-control" value="2015-06-17" id="dateFrom" />
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-3">
+        <ul class="nav nav-stacked">
+          <li><strong>To Date</strong></li>
+          <li>
+            <input type="text" class="form-control" value="2015-06-19" id="dateTo" />
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-3">
+        <ul class="nav nav-stacked">
+          <li>&nbsp;</li>
+          <li>
+            <button class="btn btn-primary" type="button" id="getJsonSrc">Search</button>
+          </li>
+        </ul>
+      </div>
+    </form>
+  </div>
+
+</div>
+	 
+	 
+	 
+	
+	<div th:replace="common/header2 :: body-bottom-scripts" />
+	
+	<script>
+		$(document).ready(function() {
+			$("#bookListTable").DataTable({
+				"lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
+				"ordering": false,
+				stateSave: true
+			});
+		});
+		
+		
+		$("#getJsonSrc").click(function() {
+			var list=document.getElementById("soma");
+		list.parentNode.removeChild(list);
+		$("#soma").append({
+			<tr th:each="book : ${bookList}">
+            
+			
+			
+			<td th:text="${book.title}"></td>
+			<td th:text="${book.author}"></td>
+			<td th:text="${book.category}"></td>
+			<td th:text="${book.listPrice}"></td>
+			<td th:text="${book.ourPrice}"></td>
+			<td th:text="${book.active}"></td>
+		</tr>
+		
+			
+			
+			
+		});
+		
+		});
+		
+		
+	</script>
+</body>
+</html>
