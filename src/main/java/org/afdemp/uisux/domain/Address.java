@@ -1,11 +1,17 @@
 package org.afdemp.uisux.domain;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -22,6 +28,31 @@ public class Address {
 	private String state;
 	private String country;
 	private String zipcode;
+	
+	@OneToMany(mappedBy="billingAddress", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	private List<AbstractSale> billingSaleList;
+	
+	@OneToMany(mappedBy="shippingAddress", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	private List<AbstractSale> shippingSaleList;
+	
+	@OneToOne
+	private UserPayment userPayment;
+
+	public List<AbstractSale> getBillingSaleList() {
+		return billingSaleList;
+	}
+	public void setBillingSaleList(List<AbstractSale> billingSaleList) {
+		this.billingSaleList = billingSaleList;
+	}
+	public List<AbstractSale> getShippingSaleList() {
+		return shippingSaleList;
+	}
+	public void setShippingSaleList(List<AbstractSale> shippingSaleList) {
+		this.shippingSaleList = shippingSaleList;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public long getId() {
 		return id;
 	}

@@ -24,25 +24,24 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 	
 	@Override
 	public void run(String... args) throws Exception {
-//		Product product = new Product();
-//		product.setDescription("Και γαμώ τα γάλατα!");
-//		product.setInStockNumber(10L);
-//		product.setListPrice(1.50);
-//		product.setMadeIn("Κίνα");
-//		product.setName("Γάλα με κακάο");
-//		product.setOurPrice(0.90);
-//		product.setPriceBought(0.30);
-//		
-//		productService.save(product);
-//		
-//		Category category = new Category("Γάλα");
-//		
-//		product.setCategory(category);
-//		
-//		productService.save(product);
-//		
-//		categoryService.removeOne(1L);
+		Product product = new Product();
+		product.setDescription("Και γαμώ τα γάλατα!");
+		product.setInStockNumber(10L);
+		product.setListPrice(1.50);
+		product.setMadeIn("Κίνα");
+		product.setName("Γάλα με κακάο");
+		product.setOurPrice(0.90);
+		product.setPriceBought(0.30);
 		
+		productService.save(product);
+		
+		Category category = new Category("Γάλα");
+		
+		product.setCategory(category);
+		
+		productService.save(product);
+		
+		categoryService.removeOne(1L);
 	}
 	
 }

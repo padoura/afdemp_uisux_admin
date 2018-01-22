@@ -14,8 +14,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.afdemp.uisux.domain.AbstractSale;
+import org.afdemp.uisux.domain.Account;
 import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.User;
+import org.afdemp.uisux.domain.UserPayment;
+import org.afdemp.uisux.domain.UserShipping;
 import org.afdemp.uisux.domain.Wishlist;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,16 +39,57 @@ public class UserRole {
 	@JoinColumn(name="role_id")
 	private Role role;
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(mappedBy="userRole", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(nullable=false)
 	private Wishlist wishlist;
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	
+	@OneToOne(mappedBy="userRole", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(nullable=false)
 	private ShoppingCart shoppingCart;
+	
+	@OneToOne(mappedBy="userRole", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(nullable=false)
+	private Account account;
 	
 	@OneToMany(mappedBy="userRole", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JsonIgnore
 	private List<AbstractSale> abstractSale;
 	
+	@OneToMany(mappedBy="userRole", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JsonIgnore
+	private List<UserShipping> userShipping;
+	
+	@OneToMany(mappedBy="userRole", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JsonIgnore
+	private List<UserPayment> userPayment;
+	
+	
+	
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	public List<UserShipping> getUserShipping() {
+		return userShipping;
+	}
+
+	public void setUserShipping(List<UserShipping> userShipping) {
+		this.userShipping = userShipping;
+	}
+
+	public List<UserPayment> getUserPayment() {
+		return userPayment;
+	}
+
+	public void setUserPayment(List<UserPayment> userPayment) {
+		this.userPayment = userPayment;
+	}
+
 	public List<AbstractSale> getAbstractSale() {
 		return abstractSale;
 	}

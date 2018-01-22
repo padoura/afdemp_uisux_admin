@@ -1,11 +1,16 @@
 package org.afdemp.uisux.domain;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -22,7 +27,17 @@ public class CreditCard {
 	private int cvc;
 	private String holderName;
 	
+	@OneToMany(mappedBy="creditCard", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	private List<AbstractSale> abstractSaleList;
 	
+	
+	
+	public List<AbstractSale> getAbstractSaleList() {
+		return abstractSaleList;
+	}
+	public void setAbstractSaleList(List<AbstractSale> abstractSaleList) {
+		this.abstractSaleList = abstractSaleList;
+	}
 	public Long getId() {
 		return id;
 	}

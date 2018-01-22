@@ -30,8 +30,8 @@ public class ShoppingCart {
 	@JsonIgnore
 	private List<CartItem> cartItemList;
 	
-	@OneToOne(mappedBy="shoppingCart", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(nullable=false)
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="user_role_id")
 	private UserRole userRole;
 
 	public Long getId() {

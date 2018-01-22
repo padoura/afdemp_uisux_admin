@@ -47,36 +47,33 @@ public abstract class AbstractSale {
 	
 	@ManyToOne
 	@JoinColumn(name="shipping_address_id")
-	private ShippingAddress shippingAddress;
+	private Address shippingAddress;
 	
 	@ManyToOne
 	@JoinColumn(name="billing_address_id")
-	private BillingAddress billingAddress;
+	private Address billingAddress;
 	
 	@ManyToOne
-	@JoinColumn(name="payment_id")
-	private Payment payment;
+	@JoinColumn(name="credit_card_id")
+	private CreditCard creditCard;
 	
 	
-	
-	
-	
-	public Payment getPayment() {
-		return payment;
+	public CreditCard getCreditCard() {
+		return creditCard;
 	}
-	public void setPayment(Payment payment) {
-		this.payment = payment;
+	public void setCreditCard(CreditCard creditCard) {
+		this.creditCard = creditCard;
 	}
-	public ShippingAddress getShippingAddress() {
+	public Address getShippingAddress() {
 		return shippingAddress;
 	}
-	public void setShippingAddress(ShippingAddress shippingAddress) {
+	public void setShippingAddress(Address shippingAddress) {
 		this.shippingAddress = shippingAddress;
 	}
-	public BillingAddress getBillingAddress() {
+	public Address getBillingAddress() {
 		return billingAddress;
 	}
-	public void setBillingAddress(BillingAddress billingAddress) {
+	public void setBillingAddress(Address billingAddress) {
 		this.billingAddress = billingAddress;
 	}
 	public List<Transaction> getTransactionList() {

@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-//import org.afdemp.uisux.domain.security.UserRole;
+import org.afdemp.uisux.domain.security.UserRole;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,10 +27,18 @@ public class Wishlist {
 	@JsonIgnore
 	private List<WishlistProduct> wishlistProductList;
 	
-	/*@OneToOne(mappedBy="wishlist", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(nullable=false)
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="user_role_id")
 	private UserRole userRole;
-*/
+	
+	public UserRole getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -7,7 +7,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import org.afdemp.uisux.domain.security.UserRole;
 
 
 
@@ -23,7 +27,19 @@ public class Account {
 	@OneToMany(mappedBy="depositAccount", fetch=FetchType.LAZY)
 	private List<Transaction> depositList;
 	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="user_role_id")
+	private UserRole userRole;
+	
 	private double balance;
+
+	public UserRole getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
+	}
 
 	public Long getId() {
 		return id;

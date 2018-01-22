@@ -1,5 +1,8 @@
 package org.afdemp.uisux.domain;
 
+import java.math.BigDecimal;
+import java.security.Timestamp;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +19,26 @@ public class Transaction {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
+	private BigDecimal amount;
+	private Timestamp dateTime;
+	
+	
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+
+	public Timestamp getDateTime() {
+		return dateTime;
+	}
+
+	public void setDateTime(Timestamp dateTime) {
+		this.dateTime = dateTime;
+	}
+
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private Account depositAccount;
 	
