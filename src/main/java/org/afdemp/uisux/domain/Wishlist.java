@@ -8,7 +8,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import org.afdemp.uisux.domain.security.UserRole;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,6 +26,10 @@ public class Wishlist {
 	@OneToMany(mappedBy="wishlist", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JsonIgnore
 	private List<WishlistProduct> wishlistProductList;
+	
+	@OneToOne(mappedBy="wishlist", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(nullable=false)
+	private UserRole userRole;
 
 	public Long getId() {
 		return id;

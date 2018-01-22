@@ -2,7 +2,6 @@ package org.afdemp.uisux.service.impl;
 
 import java.util.List;
 
-import org.afdemp.uisux.domain.Book;
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.repository.ProductRepository;
 import org.afdemp.uisux.service.ProductService;
