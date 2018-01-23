@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductServiceImpl implements ProductService {
 	
+	private static final Logger LOG = LoggerFactory.getLogger(ProductService.class);
+	
 	@Autowired
 	private ProductRepository productRepository;
 
@@ -34,6 +36,19 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void removeOne(Long id) {
 		productRepository.delete(id);
+	}
+
+	@Override
+	public Product createProduct(Product product) {
+		Product localProduct = productRepository.findByName(product.getName());
+
+		if (localProduct != null) {
+			LOG.info("product {} already exists. Nothing will be done.", product.getName());
+		} else {
+			localProduct = productRepository.save(product);
+		}
+
+		return localProduct;
 	}
 
 }
