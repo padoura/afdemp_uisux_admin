@@ -15,10 +15,10 @@ import javax.persistence.OneToOne;
 
 import org.afdemp.uisux.domain.AbstractSale;
 import org.afdemp.uisux.domain.Account;
+import org.afdemp.uisux.domain.Address;
+import org.afdemp.uisux.domain.CreditCard;
 import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.User;
-import org.afdemp.uisux.domain.UserPayment;
-import org.afdemp.uisux.domain.UserShipping;
 import org.afdemp.uisux.domain.Wishlist;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,36 +58,34 @@ public class UserRole {
 	
 	@OneToMany(mappedBy="userRole", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JsonIgnore
-	private List<UserShipping> userShipping;
+	private List<Address> userShippingAddress;
 	
 	@OneToMany(mappedBy="userRole", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JsonIgnore
-	private List<UserPayment> userPayment;
+	private List<CreditCard> creditCard;
 	
-	
-	
+	public List<Address> getUserShippingAddress() {
+		return userShippingAddress;
+	}
+
+	public void setUserShippingAddress(List<Address> userShippingAddress) {
+		this.userShippingAddress = userShippingAddress;
+	}
+
+	public List<CreditCard> getCreditCard() {
+		return creditCard;
+	}
+
+	public void setCreditCard(List<CreditCard> creditCard) {
+		this.creditCard = creditCard;
+	}
+
 	public Account getAccount() {
 		return account;
 	}
 
 	public void setAccount(Account account) {
 		this.account = account;
-	}
-
-	public List<UserShipping> getUserShipping() {
-		return userShipping;
-	}
-
-	public void setUserShipping(List<UserShipping> userShipping) {
-		this.userShipping = userShipping;
-	}
-
-	public List<UserPayment> getUserPayment() {
-		return userPayment;
-	}
-
-	public void setUserPayment(List<UserPayment> userPayment) {
-		this.userPayment = userPayment;
 	}
 
 	public List<AbstractSale> getAbstractSale() {

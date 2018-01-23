@@ -10,8 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import org.afdemp.uisux.domain.security.UserRole;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -28,7 +32,24 @@ public class Address {
 	private String state;
 	private String country;
 	private String zipcode;
+	private boolean userShippingDefault;
 	
+	@ManyToOne
+	@JoinColumn(name="user_role_id")
+	private UserRole userRole;
+	
+	public boolean isUserShippingDefault() {
+		return userShippingDefault;
+	}
+	public void setUserShippingDefault(boolean userShippingDefault) {
+		this.userShippingDefault = userShippingDefault;
+	}
+	public UserRole getUserRole() {
+		return userRole;
+	}
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
+	}
 	@OneToMany(mappedBy="billingAddress", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<AbstractSale> billingSaleList;
 	
@@ -36,8 +57,14 @@ public class Address {
 	private List<AbstractSale> shippingSaleList;
 	
 	@OneToOne
-	private UserPayment userPayment;
+	private CreditCard creditCard;
 
+	public CreditCard getCreditCard() {
+		return creditCard;
+	}
+	public void setCreditCard(CreditCard creditCard) {
+		this.creditCard = creditCard;
+	}
 	public List<AbstractSale> getBillingSaleList() {
 		return billingSaleList;
 	}
