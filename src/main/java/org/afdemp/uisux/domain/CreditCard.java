@@ -8,12 +8,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import org.afdemp.uisux.domain.security.UserRole;
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
 public class CreditCard {
 	
 	@Id
@@ -26,12 +28,36 @@ public class CreditCard {
 	private int expiryYear;
 	private int cvc;
 	private String holderName;
+	private boolean defaultCreditCard;
 	
 	@OneToMany(mappedBy="creditCard", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<AbstractSale> abstractSaleList;
 	
+	@OneToOne(fetch=FetchType.EAGER)
+	private Address billingAddress;
 	
-	
+	@ManyToOne
+	@JoinColumn(name="user_role_id")
+	private UserRole userRole;
+
+	public boolean isDefaultCreditCard() {
+		return defaultCreditCard;
+	}
+	public void setDefaultCreditCard(boolean defaultCreditCard) {
+		this.defaultCreditCard = defaultCreditCard;
+	}
+	public Address getBillingAddress() {
+		return billingAddress;
+	}
+	public void setBillingAddress(Address billingAddress) {
+		this.billingAddress = billingAddress;
+	}
+	public UserRole getUserRole() {
+		return userRole;
+	}
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
+	}
 	public List<AbstractSale> getAbstractSaleList() {
 		return abstractSaleList;
 	}
@@ -80,7 +106,4 @@ public class CreditCard {
 	public void setHolderName(String holderName) {
 		this.holderName = holderName;
 	}
-
-	
-	
 }

@@ -13,25 +13,21 @@ public class HomeController {
 	
 	@RequestMapping("/home")
 	public String home(){
-		return "home2";
-	}
-	@RequestMapping("/bookList2")
-	public String bookList2(){
-		return "bookList2";
-	}
-	
-	@RequestMapping("/financial")
-	public String financial(){
-		return "financial";
+		return "home";
 	}
 	
 	@RequestMapping("/login")
 	public String login(){
-		return "login2";
+		return "login";
 	}
 	
-//	@RequestMapping("/login")
-//	public String login(){
-//		return "login";
+//	@RequestMapping("/bookList2")
+//	public String bookList2(){
+//		return "bookList2";
+//	}
+//	
+//	@RequestMapping("/financial")
+//	public String financial(){
+//		return "financial";
 //	}
 }
