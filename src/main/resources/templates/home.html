@@ -3,9 +3,12 @@
 <html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
 <head th:replace="common/header2 :: common-header" />
 
-<body >
+<body class="kk" style = "background-color:red;">
+
 
 	<div th:replace="common/header2 :: navbar" />
+	<div><img th:src="@{/image/appl.png}" class="img-responsive"
+			style="width: auto;" /></div>
    <div th:replace="common/header2 :: body-bottom-scripts" />
 
 </body>
