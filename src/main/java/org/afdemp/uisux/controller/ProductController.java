@@ -23,6 +23,7 @@ import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.repository.CategoryRepository;
 import org.afdemp.uisux.repository.ProductRepository;
 import org.afdemp.uisux.service.ProductService;
+import org.afdemp.uisux.utility.ImageUtility;
 
 @Controller
 @RequestMapping("/product")
@@ -45,36 +46,48 @@ public class ProductController {
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addProductPost(@ModelAttribute("product") Product product, BindingResult productResult,
-				@ModelAttribute("type") String type, BindingResult typeResult) throws Exception {
+				@ModelAttribute("type") String type, BindingResult typeResult, Model model) throws Exception {
 		
-		if (productResult.hasErrors() || typeResult.hasErrors())
+		if (productResult.hasErrors() || typeResult.hasErrors()) {
+			model.addAttribute("insertSuccess",false);
 			return "addProduct";
-		
-		productService.createProduct(product, type);
-
-		MultipartFile productImage = product.getProductImage();
-
-		try {
-			byte[] bytes = productImage.getBytes();
-			String name = product.getId() + ".png";
-			BufferedOutputStream stream = new BufferedOutputStream(
-					new FileOutputStream(new File("src/main/resources/static/image/product/" + name)));
-			stream.write(bytes);
-			stream.close();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
-		return "redirect:/";
+		boolean success;
+		if (productService.createProduct(product, type) & ImageUtility.trySaveImage(product)) {
+				success = true;
+		}else{
+			success = false;
+		}
+		model.addAttribute("insertSuccess",success);
+		return "addProduct";
 	}
 	
-//	@RequestMapping("/productInfo")
-//	public String productInfo(@RequestParam("id") Long id, Model model) {
-//		Product product = productService.findOne(id);
-//		model.addAttribute("product", product);
-//		
-//		return "productInfo";
-//	}
+	@RequestMapping("/productList")
+	public String productList(Model model) {
+		List<Product> productList = productService.findAll();
+		model.addAttribute("productList", productList);		
+		return "productList";
+	}
+	
+	@RequestMapping(value="/remove", method=RequestMethod.POST)
+	public String remove(
+			@ModelAttribute("id") String id, Model model
+			) {
+		productService.removeOne(Long.parseLong(id.substring(8)));
+		List<Product> productList = productService.findAll();
+		model.addAttribute("productList", productList);
+		return "redirect:/product/productList";
+	}
+	
+	
+	@RequestMapping("/productInfo")
+	public String productInfo(@RequestParam("id") Long id, Model model) {
+		Product product = productService.findOne(id);
+		model.addAttribute("product", product);
+		
+		return "productInfo";
+	}
 //	
 //	@RequestMapping("/updateProduct")
 //	public String updateProduct(@RequestParam("id") Long id, Model model) {
@@ -109,29 +122,6 @@ public class ProductController {
 //		return "redirect:/product/productInfo?id="+product.getId();
 //	}
 //	
-//	@RequestMapping("/productList")
-//	public String productList(Model model) {
-//		List<Product> productList = productService.findAll();
-//		model.addAttribute("productList", productList);		
-//		return "productList";
-//		
-//	}
-//	@RequestMapping("/productList2")
-//	public String productList2(Model model) {
-//		List<Product> productList = productService.findAll();
-//		model.addAttribute("productList", productList);		
-//		return "productList2";	
-//	}
-//	
-//	@RequestMapping(value="/remove1", method=RequestMethod.POST)
-//	public String remove(
-//			@ModelAttribute("id") String id, Model model
-//			) {
-//		productService.removeOne(Long.parseLong(id.substring(8)));
-//		List<Product> productList = productService.findAll();
-//		model.addAttribute("productList", productList);
-//		
-//		return "redirect:/product/productList";
-//	}
+
 
 }

@@ -107,7 +107,21 @@
             color: #f8f9f8;
             background-color: #293872;
         }
-    }</style>
+    }
+    .bg { 
+    /* The image used */
+    background-image: url("/image/applie-touch-icon.png");
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+    
+    </style>
 		<nav class="navbar navbar-default navbar-static-top ">
 			<div class="container">
 				<div class="navbar-header">
@@ -125,8 +139,10 @@
 					<ul class="nav navbar-nav ">
 						
 					<li><a th:href="@{/product/add}">Add Product</a></li>
+								<li><a th:href="@{/product/add}">Add Product</a></li>
 								<li><a th:href="@{/product/productList}">View Products</a></li>
-								<li><a th:href="@{/user/productList}">View Members User</a></li>
+								<li><a th:href="@{/user/productList}">View Members </a></li>
+								<li><a th:href="@{/user/productList}">Add Member</a></li>
 								<li><a th:href="@{/user/finance}">Finance Management</a></li>
 								<li><a th:href="@{/user/productList2}">Product Management</a></li>
 							
@@ -138,7 +154,19 @@
 	</div>
 
 	<div th:fragment="navbar2">
-	<style>.navbar-default {
+	<style>
+	
+	
+	
+	.kk{
+        background-color:red;
+    }
+ 
+	
+	
+	
+	
+	.navbar-default {
         background-color: #a32222;
         border-color: #293872;
     }
@@ -221,7 +249,14 @@
             color: #f8f9f8;
             background-color: #293872;
         }
-    }</style>
+    }
+    
+    
+    
+    
+    
+    
+    </style>
 		<nav class="navbar navbar-default navbar-static-top">
 			<div class="container">
 				<div class="navbar-header">
@@ -236,7 +271,8 @@
 							<ul class="dropdown-menu">
 								<li><a th:href="@{/product/add}">Add Product</a></li>
 								<li><a th:href="@{/product/productList}">View Products</a></li>
-								<li><a th:href="@{/user/productList}">View Members User</a></li>
+								<li><a th:href="@{/user/productList}">View Members </a></li>
+								<li><a th:href="@{/user/productList}">Add Member</a></li>
 								<li><a th:href="@{/user/finance}">Finance Management</a></li>
 								<li><a th:href="@{/user/productList2}">Product Management</a></li>
 							</ul></li>
