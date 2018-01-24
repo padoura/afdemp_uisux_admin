@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header2 :: common-header" />
+
+<body>
+	<div th:replace="common/header2 :: navbar" />
+	
+	<div class="container">
+		<div class="table-responsive">
+			<table id="userListTable" class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th><input th:id="selectAllUsers" type="checkbox" /></th>
+						<th>`email`</th>
+						<th>first_name</th>
+						<th>last_name</th>
+						<th>phone</th>
+						<th>username</th>
+						<th>`enabled`</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-th-each="user : ${memberList}">
+						<td>
+						<input hidden="hidden" name="id" th:value="${user.id}" />
+						<input th:id="'selected'+${user.id}" class="checkboxBook" type="checkbox" />
+						</td>
+						<td><a th:href="@{/user/userInfo(id=${user.id})}"></a></td>
+						<td th:id="${user.username}"></td>
+						<td th:id="${user.id}"></td>
+						<td th:id="${user.password}"></td>
+						<td th:id="${user.firstName}"></td>
+						<td th:id="${user.lastName}"></td>
+						<td>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	<button th:id="deleteSelected" class="btn btn-danger ">Delete Selected</button>
+	</div>
+	
+	
+	<div th:replace="common/header2 :: body-bottom-scripts" />
+	
+	<script>
+		$(document).ready(function() {
+			$("#bookListTable").DataTable({
+				"lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
+				"ordering": false,
+				stateSave: true
+			});
+		});
+	</script>
+</body>
+</html>
