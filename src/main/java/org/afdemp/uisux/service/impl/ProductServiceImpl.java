@@ -53,6 +53,7 @@ public class ProductServiceImpl implements ProductService {
 			if (category == null) {
 			    category = new Category();
 			    category.setType(type);
+			    categoryRepository.save(category);
 			}
 			product.setCategory(category);
 			localProduct = productRepository.save(product);
