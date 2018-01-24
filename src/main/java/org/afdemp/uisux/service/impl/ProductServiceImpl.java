@@ -43,11 +43,12 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product createProduct(Product product, String type) {
+	public boolean createProduct(Product product, String type) {
 		Product localProduct = productRepository.findByName(product.getName());
 
 		if (localProduct != null) {
 			LOG.info("product {} already exists. Nothing will be done.", product.getName());
+			return false;
 		} else {
 			Category category = categoryRepository.findByType(type);
 			if (category == null) {
@@ -59,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
 			localProduct = productRepository.save(product);
 		}
 
-		return localProduct;
+		return true;
 	}
 
 }
