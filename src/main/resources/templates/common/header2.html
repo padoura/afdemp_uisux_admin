@@ -99,10 +99,7 @@
             color: #ecf0f1;
         }
 
-        .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
-        .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
-            color: #f8f9f8;
-        }
+        
 
         .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
         .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
@@ -111,38 +108,30 @@
             background-color: #293872;
         }
     }</style>
-		<nav class="navbar navbar-default navbar-static-top">
+		<nav class="navbar navbar-default navbar-static-top ">
 			<div class="container">
 				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed"
-						data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
+					
 					<a class="navbar-brand" th:href="@{/}">Admin Portal</a>
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button" aria-haspopup="true"
-							aria-expanded="false">Admin Operations <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a th:href="@{/product/add}">Add Product</a></li>
+				
+					
+					<ul class="nav navbar-nav navbar-right">
+					<li><a th:href="@{/logout}">Sign out</a></li>						
+
+					</ul>
+					<ul class="nav navbar-nav ">
+						
+					<li><a th:href="@{/product/add}">Add Product</a></li>
 								<li><a th:href="@{/product/productList}">View Products</a></li>
 								<li><a th:href="@{/user/productList}">View Members User</a></li>
 								<li><a th:href="@{/user/finance}">Finance Management</a></li>
 								<li><a th:href="@{/user/productList2}">Product Management</a></li>
-							</ul></li>
+							
 					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li><a th:href="@{/logout}">Sign out</a></li>
-					</ul>
-				</div>
-				<!-- /.navbar-collapse -->
+							<!-- /.navbar-collapse -->
 			</div>
 			<!-- /.container-fluid -->
 		</nav>
@@ -236,21 +225,14 @@
 		<nav class="navbar navbar-default navbar-static-top">
 			<div class="container">
 				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed"
-						data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
+					
 					<a class="navbar-brand" th:href="@{/}">Admin Portal</a>
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button" aria-haspopup="true"
-							aria-expanded="false">Admin Operations <span class="caret"></span></a>
+						<li class="dropdown">
 							<ul class="dropdown-menu">
 								<li><a th:href="@{/product/add}">Add Product</a></li>
 								<li><a th:href="@{/product/productList}">View Products</a></li>
