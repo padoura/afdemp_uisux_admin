@@ -8,14 +8,12 @@ import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.security.UserRole;
 
 public interface ProductService {
-	
-	Product save(Product product);
 
 	List<Product> findAll();
 	
 	Product findOne(Long id);
 	
 	void removeOne(Long id);
-	
-	Product createProduct(Product product) throws Exception;
+
+	Product createProduct(Product product, String type);
 }

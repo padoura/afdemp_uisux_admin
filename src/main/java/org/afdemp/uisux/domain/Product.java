@@ -13,8 +13,10 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -39,12 +41,23 @@ public class Product {
 	@Column(columnDefinition="text")
 	private String description;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private Category category;
 	
 	@OneToMany(mappedBy="product", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JsonIgnore
 	private List<WishlistProduct> wishlistProductList;
+	
+	@Transient
+	private MultipartFile productImage;
+
+	public MultipartFile getProductImage() {
+		return productImage;
+	}
+
+	public void setProductImage(MultipartFile productImage) {
+		this.productImage = productImage;
+	}
 
 	public List<WishlistProduct> getWishlistProductList() {
 		return wishlistProductList;

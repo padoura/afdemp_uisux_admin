@@ -16,6 +16,7 @@ import org.afdemp.uisux.service.UserService;
 import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
+import org.afdemp.uisux.repository.CategoryRepository;
 import org.afdemp.uisux.utility.SecurityUtility;
 
 @SpringBootApplication
@@ -28,6 +29,9 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 	private CategoryService categoryService;
 	
 	@Autowired
+	private CategoryRepository categoryRepository;
+	
+	@Autowired
 	private UserService userService;
 
 	public static void main(String[] args) {
@@ -37,10 +41,19 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		insertFirstAdmin();
+		insertSomeCategories();
 		insertExampleProduct();
+		duplicateCategoryViaProduct();
 	}
 	
-	public void insertFirstAdmin() {
+	private void insertSomeCategories() {
+		Category fruits = new Category("Fruits");
+		categoryService.createCategory(fruits);
+		Category vegetables = new Category("Vegetables");
+		categoryService.createCategory(vegetables);
+	}
+
+	private void insertFirstAdmin() throws Exception {
 		User user1 = new User();
 		user1.setUsername("admin");
 		user1.setPassword(SecurityUtility.passwordEncoder().encode("admin"));
@@ -51,39 +64,40 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 		role1.setName("ROLE_ADMIN");
 		userRoles.add(new UserRole(user1, role1));
 		
-		try {
-			userService.createUser(user1, userRoles);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		userService.createUser(user1, userRoles);
 	}
 	
-	public void insertExampleProduct() {
+	private void insertExampleProduct() throws Exception {
 		Product product = new Product();
-		product.setDescription("Και γαμώ τα γάλατα!");
+		product.setDescription("Awesome Choco Milk!");
 		product.setInStockNumber(10L);
 		product.setListPrice(1.50);
-		product.setMadeIn("Κίνα");
-		product.setName("Γάλα με κακάο");
+		product.setMadeIn("Keramia Crete");
+		product.setName("Choco Milk 0.5L");
 		product.setOurPrice(0.90);
 		product.setPriceBought(0.30);
 		
-		Category category = new Category("Γάλα");
-		
-		product.setCategory(category);
-		
-		try {
-			productService.createProduct(product);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String type = "Milk";
+		productService.createProduct(product, type);
 	}
 	
-	public void insertProductAndRemoveCategory() {
+	private void insertProductAndRemoveCategory() throws Exception {
 		insertExampleProduct();
 		categoryService.removeOne(1L);
+	}
+	
+	private void duplicateCategoryViaProduct() {
+		Product product = new Product();
+		product.setDescription("Awesome Choco Milk!");
+		product.setInStockNumber(10L);
+		product.setListPrice(3);
+		product.setMadeIn("Keramia Crete");
+		product.setName("Choco Milk 1L");
+		product.setOurPrice(1.80);
+		product.setPriceBought(0.60);
+		
+		String type = "Milk";
+		productService.createProduct(product, type);
 	}
 	
 }
