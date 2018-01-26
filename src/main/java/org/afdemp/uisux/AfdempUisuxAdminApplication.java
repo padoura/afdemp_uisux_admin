@@ -1,23 +1,25 @@
 package org.afdemp.uisux;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.afdemp.uisux.domain.CartItem;
 import org.afdemp.uisux.domain.Category;
 import org.afdemp.uisux.domain.Product;
-import org.afdemp.uisux.service.CategoryService;
-import org.afdemp.uisux.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import org.afdemp.uisux.service.UserService;
 import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.CategoryRepository;
+import org.afdemp.uisux.service.CartItemService;
+import org.afdemp.uisux.service.CategoryService;
+import org.afdemp.uisux.service.ProductService;
+import org.afdemp.uisux.service.UserService;
 import org.afdemp.uisux.utility.SecurityUtility;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class AfdempUisuxAdminApplication implements CommandLineRunner{
@@ -32,10 +34,15 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 	private CategoryRepository categoryRepository;
 	
 	@Autowired
+	private CartItemService cartItemService;
+	
+	@Autowired
 	private UserService userService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AfdempUisuxAdminApplication.class, args);
+		
+		
 	}
 	
 	@Override
@@ -43,7 +50,9 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 		insertFirstAdmin();
 		insertSomeCategories();
 		insertExampleProduct();
-		duplicateCategoryViaProduct();
+		insertExampleProduct();
+		insertExampleProduct2();
+		
 	}
 	
 	private void insertSomeCategories() {
@@ -51,6 +60,8 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 		categoryService.createCategory(fruits);
 		Category vegetables = new Category("Vegetables");
 		categoryService.createCategory(vegetables);
+		Category vegetable = new Category("Vegetables");
+		categoryService.createCategory(vegetable);
 	}
 
 	private void insertFirstAdmin() throws Exception {
@@ -65,7 +76,8 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 		userRoles.add(new UserRole(user1, role1));
 		
 		userService.createUser(user1, userRoles);
-	}
+				
+		}
 	
 	private void insertExampleProduct() throws Exception {
 		Product product = new Product();
@@ -76,10 +88,45 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 		product.setName("Choco Milk 0.5L");
 		product.setOurPrice(0.90);
 		product.setPriceBought(0.30);
+		product.setActive(true);
 		
 		String type = "Milk";
 		productService.createProduct(product, type);
 	}
+	
+	private void insertExampleProduct2() throws Exception {
+		Product product = new Product();
+		product.setDescription("Awesome Choco Milk!");
+		product.setInStockNumber(10L);
+		product.setListPrice(1.50);
+		product.setMadeIn("Keramia Crete");
+		product.setName("Choco Milk 1L");
+		product.setOurPrice(0.90);
+		product.setPriceBought(0.30);
+		product.setActive(true);
+		
+		String type = "GTP Milk";
+		productService.createProduct(product, type);
+		
+		insertCartItem(product, 10);
+		
+		
+		
+	}
+	
+	private void insertCartItem(Product product,int qty)
+	{
+		CartItem cartItem=new CartItem();
+		cartItem.setQty(qty);
+		cartItem.setSubtotal(BigDecimal.valueOf(product.getOurPrice()*cartItem.getQty()));
+		cartItem.setProduct(product);
+		
+		
+		
+		cartItemService.createCartItem(cartItem);
+		
+	}
+
 	
 	private void insertProductAndRemoveCategory() throws Exception {
 		insertExampleProduct();
