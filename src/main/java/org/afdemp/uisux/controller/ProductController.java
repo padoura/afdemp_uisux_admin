@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.afdemp.uisux.domain.Category;
 import org.afdemp.uisux.domain.Product;
-import org.afdemp.uisux.repository.CategoryRepository;
+import org.afdemp.uisux.service.CategoryService;
 import org.afdemp.uisux.service.ProductService;
 import org.afdemp.uisux.utility.ImageUtility;
 
@@ -23,14 +23,16 @@ public class ProductController {
 	private ProductService productService;
 	
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private CategoryService categoryService;
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String addProduct(Model model) {
 		Product product = new Product();
 		Category category = new Category();
+		List<Category> categoryList = categoryService.findAll();
 		model.addAttribute("product", product);
 		model.addAttribute("category", category);
+		model.addAttribute("categoryList", categoryList);
 		return "addProduct";
 	}
 
@@ -82,8 +84,9 @@ public class ProductController {
 	@RequestMapping("/updateProduct")
 	public String updateProduct(@RequestParam("id") Long id, Model model) {
 		Product product = productService.findOne(id);
+		List<Category> categoryList = categoryService.findAll();
 		model.addAttribute("product", product);
-		
+		model.addAttribute("categoryList", categoryList);
 		return "updateProduct";
 	}
 	
