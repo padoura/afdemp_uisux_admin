@@ -20,20 +20,22 @@
 						<th>`enabled`</th>
 					</tr>
 				</thead>
+				
 				<tbody>
 					<tr data-th-each="user : ${memberList}">
 						<td>
 						<input hidden="hidden" name="id" th:value="${user.id}" />
 						<input th:id="'selected'+${user.id}" class="checkboxBook" type="checkbox" />
 						</td>
-						<td><a th:href="@{/user/userInfo(id=${user.id})}"></a></td>
-						<td th:id="${user.username}"></td>
-						<td th:id="${user.id}"></td>
-						<td th:id="${user.password}"></td>
-						<td th:id="${user.firstName}"></td>
-						<td th:id="${user.lastName}"></td>
-						<td>
-						</td>
+						<td><a th:href="@{/user/userInfo(id=${user.id})}"><span th:text="${user.username}"></span></a></td>
+						<td th:text="${user.username}"></td>
+						<td th:text="${user.id}"></td>
+						
+						<td th:text="${user.password}"></td>
+						<td th:text="${user.firstName}"></td>
+						
+						<td th:text="${user.lastName}"></td>
+						
 					</tr>
 				</tbody>
 			</table>
