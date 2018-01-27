@@ -12,12 +12,14 @@
 				<thead>
 					<tr>
 						<th><input th:id="selectAllUsers" type="checkbox" /></th>
-						<th>`email`</th>
+						<th>username</th>
+						<th>id</th>
+						<th>password</th>
 						<th>first_name</th>
 						<th>last_name</th>
 						<th>phone</th>
-						<th>username</th>
-						<th>`enabled`</th>
+						<th>email</th>
+						<th>enabled</th>
 					</tr>
 				</thead>
 				
@@ -35,6 +37,9 @@
 						<td th:text="${user.firstName}"></td>
 						
 						<td th:text="${user.lastName}"></td>
+						<td th:text="${user.phone}"></td>
+						<td th:text="${user.email}"></td>
+						<td th:text="${user.enabled}"></td>
 						
 					</tr>
 				</tbody>
