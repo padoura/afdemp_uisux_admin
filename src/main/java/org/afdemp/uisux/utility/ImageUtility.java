@@ -14,7 +14,7 @@ public class ImageUtility {
 	
 	public static boolean trySaveImage(Product product) {
 		MultipartFile productImage = product.getProductImage();
-		if (!productImage.isEmpty()){
+		if (productImage != null && !productImage.isEmpty()){
 			try {
 				byte[] bytes = productImage.getBytes();
 				String name = product.getId() + ".png";
