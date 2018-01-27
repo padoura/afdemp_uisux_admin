@@ -56,7 +56,7 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 		insertSomeCategories();
 		insertExampleProduct();
 		insertExampleProduct();
-		insertExampleProduct2();
+//		insertExampleProduct2();
 		
 	}
 	
