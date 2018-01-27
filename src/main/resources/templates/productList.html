@@ -27,7 +27,7 @@
 					<tr data-th-each="product : ${productList}">
 						<td>
 						<input hidden="hidden" name="id" th:value="${product.id}" />
-						<input th:id="'selected'+${book.id}" class="checkboxBook" type="checkbox" />
+						<input th:id="'selected'+${product.id}" class="checkboxBook" type="checkbox" />
 						</td>
 						<td><a th:href="@{/product/productInfo(id=${product.id})}"><span th:text="${product.name}"></span></a></td>
 						<td th:text="${product.id}"></td>
@@ -35,13 +35,12 @@
 						<td th:text="${product.inStockNumber}"></td>
 						<td th:text="${product.category.type}"></td>
 						<td th:text="${product.description}"></td>
-						<td th:text="${product.active}"></td>
+						
 						<td th:text="${product.priceBought}"></td>
-						<td>
-							<input hidden="hidden" name="id" th:value="${product.id}" />
-							<button th:id="'oneBook-'+${product.id}" class="btn btn-danger btn-xs delete-book" type="submit" value="delete" >
-								<span class="fa fa-times"></span>Delete</button>
-						</td>
+						<td th:text="${product.listPrice}"></td>
+						
+						<td th:text="${product.active}"></td>
+						
 					</tr>
 				</tbody>
 			</table>
