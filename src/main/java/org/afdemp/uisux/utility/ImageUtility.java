@@ -14,16 +14,19 @@ public class ImageUtility {
 	
 	public static boolean trySaveImage(Product product) {
 		MultipartFile productImage = product.getProductImage();
-		try {
-			byte[] bytes = productImage.getBytes();
-			String name = product.getId() + ".png";
-			BufferedOutputStream stream = new BufferedOutputStream(
-					new FileOutputStream(new File("src/main/resources/static/image/product/" + name)));
-			stream.write(bytes);
-			stream.close();
-			return true;
-		} catch (Exception e) {
-			return false;
+		if (!productImage.isEmpty()){
+			try {
+				byte[] bytes = productImage.getBytes();
+				String name = product.getId() + ".png";
+				BufferedOutputStream stream = new BufferedOutputStream(
+						new FileOutputStream(new File("src/main/resources/static/image/product/" + name)));
+				stream.write(bytes);
+				stream.close();
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
 		}
+		return true;
 	}
 }
