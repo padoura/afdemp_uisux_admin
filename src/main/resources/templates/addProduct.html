@@ -4,6 +4,7 @@
 <head th:replace="common/header2 :: common-header" />
 
 <body>
+alert(categoryList)
 	<div th:replace="common/header2 :: navbar" />
 
 	<div class="container">
@@ -52,6 +53,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="type">*
 							Category</label>
+						
 						<div class="col-md-8">
 							<select th:value="${type}" id="type" name="type"
 								class="form-control">
@@ -65,8 +67,24 @@
 									th:selected="(${type}=='Milk')">Milk</option>
 							</select>
 						</div>
+						<div class="col-md-8">
+							<select th:value="${type}" id="type" name="type"
+								class="form-control">
+								<option value="" selected="selected" disabled="disabled">Please
+									select an option...</option>
+								<option value="Fruits"
+									th:selected="(${type}=='Fruits')">Fruits</option>
+							<!-- 	 <option th:each="${categoty.id }" th:value="${categoty.type}"th:text="${categoty.type }"/> -->
+							
+							
+							 <option th:each="category :${categoryList }" >kk</option>
+							  </select>
+						</div>
 					</div>
-
+				
+					
+					
+						
 					<!-- price bought -->
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="priceBought">Buying Price</label>
@@ -156,5 +174,6 @@
 
 
 	<div th:replace="common/header2 :: body-bottom-scripts" />
+	
 </body>
 </html>
