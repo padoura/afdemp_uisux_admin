@@ -52,18 +52,15 @@
 								class="form-control">
 								<option value="" selected="selected" disabled="disabled">Please
 									select an option...</option>
-								<option value="Management"
-									th:selected="(${product.category.type}=='1')">Management</option>
-								<option value="Fiction"
-									th:selected="(${product.category.type}=='Fiction')">Fiction</option>
-								<option value="Engineering"
-									th:selected="(${product.category.type}=='Engineering')">Engineering</option>
-								<option value="Programming"
-									th:selected="(${product.category.type}=='Programming')">Programming</option>
-								<option value="Arts &amp; Literature"
-									th:selected="(${product.category.type}=='Arts &amp; Literature')">Arts
-									&amp; Literature</option>
+									
+											
+							<option th:each="prod : ${categoryList}" value="${prod.type}" th:text="${prod.type}"
+									th:selected="(${product.category.type}==${prod.type}  )"></option>
+							<option value="Milk"
+									th:selected="(${product.category.type}=='Milk')">Milk2</option>
 							</select>
+							
+					
 						</div>
 					</div>
 
@@ -139,10 +136,10 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="description">Description</label>
 						<div class="col-md-8">
-							<textarea name="description" rows="5" class="form-control"
+							<textarea name="description" rows="6" class="form-control"
 								id="description" th:value="${product.description}" th:text="${product.description}"
-								placeholder="Description" />
-							<span class="help-block">Description of the book</span>
+								placeholder="Description" > </textarea>
+							<span class="help-block">Description of the product</span>
 						</div>
 					</div>
 
