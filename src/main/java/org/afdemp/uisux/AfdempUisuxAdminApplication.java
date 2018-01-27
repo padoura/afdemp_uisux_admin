@@ -7,6 +7,7 @@ import java.util.Set;
 import org.afdemp.uisux.domain.CartItem;
 import org.afdemp.uisux.domain.Category;
 import org.afdemp.uisux.domain.Product;
+import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
@@ -14,6 +15,7 @@ import org.afdemp.uisux.repository.CategoryRepository;
 import org.afdemp.uisux.service.CartItemService;
 import org.afdemp.uisux.service.CategoryService;
 import org.afdemp.uisux.service.ProductService;
+import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.UserService;
 import org.afdemp.uisux.utility.SecurityUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,9 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ShoppingCartService shoppingCartService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AfdempUisuxAdminApplication.class, args);
@@ -94,6 +99,15 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 		productService.createProduct(product, type);
 	}
 	
+	private ShoppingCart makeShoppingCart()
+	{
+		ShoppingCart shoppingCart=new ShoppingCart();
+		UserRole userRole=new UserRole();
+		shoppingCart.setUserRole(userRole);
+		shoppingCartService.createShoppingCart(shoppingCart);
+		return shoppingCart;
+	}
+	
 	private void insertExampleProduct2() throws Exception {
 		Product product = new Product();
 		product.setDescription("Awesome Choco Milk!");
@@ -108,18 +122,21 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 		String type = "GTP Milk";
 		productService.createProduct(product, type);
 		
-		insertCartItem(product, 10);
+		ShoppingCart shoppingCart=makeShoppingCart();
+		
+		insertCartItem(product, 10, shoppingCart);
 		
 		
 		
 	}
 	
-	private void insertCartItem(Product product,int qty)
+	private void insertCartItem(Product product,int qty, ShoppingCart shoppingCart)
 	{
 		CartItem cartItem=new CartItem();
 		cartItem.setQty(qty);
 		cartItem.setSubtotal(BigDecimal.valueOf(product.getOurPrice()*cartItem.getQty()));
 		cartItem.setProduct(product);
+		cartItem.setShoppingCart(shoppingCart);
 		
 		
 		

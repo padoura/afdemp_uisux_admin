@@ -11,6 +11,8 @@ import org.afdemp.uisux.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,24 +45,52 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public boolean createProduct(Product product, String type) {
-		Product localProduct = productRepository.findByName(product.getName());
-
-		if (localProduct != null) {
-			LOG.info("product {} already exists. Nothing will be done.", product.getName());
-			return false;
-		} else {
-			Category category = categoryRepository.findByType(type);
-			if (category == null) {
+	public boolean createProduct(Product product, String type) 
+	{
+		
+		
+		 if(type==null)
+		 {
+			 System.out.println("\nFAILURE: String type parameter cannot be null.\n");
+			 return false;
+		 }
+		 
+		 if(product.getName()==null)
+		 {
+			 System.out.println("\nFAILURE: Product.name parameter cannot be null.\n");
+			 return false;
+		 }
+		 
+		 Category category = categoryRepository.findByType(type);
+		 
+			if (category == null) 
+			{
 			    category = new Category();
 			    category.setType(type);
 			    categoryRepository.save(category);
 			}
+			
 			product.setCategory(category);
-			localProduct = productRepository.save(product);
-		}
-
-		return true;
+				
+			try 
+			{
+				productRepository.save(product);
+				System.out.println("\nSUCCESS: Added product "+product.getName()+".\n");
+				return true;
+			}
+			catch (DataIntegrityViolationException e)
+			{
+				System.out.println("\nFAILURE:There's already an item with the same name.\n");
+				return false;
+			}
+			catch (InvalidDataAccessApiUsageException e)
+			{
+				System.out.println("\nFAILURE:Illegal Object. (Product product is null or incomplete)\n");
+				return false;
+			}	
 	}
 
+		
 }
+
+
