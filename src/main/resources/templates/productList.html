@@ -21,6 +21,7 @@
 						<th>Price Bougth</th>
 						<th>listPrice</th>
 						<th>active</th>
+						<th>delete</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -40,6 +41,12 @@
 						<td th:text="${product.listPrice}"></td>
 						
 						<td th:text="${product.active}"></td>
+						
+						<td>
+							<input hidden="hidden" name="id" th:value="${product.id}" />
+							<button th:id="'oneProd-'+${product.id}" class="btn btn-danger btn-xs delete-product" type="submit" value="delete" >
+							<span class="fa fa-times"></span>Delete</button>
+						</td>
 						
 					</tr>
 				</tbody>
