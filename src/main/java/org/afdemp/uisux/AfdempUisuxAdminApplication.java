@@ -17,7 +17,6 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 	public static void main(String[] args) {
 		SpringApplication.run(AfdempUisuxAdminApplication.class, args);
 		
-		
 	}
 	
 	@Override
