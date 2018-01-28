@@ -44,8 +44,8 @@ public class MemberController {
 	
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String addMember(Model model) {
-		User user = new User();
-		model.addAttribute(user);
+		User member = new User();
+		model.addAttribute(member);
 		return "addMember";
 	}
 	
