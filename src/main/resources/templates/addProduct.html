@@ -74,9 +74,9 @@ if(message==null ||message==false){
 						</div>
 						
 					<div class="col-md-8" id="hi2">
-									<input type="text" name="category" class="form-control" id="category"
+									<input type="text" name="type" class="form-control" id="type"
 								th:value="${type}"
-								placeholder="category" />	
+								placeholder="type" />	
 					</div>		
 						</div>
 					
@@ -136,7 +136,7 @@ category -->
 						<div class="col-md-8">
 							<div class="input-group">
 								<span class="input-group-addon"> &euro;</span> <input
-									th:value="${product.listPrice}" type="number" min="0" name="listPrice" step="0.5"
+									th:value="${product.listPrice}" type="number" min="0" name="listPrice" step="0.01"
 									class="form-control" id="listPrice" placeholder="List Price" />
 							</div>
 							<span class="help-block">List price product</span>
@@ -150,7 +150,7 @@ category -->
 						<div class="col-md-8">
 							<div class="input-group">
 								<span class="input-group-addon">&euro;</span> <input
-									th:value="${product.ourPrice}" type="number" min="0" name="ourPrice" step="0.5"
+									th:value="${product.ourPrice}" type="number" min="0" name="ourPrice" step="0.01"
 									class="form-control" id="ourPrice" placeholder="Our Price" />
 							</div>
 							<span class="help-block">Our price of the book</span>
@@ -163,7 +163,7 @@ category -->
 						<div class="col-md-8">
 							<div class="input-group">
 								<span class="input-group-addon">&euro;</span> <input
-									th:value="${product.priceBought}" type="number" min="0" name="priceBought" step="0.5"
+									th:value="${product.priceBought}" type="number" min="0" name="priceBought" step="0.01"
 									class="form-control" id="priceBought" placeholder="priceBought" />
 							</div>
 							<span class="help-block">priceBought of the book</span>

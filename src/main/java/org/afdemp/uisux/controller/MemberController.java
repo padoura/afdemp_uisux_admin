@@ -44,15 +44,15 @@ public class MemberController {
 	
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String addMember(Model model) {
-		User member = new User();
-		model.addAttribute(member);
+		User user = new User();
+		model.addAttribute(user);
 		return "addMember";
 	}
 	
 	@RequestMapping(value="/add", method = RequestMethod.POST)
 	public String newMemberPost(
 			HttpServletRequest request,
-			@ModelAttribute("member") User member,
+			@ModelAttribute("user") User user,
 			BindingResult memberResult, 
 			Model model
 			) throws Exception{
@@ -63,20 +63,20 @@ public class MemberController {
 		}
 		
 		model.addAttribute("classActiveNewAccount", true);
-		model.addAttribute("member", member);
+		model.addAttribute("user", user);
 		
-		User user = userService.findByUsername(member.getUsername());
+		User member = userService.findByUsername(user.getUsername());
 		
-		if (user != null) {
-			member = user;
+		if (member != null) {
+			user = member;
 			Role role = new Role();
 			role.setRoleId(2);
 			role.setName("ROLE_MEMBER");
-			UserRole memberRole = new UserRole(member, role);
-			member.getUserRoles().add(memberRole);
-			userService.save(member);
+			UserRole memberRole = new UserRole(user, role);
+			user.getUserRoles().add(memberRole);
+			userService.save(user);
 			return "addMember";
-		}else if (userService.findByEmail(member.getEmail()) != null) {
+		}else if (userService.findByEmail(user.getEmail()) != null) {
 			model.addAttribute("emailExists", true);
 			return "addMember";
 		}
@@ -84,21 +84,21 @@ public class MemberController {
 		String password = SecurityUtility.randomPassword();
 		
 		String encryptedPassword = SecurityUtility.passwordEncoder().encode(password);
-		member.setPassword(encryptedPassword);
+		user.setPassword(encryptedPassword);
 		
 		Role role = new Role();
 		role.setRoleId(2);
 		role.setName("ROLE_MEMBER");
 		Set<UserRole> userRoles = new HashSet<>();
-		userRoles.add(new UserRole(member, role));
-		userService.createUser(member, userRoles);
+		userRoles.add(new UserRole(user, role));
+		userService.createUser(user, userRoles);
 		
 		String token = UUID.randomUUID().toString();
-		userService.createPasswordResetTokenForUser(member, token);
+		userService.createPasswordResetTokenForUser(user, token);
 		
 		String appUrl = "http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
 		
-		SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, member, password);
+		SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);
 		
 		mailSender.send(email);
 		
