@@ -55,7 +55,7 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 		insertFirstAdmin();
 		insertSomeCategories();
 		insertExampleProduct();
-		insertExampleProduct();
+		updateExampleProduct();
 		insertExampleMember();
 //		insertExampleProduct2();
 		
@@ -100,6 +100,13 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 		productService.createProduct(product, type);
 	}
 	
+	private void updateExampleProduct() throws Exception {
+		Product product = productService.findOne(1L);
+		product.setMadeIn("China");
+		String type = "GTP Milk";
+		productService.createProduct(product, type);
+	}
+	
 	private ShoppingCart makeShoppingCart()
 	{
 		ShoppingCart shoppingCart=new ShoppingCart();
@@ -126,9 +133,6 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 		ShoppingCart shoppingCart=makeShoppingCart();
 		
 		insertCartItem(product, 10, shoppingCart);
-		
-		
-		
 	}
 	
 	private void insertCartItem(Product product,int qty, ShoppingCart shoppingCart)
@@ -166,17 +170,27 @@ public class AfdempUisuxAdminApplication implements CommandLineRunner{
 	}
 	
 	private void insertExampleMember() throws Exception{
+		Role role1= new Role();
+		role1.setRoleId(2);
+		role1.setName("ROLE_MEMBER");
+		
 		User user1 = new User();
 		user1.setUsername("member");
 		user1.setPassword(SecurityUtility.passwordEncoder().encode("member"));
 		user1.setEmail("padoura21@hotmail.com");
 		Set<UserRole> userRoles = new HashSet<>();
-		Role role1= new Role();
-		role1.setRoleId(2);
-		role1.setName("ROLE_MEMBER");
 		userRoles.add(new UserRole(user1, role1));
 		
 		userService.createUser(user1, userRoles);
+		
+		User user2=new User();
+        user2.setUsername("madryoch");
+        user2.setPassword(SecurityUtility.passwordEncoder().encode("guest2"));
+        user2.setEmail("madryoch@gmail.com");
+        userRoles = new HashSet<>();
+        userRoles.add(new UserRole(user2, role1));
+        
+        userService.createUser(user2, userRoles);
 	}
 	
 }

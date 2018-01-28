@@ -94,8 +94,15 @@ public class ProductController {
 	public String updateProductPost(@ModelAttribute("product") Product product, BindingResult productResult,
 			@ModelAttribute("type") String type, BindingResult typeResult, Model model) {
 		
+//		if (productResult.hasErrors()){
+//			System.out.println("productResult problem");
+//		}
+//		
+//		if (typeResult.hasErrors()){
+//			System.out.println("typeResult problem");
+//		}
+		
 		if (productResult.hasErrors() || typeResult.hasErrors()) {
-			model.addAttribute("updateSuccess",false);
 			return "redirect:/product/productInfo?id="+product.getId();
 		}
 

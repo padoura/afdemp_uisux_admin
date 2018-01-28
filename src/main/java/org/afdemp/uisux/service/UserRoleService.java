@@ -8,4 +8,8 @@ public interface UserRoleService {
 
 	
 	List<User> findAllMembers();
+
+	boolean hasThisRole(String roleName, User user);
+
+	List<User> fetchUsersOfRole(String roleName);
 }
