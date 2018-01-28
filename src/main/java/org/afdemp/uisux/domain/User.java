@@ -38,6 +38,8 @@ public class User implements UserDetails{
 	@Column(nullable = false, updatable = false)
 	private String email;
 	private String phone;
+	
+	
 	private boolean enabled=true;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

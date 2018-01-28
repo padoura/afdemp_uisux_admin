@@ -1,5 +1,8 @@
 package org.afdemp.uisux.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -7,11 +10,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.afdemp.uisux.domain.security.PasswordResetToken;
+import org.afdemp.uisux.repository.PasswordResetTokenRepository;
+
 import org.afdemp.uisux.domain.User;
+import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.RoleRepository;
 import org.afdemp.uisux.repository.UserRepository;
 import org.afdemp.uisux.service.UserService;
+import org.afdemp.uisux.utility.SecurityUtility;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,6 +31,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private PasswordResetTokenRepository passwordResetTokenRepository;
 
 	@Override
 	public User createUser(User user, Set<UserRole> userRoles) {
@@ -46,6 +57,22 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User save(User user) {
 		return userRepository.save(user);
+	}
+
+	@Override
+	public void createPasswordResetTokenForUser(final User user, final String token) {
+		final PasswordResetToken myToken = new PasswordResetToken(token, user);
+		passwordResetTokenRepository.save(myToken);
+	}
+	
+	@Override
+	public User findByEmail (String email) {
+		return userRepository.findByEmail(email);
+	}
+	
+	@Override
+	public User findByUsername(String username) {
+		return userRepository.findByUsername(username);
 	}
 
 }

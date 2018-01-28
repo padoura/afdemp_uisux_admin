@@ -1,6 +1,7 @@
 package org.afdemp.uisux.domain;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,25 +10,21 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.NaturalId;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
 public class Product {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	@NaturalId
+	@Column(unique=true,nullable=false)
 	private String name;
 	private String madeIn;
 	private Long inStockNumber;
@@ -44,6 +41,9 @@ public class Product {
 	@ManyToOne
 	private Category category;
 	
+	@OneToMany(mappedBy="product", fetch=FetchType.LAZY)
+	private Set<CartItem> cartItems;
+	
 	@OneToMany(mappedBy="product", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JsonIgnore
 	private List<WishlistProduct> wishlistProductList;
@@ -55,6 +55,8 @@ public class Product {
 		return productImage;
 	}
 
+	
+	
 	public void setProductImage(MultipartFile productImage) {
 		this.productImage = productImage;
 	}
@@ -115,7 +117,7 @@ public class Product {
 		this.ourPrice = ourPrice;
 	}
 
-	public boolean isActive() {
+		public boolean isActive() {
 		return active;
 	}
 
@@ -123,7 +125,7 @@ public class Product {
 		this.active = active;
 	}
 
-	public double getPriceBought() {
+public double getPriceBought() {
 		return priceBought;
 	}
 
@@ -131,7 +133,7 @@ public class Product {
 		this.priceBought = priceBought;
 	}
 
-	public String getDescription() {
+		public String getDescription() {
 		return description;
 	}
 

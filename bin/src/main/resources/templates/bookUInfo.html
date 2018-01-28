@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header2 :: common-header" />
+
+<body>
+	<div th:replace="common/header2 :: navbar" />
+	
+	<div class="container">
+		<div>
+			<ol class="breadcrumb">
+				<li><a th:href="@{/user/bookList}"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Go back</a></li>
+				<li><a th:href="@{/user/updateBook?id=}+${book.id}">Edit</a></li>
+			</ol>
+			
+		</div>
+		
+		<div class="row">
+			<div class="col-xs-3">
+				<div class="panel panel-default">
+				<div class="panel-body">
+					<img th:src="@{/image/book/}+${book.id}+'.png'" class="img-responsive center-block" />
+				</div>
+				</div>
+			</div>
+			<div class="col-xs-9">
+				<h3 th:text="${book.title}"></h3>
+				<div class="row">
+					<div class="col-xs-6">
+						<p><strong>username: </strong><span th:text="${book.author}"></span></p>
+						<p><strong>firstName: </strong><span th:text="${book.publisher}"></span></p>
+						<p><strong>lastName: </strong><span th:text="${book.publicationDate}"></span></p>
+						<p><strong>email: </strong><span th:text="${book.language}"></span></p>
+						<p><strong>phone: </strong><span th:text="${book.category}"></span></p>
+						<p><strong>enabled: </strong><span th:text="${book.numberOfPages}"></span></p>
+					</div>
+					
+				</div>
+				
+					</div>
+			
+		</div>
+	</div>
+
+	<div th:replace="common/header2 :: body-bottom-scripts" />
+</body>
+</html>

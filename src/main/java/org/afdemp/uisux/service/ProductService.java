@@ -15,5 +15,5 @@ public interface ProductService {
 	
 	void removeOne(Long id);
 
-	Product createProduct(Product product, String type);
+	boolean createProduct(Product product, String type);
 }

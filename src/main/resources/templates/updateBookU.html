@@ -1,18 +1,18 @@
 
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
-<head th:replace="common/header :: common-header" />
+<head th:replace="common/header2 :: common-header" />
 
 <body>
-	<div th:replace="common/header :: navbar" />
+	<div th:replace="common/header2 :: navbar" />
 
 	<div class="container">
 		<div class="row">
-			<form class="form-horizontal" th:action="@{/book/updateBook}" method="post"
+			<form class="form-horizontal" th:action="@{/book/updateProduct}" method="post"
 				enctype="multipart/form-data">
 				<fieldset>
 					<legend class="center-block">
-						Update Member Information<span style="font-size: small"> * is a
+						Update Product Information<span style="font-size: small"> * is a
 							required field</span>
 					</legend>
 					

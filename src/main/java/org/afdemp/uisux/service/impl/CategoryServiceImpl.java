@@ -10,6 +10,8 @@ import org.afdemp.uisux.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,15 +44,25 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Category createCategory(Category category) {
-		Category localCategory = categoryRepository.findByType(category.getType());
-
-		if (localCategory != null) {
-			LOG.info("category {} already exists. Nothing will be done.", category.getType());
-		} else {
-			localCategory = categoryRepository.save(category);
+		try 
+		{
+			category=categoryRepository.save(category);
+			System.out.println("\nSUCCESS: Added category "+category.getType()+".\n");
+			return category;
 		}
-
-		return localCategory;
+		catch (DataIntegrityViolationException e)
+		{
+			System.out.println("\nFAILURE:There's already a category of the same type.\n");
+			return category;
+		}
+		catch (InvalidDataAccessApiUsageException e)
+		{
+			System.out.println("\nFAILURE:Illegal Object. (Category category is null)\n");
+			return null;
+		}	
+		
+		
+		
 	}
 
 }

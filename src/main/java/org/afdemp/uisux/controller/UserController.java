@@ -73,8 +73,6 @@
 //		model.addAttribute("memberList", memberList);		
 //
 //		return "memberList";
-//	
-//		
 //	}
 //	@RequestMapping("/bookList")
 //	public String bookList(Model model) {
