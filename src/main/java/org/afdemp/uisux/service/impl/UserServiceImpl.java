@@ -37,21 +37,34 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User createUser(User user, Set<UserRole> userRoles) {
-		List<User> localUser = userRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
+		User localUser = userRepository.findByUsername(user.getUsername());
 
 		if (localUser != null) {
-			LOG.info("user {} already exists. Nothing will be done.", user.getUsername());
-		} else {
-			for (UserRole ur : userRoles) {
-				roleRepository.save(ur.getRole());
+			LOG.info("\n\nFAILURE: User {} already exists. Nothing will be done.\n\n", user.getUsername());
+		} 
+		else 
+			{
+			localUser = userRepository.findByEmail(user.getEmail());
+			if (localUser != null) 
+				{
+					LOG.info("\n\nFAILURE: User with email:{} already exists. Nothing will be done.\n\n", user.getEmail());
+				}
+			
+			else
+				{
+					for (UserRole ur : userRoles) 
+					{
+					roleRepository.save(ur.getRole());
+					}
+			
+					user.getUserRoles().addAll(userRoles);
+					
+					localUser = userRepository.save(user);
+					
+					LOG.info("\n\nSUCCESS: User {} modified. Database succesfully updated.\n\n", user.getUsername());
+			
+				}
 			}
-
-			user.getUserRoles().addAll(userRoles);
-
-			
-			localUser = userRepository.save(user);
-			
-		}
 
 		return localUser;
 	}

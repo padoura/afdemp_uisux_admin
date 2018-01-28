@@ -162,7 +162,7 @@ public class DataGenerator {
 		User user1 = new User();
 		user1.setUsername("member");
 		user1.setPassword(SecurityUtility.passwordEncoder().encode("member"));
-		user1.setEmail("padoura21@gmail.com");
+		user1.setEmail("padoura21@hotmail.com");
 		Set<UserRole> userRoles = new HashSet<>();
 		userRoles.add(new UserRole(user1, role1));
 		
