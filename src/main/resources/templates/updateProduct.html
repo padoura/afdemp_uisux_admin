@@ -21,7 +21,7 @@
 
 					<!-- title -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="title">*Name</label>
+						<label class="col-md-2 control-label" for="name">*Name</label>
 
 						<div class="col-md-8">
 							<input type="text" name="name" class="form-control" id="name"
@@ -33,46 +33,38 @@
 					<!-- author -->
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="madeIn">*
-							madeIn</label>
+							origin</label>
 						<div class="col-md-8">
 							<input type="text" name="madeIn" class="form-control" id="madeIn"
 								th:value="${product.madeIn}" required="required"
-								placeholder="madeIn" /> <span class="help-block">Name</span>
+								placeholder="madeIn" /> <span class="help-block">origin of product</span>
 						</div>
 					</div>
 
 					
 					
-					<!-- category -->
+					
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="category">*
 							Category</label>
-						<div class="col-md-8">
-							<select th:value="${product.category.type}" id="category" name="category"
+						<div class="col-md-8" id="hi">
+							<select th:value="${type}" id="type" name="type"
 								class="form-control">
 								<option value="" selected="selected" disabled="disabled">Please
-									select an option...</option>
-									
-											
-							<option th:each="prod : ${categoryList}" value="${prod.type}" th:text="${prod.type}"
-									th:selected="(${product.category.type}==${prod.type}  )"></option>
-							<option value="Milk"
-									th:selected="(${product.category.type}=='Milk')">Milk2</option>
-							</select>
-							
-					
+									select an category...</option>
+								<option th:each="prod : ${categoryList}" th:value="${prod.type}" th:text="${prod.type}"
+									th:selected="(${type}=='${prod.type}'  )"></option></select>
 						</div>
 					</div>
-
-					<!-- pages -->
+				<!-- pages -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="inStockNumber">stock</label>
+						<label class="col-md-2 control-label" for="inStockNumber">#stock</label>
 
 						<div class="col-md-8">
 							<input type="number" name="inStockNumber" class="form-control"
 								id="inStockNumber" th:value="${product.inStockNumber}"
 								placeholder="stock" /> <span class="help-block">Number
-								of stocks</span>
+								in stock</span>
 						</div>
 					</div>
 
@@ -83,8 +75,8 @@
 							Price</label>
 						<div class="col-md-8">
 							<div class="input-group">
-								<span class="input-group-addon">$</span> <input
-									th:value="${product.listPrice}" type="number" name="listPrice" step="0.5"
+								<span class="input-group-addon">&euro;</span> <input
+									th:value="${product.listPrice}" min="0" type="number" name="listPrice" step="0.01"
 									class="form-control" id="listPrice" placeholder="List Price" />
 							</div>
 							<span class="help-block">List price product</span>
@@ -97,11 +89,11 @@
 							Price</label>
 						<div class="col-md-8">
 							<div class="input-group">
-								<span class="input-group-addon">$</span> <input
-									th:value="${product.ourPrice}" type="number" name="ourPrice" step="0.5"
+								<span class="input-group-addon">&euro;</span> <input
+									th:value="${product.ourPrice}" min="0" type="number" name="ourPrice" step="0.01"
 									class="form-control" id="ourPrice" placeholder="Our Price" />
 							</div>
-							<span class="help-block">Our price of the book</span>
+							<span class="help-block">Our price of the product</span>
 						</div>
 					</div>
 
@@ -110,11 +102,11 @@
 						<label class="col-md-2 control-label" for="ourPrice">priceBought</label>
 						<div class="col-md-8">
 							<div class="input-group">
-								<span class="input-group-addon">$</span> <input
-									th:value="${product.priceBought}" type="number" name="priceBought" step="0.5"
+								<span class="input-group-addon">&euro;</span> <input
+									th:value="${product.priceBought}" min="0"  type="number" name="priceBought" step="0.01"
 									class="form-control" id="priceBought" placeholder="priceBought" />
 							</div>
-							<span class="help-block">priceBought of the book</span>
+							<span class="help-block">priceBought of the product</span>
 						</div>
 					</div>
 
@@ -149,7 +141,7 @@
 							<label for="productImage">Upload product image</label>
 						</div>
 						<div class="col-md-8">
-							<input id="productImage" type="file" name="productmage"
+							<input id="productImage" type="file" name="productImage"
 								th:value="${product.productImage}" />
 						</div>
 					</div>
