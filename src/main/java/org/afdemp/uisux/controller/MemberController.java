@@ -65,16 +65,19 @@ public class MemberController {
 		model.addAttribute("classActiveNewAccount", true);
 		model.addAttribute("member", member);
 		
-		User user = userService.findByUsername(member.getUsername());
+		User user = new User();
 		
-		if (user != null) {
-			member = user;
-			Role role = new Role();
-			role.setRoleId(2);
-			role.setName("ROLE_MEMBER");
-			UserRole memberRole = new UserRole(member, role);
-			member.getUserRoles().add(memberRole);
-			userService.save(member);
+		
+		if (userService.findByUsername(member.getUsername())!=null) {
+//			member = user;
+//			Role role = new Role();
+//			role.setRoleId(2);
+//			role.setName("ROLE_MEMBER");
+//			UserRole memberRole = new UserRole(member, role);
+//			member.getUserRoles().add(memberRole);
+//			userService.save(member);
+			
+			userService.addRole(member, "ROLE_MEMBER");
 			return "addMember";
 		}else if (userService.findByEmail(member.getEmail()) != null) {
 			model.addAttribute("emailExists", true);

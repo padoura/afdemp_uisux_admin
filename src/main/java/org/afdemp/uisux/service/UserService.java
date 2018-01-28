@@ -14,6 +14,13 @@ public interface UserService {
 	
 	User save(User user);
 	
+	void addRole(User user,String rolename);
+	
+	//Non-Functional
+	void updateUserThroughUsername(User user);
+	//Non-Functional
+	void updateUserThroughEmail(String email, User user);
+	
 
 	void createPasswordResetTokenForUser(final User user, final String token);
 	
