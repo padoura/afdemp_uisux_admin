@@ -41,29 +41,22 @@
 						</div>
 					</div>
 
-				<!-- 	
+					
 					
 					
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="category">*
 							Category</label>
-						<div class="col-md-8">
-							<select th:value="${product.category.id}" id="category" name="category"
+						<div class="col-md-8" id="hi">
+							<select th:value="${type}" id="type" name="type"
 								class="form-control">
-				
 								<option value="" selected="selected" disabled="disabled">Please
-									select an option...</option>
-									
-											
-							<option th:each="prod : ${categoryList}" value="${prod.id}" th:text="${prod.type}"
-									th:selected="(${product.category.id}==${prod.id}  )"></option>
-				 			
-							
-					</select>
+									select an category...</option>
+								<option th:each="prod : ${categoryList}" th:value="${prod.type}" th:text="${prod.type}"
+									th:selected="(${type}=='${prod.type}'  )"></option></select>
 						</div>
 					</div>
--->
-					<!-- pages -->
+				<!-- pages -->
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="inStockNumber">#stock</label>
 
@@ -83,7 +76,7 @@
 						<div class="col-md-8">
 							<div class="input-group">
 								<span class="input-group-addon">&euro;</span> <input
-									th:value="${product.listPrice}" min="0" type="number" name="listPrice" step="0.5"
+									th:value="${product.listPrice}" min="0" type="number" name="listPrice" step="0.01"
 									class="form-control" id="listPrice" placeholder="List Price" />
 							</div>
 							<span class="help-block">List price product</span>
@@ -97,7 +90,7 @@
 						<div class="col-md-8">
 							<div class="input-group">
 								<span class="input-group-addon">&euro;</span> <input
-									th:value="${product.ourPrice}" min="0" type="number" name="ourPrice" step="0.5"
+									th:value="${product.ourPrice}" min="0" type="number" name="ourPrice" step="0.01"
 									class="form-control" id="ourPrice" placeholder="Our Price" />
 							</div>
 							<span class="help-block">Our price of the product</span>
@@ -110,7 +103,7 @@
 						<div class="col-md-8">
 							<div class="input-group">
 								<span class="input-group-addon">&euro;</span> <input
-									th:value="${product.priceBought}" min="0"  type="number" name="priceBought" step="0.5"
+									th:value="${product.priceBought}" min="0"  type="number" name="priceBought" step="0.01"
 									class="form-control" id="priceBought" placeholder="priceBought" />
 							</div>
 							<span class="help-block">priceBought of the product</span>
