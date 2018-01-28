@@ -20,6 +20,7 @@
 						<th>phone</th>
 						<th>email</th>
 						<th>enabled</th>
+						<th>delete</th>
 					</tr>
 				</thead>
 				
@@ -29,7 +30,7 @@
 						<input hidden="hidden" name="id" th:value="${user.id}" />
 						<input th:id="'selected'+${user.id}" class="checkboxBook" type="checkbox" />
 						</td>
-						<td><a th:href="@{/user/userInfo(id=${user.id})}"><span th:text="${user.username}"></span></a></td>
+						<td><a th:href="@{/member/userInfo(id=${user.id})}"><span th:text="${user.username}"></span></a></td>
 						<td th:text="${user.id}"></td>
 						
 						<td th:text="${user.password}"></td>
@@ -40,6 +41,11 @@
 						<td th:text="${user.email}"></td>
 						<td th:text="${user.enabled}"></td>
 						
+						<td>
+							<input hidden="hidden" name="id" th:value="${user.id}" />
+							<button th:id="'oneUser-'+${user.id}" class="btn btn-danger btn-xs delete-user" type="submit" value="delete" >
+							<span class="fa fa-times"></span>Delete</button>
+						</td>
 					</tr>
 				</tbody>
 			</table>
