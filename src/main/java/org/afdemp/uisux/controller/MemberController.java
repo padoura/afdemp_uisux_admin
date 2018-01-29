@@ -119,7 +119,7 @@ public class MemberController {
 		return "memberList";
 	}
 	
-	@RequestMapping(value= {"/memberInfo","/updateMember"})
+	@RequestMapping("/memberInfo")
 	public String memberInfo(@RequestParam("id") Long id, Model model) {
 		User user = userService.findOne(id);
 		user.setPassword(""); //password not sent to view
