@@ -119,16 +119,23 @@ public class MemberController {
 		return "memberList";
 	}
 	
-	@RequestMapping("/memberInfo")
-	public String memberInfo(@RequestParam("username") String username, Model model) {
-		User user = userService.findByUsername(username);
+	@RequestMapping(value= {"/memberInfo","/updateMember"})
+	public String memberInfo(@RequestParam("id") Long id, Model model) {
+		User user = userService.findOne(id);
 		user.setPassword(""); //password not sent to view
 		model.addAttribute("user", user);
-		
 		return "memberInfo";
 	}
 	
-	@RequestMapping(value="/update", method=RequestMethod.POST)
+	@RequestMapping("/updateMember")
+	public String updateMember(@RequestParam("id") Long id, Model model) {
+		User user = userService.findOne(id);
+		user.setPassword(""); //password not sent to view
+		model.addAttribute("user", user);
+		return "updateMember";
+	}
+	
+	@RequestMapping(value="/updateMember", method=RequestMethod.POST)
 	public String updateMemberPost(@ModelAttribute("user") User user, BindingResult userResult,
 			Model model) {
 		
