@@ -59,7 +59,7 @@ public class DataGenerator {
 		User user1 = new User();
 		user1.setUsername("admin");
 		user1.setPassword(SecurityUtility.passwordEncoder().encode("admin"));
-		user1.setEmail("padoura21@hotmail.com");
+		user1.setEmail("whatever@xxx.tv");
 		Set<UserRole> userRoles = new HashSet<>();
 		Role role1= new Role();
 		role1.setRoleId(0);
@@ -162,7 +162,7 @@ public class DataGenerator {
 		User user1 = new User();
 		user1.setUsername("member");
 		user1.setPassword(SecurityUtility.passwordEncoder().encode("member"));
-		user1.setEmail("padoura21@hotmail.com");
+		user1.setEmail("member@fruitsynd.tk");
 		Set<UserRole> userRoles = new HashSet<>();
 		userRoles.add(new UserRole(user1, role1));
 		
