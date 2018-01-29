@@ -127,14 +127,21 @@ public class MemberController {
 		
 		return "memberInfo";
 	}
+	@RequestMapping("/updateMember")
+	public String updateMember(@RequestParam("id") Long id, Model model) {
+		User user = userService.findOne(id);
+		user.setPassword(""); //password not sent to view
+		model.addAttribute("user", user);
+		return "updateMember";
+	}
 	
-	@RequestMapping(value="/update", method=RequestMethod.POST)
+	@RequestMapping(value="/updateMember", method=RequestMethod.POST)
 	public String updateMemberPost(@ModelAttribute("user") User user, BindingResult userResult,
 			Model model) {
 		
 		if (userResult.hasErrors()) {
 			model.addAttribute("insertFailure",true);
-			return "redirect:/member/memberInfo?id=\"+user.getId()";
+			return "redirect:/member/memberInfo?id=" + user.getId();
 		}
 		
 		model.addAttribute("classActiveNewAccount", true);
@@ -144,12 +151,12 @@ public class MemberController {
 		
 		if (existingUser != null && !user.getId().equals(existingUser.getId())) {
 			model.addAttribute("emailAlreadyExistsFailure", true);
-			return "redirect:/member/memberInfo?id=\"+user.getId()";
+			return "redirect:/member/memberInfo?id=" + user.getId();
 		}else {
 			existingUser = userService.findByUsername(user.getUsername());
 			if (existingUser != null && !user.getId().equals(existingUser.getId())) {
 				model.addAttribute("usernameAlreadyExistsFailure", true);
-				return "redirect:/member/memberInfo?id=\"+user.getId()";
+				return "redirect:/member/memberInfo?id=" + user.getId();
 			}
 		}
 		
@@ -158,6 +165,6 @@ public class MemberController {
 		existingUser.updateUser(user);
 		userService.save(existingUser);
 		model.addAttribute("updateSuccess",true);
-		return "redirect:/member/memberInfo?id=\"+user.getId()";
+		return "redirect:/member/memberInfo?id=" + user.getId();
 	}
 }

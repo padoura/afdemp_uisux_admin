@@ -8,7 +8,7 @@
 
 	<div class="container">
 		<div class="row">
-			<form class="form-horizontal" th:action="@{/user/updateUser}" method="post"
+			<form class="form-horizontal" th:action="@{/member/updateMember}" method="post"
 				enctype="multipart/form-data">
 				
 							<fieldset>
@@ -22,12 +22,12 @@
 
 
 					<!-- title -->
-					<div class="form-group">
+					<div class="form-group" >
 						<label class="col-md-2 control-label" for="title">*UserName</label>
 
 						<div class="col-md-8">
 							<input type="text" name="username" class="form-control" id="username"
-								th:value="${user.username}" th:value="${user.username}" required="required" placeholder="username" />
+								th:value="${user.username}" required="required" placeholder="username"  />
 							<span class="help-block">userName</span>
 						</div>
 					</div>
@@ -38,7 +38,7 @@
 
 						<div class="col-md-8">
 							<input type="text" name="firstName" class="form-control" id="firstName"
-								th:value="${user.firstName}" th:value="${user.firstName}"  required="required" placeholder="firstName" />
+								th:value="${user.firstName}"   required="required" placeholder="firstName" />
 							<span class="help-block">firstName</span>
 						</div>
 					</div>
@@ -48,7 +48,7 @@
 
 						<div class="col-md-8">
 							<input type="text" name="lastName" class="form-control" id="lastName"
-								th:value="${user.lastName}" required="required" th:value="${user.Lastname}" placeholder="lastName" />
+								th:value="${user.lastName}" required="required"  placeholder="lastName" />
 							<span class="help-block">lastName</span>
 						</div>
 					</div>
@@ -58,7 +58,7 @@
 
 						<div class="col-md-8">
 							<input type="text" name="email" class="form-control" id="email"
-								th:value="${user.email}" th:value="${user.email}" required="required" placeholder="email" />
+								th:value="${user.email}"  required="required" placeholder="email" />
 							<span class="help-block">email</span>
 						</div>
 					</div>
@@ -67,8 +67,8 @@
 						<label class="col-md-2 control-label" for="title">phone</label>
 
 						<div class="col-md-8">
-							<input type="text" name="phone" class="form-control" id="phone"
-								th:value="${user.phone}" th:value="${user.phone}"  placeholder="phone" />
+							<input type="text" name="phone"  class="form-control" id="phone"
+								th:value="${user.phone}"   placeholder="phone" />
 							<span class="help-block">phone</span>
 						</div>
 					</div>
