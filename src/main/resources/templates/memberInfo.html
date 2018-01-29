@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header2 :: common-header" />
+
+<body>
+	<div th:replace="common/header2 :: navbar" />
+	
+	<div class="container">
+		<div>
+			<ol class="breadcrumb">
+				<li><a th:href="@{/member/memberList}"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Go back</a></li>
+				<li><a th:href="@{/member/updateUser?username=}+${user.username}">Edit</a></li>
+			</ol>
+
+		</div>
+		
+			
+			<div class="col-xs-9">
+				<div class="row">
+					<div class="col-xs-6">
+						<p><strong>id: </strong><span th:text="${user.id}"></span></p>
+						<p><strong>username: </strong><span th:text="${user.username}"></span></p>
+						<p><strong>password: </strong><span th:text="${user.password}"></span></p>
+						<p><strong>firstName: </strong><span th:text="${user.firstName}"></span></p>
+						<p><strong>lastName: </strong><span th:text="${user.lastName}"></span></p>
+						<p><strong>email: </strong><span th:text="${user.email}"></span></p>
+					</div>
+					<div class="col-xs-2">
+						<p><strong>phone: </strong><span th:text="${user.phone}"></span></p>
+						<p><strong>enabled: </strong><span th:text="${user.enabled}"></span></p>
+						</div>
+				</div>
+				
+				</div>
+			
+		</div>
+	
+	<div th:replace="common/header2 :: body-bottom-scripts" />
+</body>
+</html>
