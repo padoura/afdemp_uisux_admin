@@ -1,38 +1,50 @@
 package org.afdemp.uisux.service.impl;
 
+import java.math.BigDecimal;
+
 import org.afdemp.uisux.domain.ShoppingCart;
+import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.ShoppingCartRepository;
 import org.afdemp.uisux.service.ShoppingCartService;
+import org.afdemp.uisux.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService{
 	
+	private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+	
 	@Autowired
 	private ShoppingCartRepository shoppingCartRepository;
 	
 	@Override
-	public boolean createShoppingCart(ShoppingCart shoppingCart)
+	public boolean createShoppingCart(UserRole userRole)
 	{
-		try 
-		{
-			shoppingCart=shoppingCartRepository.save(shoppingCart);
-			System.out.println("\nSUCCESS: Added ShoppingCart for user "+shoppingCart.getUserRole().getUser().getUsername()+".\n");
-			return true;
-		}
-		catch (DataIntegrityViolationException e)
-		{
-			System.out.println("\nFAILURE:There's already a shopping cart for that user.\n");
-			return false;
-		}
-		catch (InvalidDataAccessApiUsageException e)
-		{
-			System.out.println("\nFAILURE:Illegal Object. (ShoppingCart shoppingCart is null)\n");
-			return false;
-		}	
+	
+		ShoppingCart shoppingCart=shoppingCartRepository.findByUserRole(userRole);
+		
+			if(userRole!=null && userRole.getUser()!=null)
+			{
+				shoppingCart=new ShoppingCart();
+				shoppingCart.setUserRole(userRole);
+				shoppingCart.setGrandTotal(BigDecimal.valueOf(0));
+				shoppingCart=shoppingCartRepository.save(shoppingCart);
+				
+				LOG.info("\n\n\nSUCCESS: Shopping Cart for user {} succesfully created.\n\n",userRole.getUser().getUsername());
+				return true;
+			}
+			else
+			{
+				LOG.info("\n\n\nFAILURE:Invalid Argument passed\n\n");
+				return false;
+			}
+		
+		
+		
+
 	}
 
 }

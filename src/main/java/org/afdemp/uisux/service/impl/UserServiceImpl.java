@@ -11,6 +11,7 @@ import org.afdemp.uisux.repository.PasswordResetTokenRepository;
 import org.afdemp.uisux.repository.RoleRepository;
 import org.afdemp.uisux.repository.UserRepository;
 import org.afdemp.uisux.service.RoleService;
+import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.UserRoleService;
 import org.afdemp.uisux.service.UserService;
 import org.slf4j.Logger;
@@ -23,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 	
+	@Autowired
+	private ShoppingCartService shoppingCartService;
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -72,6 +75,7 @@ public class UserServiceImpl implements UserService {
 					for (UserRole ur : user.getUserRoles()) 
 					{
 						userRoleService.createUserRole(ur);
+						shoppingCartService.createShoppingCart(ur);
 					}
 					
 					
@@ -109,9 +113,13 @@ public class UserServiceImpl implements UserService {
 			
 			userService.save(user);
 			
-			for (UserRole ur : user.getUserRoles()) 
+			if(!user.getUserRoles().isEmpty())
 			{
-				userRoleService.createUserRole(ur);
+				for (UserRole ur : user.getUserRoles()) 
+				{
+					userRoleService.createUserRole(ur);
+					
+				}
 			}
 		}
 	}

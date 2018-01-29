@@ -8,13 +8,11 @@ import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.RoleRepository;
 import org.afdemp.uisux.repository.UserRoleRepository;
+import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.UserRoleService;
-import org.afdemp.uisux.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +26,9 @@ public class UserRoleServiceImpl implements UserRoleService{
 	@Autowired
 	private RoleRepository roleRepository;
 	
+	@Autowired
+	private ShoppingCartService shoppingCartService;
+	
 	@Override
 	public boolean createUserRole(UserRole userRole)
 	{
@@ -36,6 +37,7 @@ public class UserRoleServiceImpl implements UserRoleService{
 		if(ur==null && userRole.getUser()!=null && userRole.getRole()!=null)
 		{			
 			userRole=userRoleRepository.save(userRole);
+			shoppingCartService.createShoppingCart(userRole);
 			LOG.info("\n\n\nSUCCESS: Added UserRole {} to user {} \n\n",userRole.getRole().getName(), userRole.getUser().getUsername());
 			return true;
 		}

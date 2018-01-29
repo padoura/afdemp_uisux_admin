@@ -96,15 +96,6 @@ public class DataGenerator {
 		productService.createProduct(product, type);
 	}
 	
-	private ShoppingCart makeShoppingCart()
-	{
-		ShoppingCart shoppingCart=new ShoppingCart();
-		UserRole userRole=new UserRole();
-		shoppingCart.setUserRole(userRole);
-		shoppingCartService.createShoppingCart(shoppingCart);
-		return shoppingCart;
-	}
-	
 	private void insertExampleProduct2() throws Exception {
 		Product product = new Product();
 		product.setDescription("Awesome Choco Milk!");
@@ -119,9 +110,9 @@ public class DataGenerator {
 		String type = "GTP Milk";
 		productService.createProduct(product, type);
 		
-		ShoppingCart shoppingCart=makeShoppingCart();
 		
-		insertCartItem(product, 10, shoppingCart);
+		
+		//insertCartItem(product, 10, shoppingCart);
 	}
 	
 	private void insertCartItem(Product product,int qty, ShoppingCart shoppingCart)
