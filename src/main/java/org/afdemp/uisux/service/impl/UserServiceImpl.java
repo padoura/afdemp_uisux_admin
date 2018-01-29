@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
 					for (UserRole ur : user.getUserRoles()) 
 					{
 						userRoleService.createUserRole(ur);
-						shoppingCartService.createShoppingCart(ur);
+						
 					}
 					
 					
@@ -87,41 +87,32 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void addRole(User member,String roleName)
+	public User addRole(User user,String roleName)
 	{
-		User user = userService.findByUsername(member.getUsername());
+		//Searching Database for User user
+		user = userService.findByUsername(user.getUsername());
 		
 		if (user != null) 
 		{
-			Set<UserRole> userRoles=new HashSet<UserRole>();
-			userRoles.addAll(user.getUserRoles());
+			//Finding the role
 			Role role = new Role();
-			
-			
 			role=roleRepository.findByName(roleName);
 			
-			//Not checking if the roleName could be wrong but could add
-			//Left it for bussiness logic to deal with it.
-			UserRole memberRole = new UserRole(user, role);
-			user.getUserRoles().add(memberRole);
+			//Creating  a UserRole object
+			UserRole roleToAdd = new UserRole(user, role);
 			
-			user.getUserRoles().removeAll(userRoles);
-			
-			
-			
-			System.out.println("\n\n\n");
-			
-			userService.save(user);
-			
-			if(!user.getUserRoles().isEmpty())
+			//Checking if it exists in user object's Set of UserRoles
+			//and if it isn't part of it create it and add it to user object.
+			if(!user.getUserRoles().contains(roleToAdd))
 			{
-				for (UserRole ur : user.getUserRoles()) 
-				{
-					userRoleService.createUserRole(ur);
-					
-				}
+				userRoleService.createUserRole(roleToAdd);
+				user.getUserRoles().add(roleToAdd);
+				userService.save(user);
 			}
 		}
+		
+		//Returning the final user or null in case the user search yielded no results
+		return user;
 	}
 	
 	//Non Functional
