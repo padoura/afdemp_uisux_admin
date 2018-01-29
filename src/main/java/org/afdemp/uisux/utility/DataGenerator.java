@@ -96,16 +96,7 @@ public class DataGenerator {
 		productService.createProduct(product, type);
 	}
 	
-	private ShoppingCart makeShoppingCart()
-	{
-		ShoppingCart shoppingCart=new ShoppingCart();
-		UserRole userRole=new UserRole();
-		shoppingCart.setUserRole(userRole);
-		shoppingCartService.createShoppingCart(shoppingCart);
-		return shoppingCart;
-	}
-	
-	private void insertExampleProduct2() throws Exception {
+	private Product insertExampleProduct2() throws Exception {
 		Product product = new Product();
 		product.setDescription("Awesome Choco Milk!");
 		product.setInStockNumber(10L);
@@ -119,23 +110,12 @@ public class DataGenerator {
 		String type = "GTP Milk";
 		productService.createProduct(product, type);
 		
-		ShoppingCart shoppingCart=makeShoppingCart();
-		
-		insertCartItem(product, 10, shoppingCart);
+		return product;
 	}
 	
 	private void insertCartItem(Product product,int qty, ShoppingCart shoppingCart)
 	{
-		CartItem cartItem=new CartItem();
-		cartItem.setQty(qty);
-		cartItem.setSubtotal(BigDecimal.valueOf(product.getOurPrice()*cartItem.getQty()));
-		cartItem.setProduct(product);
-		cartItem.setShoppingCart(shoppingCart);
-		
-		
-		
-		cartItemService.createCartItem(cartItem);
-		
+		cartItemService.addToCart(shoppingCart,product,qty);
 	}
 
 	

@@ -25,12 +25,12 @@ public class RoleServiceImpl implements RoleService{
 		if(rl==null)
 		{			
 			role=roleRepository.save(role);
-			LOG.info("\n\\nSUCCESS: Added Role  {} \n\n",role.getName());
+			LOG.info("\n\n\nSUCCESS: Added Role  {} \n\n",role.getName());
 			return true;
 		}
 		else
 		{
-			LOG.info("\n\nFAILURE:Role {} already exists.\n\n", role.getName());
+			LOG.info("\n\n\nFAILURE:Role {} already exists.\n\n", role.getName());
 			return false;
 		}
 			

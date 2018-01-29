@@ -11,6 +11,7 @@ import org.afdemp.uisux.repository.PasswordResetTokenRepository;
 import org.afdemp.uisux.repository.RoleRepository;
 import org.afdemp.uisux.repository.UserRepository;
 import org.afdemp.uisux.service.RoleService;
+import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.UserRoleService;
 import org.afdemp.uisux.service.UserService;
 import org.slf4j.Logger;
@@ -23,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 	
+	@Autowired
+	private ShoppingCartService shoppingCartService;
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -46,14 +49,14 @@ public class UserServiceImpl implements UserService {
 		User localUser = userRepository.findByUsername(user.getUsername());
 
 		if (localUser != null) {
-			LOG.info("\n\nFAILURE: User {} already exists. Nothing will be done.\n\n", user.getUsername());
+			LOG.info("\n\n\nFAILURE: User {} already exists. Nothing will be done.\n\n", user.getUsername());
 		} 
 		else 
 			{
 			localUser = userRepository.findByEmail(user.getEmail());
 			if (localUser != null) 
 				{
-					LOG.info("\n\nFAILURE: User with email:{} already exists. Nothing will be done.\n\n", user.getEmail());
+					LOG.info("\n\n\nFAILURE: User with email:{} already exists. Nothing will be done.\n\n", user.getEmail());
 				}
 			
 			else
@@ -64,6 +67,7 @@ public class UserServiceImpl implements UserService {
 					}
 			
 					user.getUserRoles().addAll(userRoles);
+					LOG.info("\n\n\nSUCCESS: User {} created. Database succesfully updated.\n\n", user.getUsername());
 										
 								
 					localUser = userRepository.save(user);
@@ -71,9 +75,10 @@ public class UserServiceImpl implements UserService {
 					for (UserRole ur : user.getUserRoles()) 
 					{
 						userRoleService.createUserRole(ur);
+						
 					}
 					
-					LOG.info("\n\nSUCCESS: User {} created. Database succesfully updated.\n\n", user.getUsername());
+					
 			
 				}
 			}
@@ -82,37 +87,32 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void addRole(User member,String roleName)
+	public User addRole(User user,String roleName)
 	{
-		User user = userService.findByUsername(member.getUsername());
+		//Searching Database for User user
+		user = userService.findByUsername(user.getUsername());
 		
 		if (user != null) 
 		{
-			Set<UserRole> userRoles=new HashSet<UserRole>();
-			userRoles.addAll(user.getUserRoles());
+			//Finding the role
 			Role role = new Role();
-			
-			
 			role=roleRepository.findByName(roleName);
 			
-			//Not checking if the roleName could be wrong but could add
-			//Left it for business logic to deal with it.
-			UserRole memberRole = new UserRole(user, role);
-			user.getUserRoles().add(memberRole);
+			//Creating  a UserRole object
+			UserRole roleToAdd = new UserRole(user, role);
 			
-			user.getUserRoles().removeAll(userRoles);
-			
-			
-			
-			System.out.println("\n\n\n");
-			
-			userService.save(user);
-			
-			for (UserRole ur : user.getUserRoles()) 
+			//Checking if it exists in user object's Set of UserRoles
+			//and if it isn't part of it create it and add it to user object.
+			if(!user.getUserRoles().contains(roleToAdd))
 			{
-				userRoleService.createUserRole(ur);
+				userRoleService.createUserRole(roleToAdd);
+				user.getUserRoles().add(roleToAdd);
+				userService.save(user);
 			}
 		}
+		
+		//Returning the final user or null in case the user search yielded no results
+		return user;
 	}
 	
 	//Non Functional
