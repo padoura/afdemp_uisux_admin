@@ -27,8 +27,7 @@ public class CartItem {
 	private Product product;
 		
 	private int qty;
-	private BigDecimal subtotal;
-	
+		
 	@ManyToOne
 	@JoinColumn(name="shopping_cart_id")
 	private ShoppingCart shoppingCart;
@@ -55,14 +54,6 @@ public class CartItem {
 
 	public void setCurrentPrice(BigDecimal currentPrice) {
 		this.currentPrice = currentPrice;
-	}
-
-	public BigDecimal getSubtotal() {
-		return subtotal;
-	}
-
-	public void setSubtotal(BigDecimal subtotal) {
-		this.subtotal = subtotal;
 	}
 
 	public ShoppingCart getShoppingCart() {
