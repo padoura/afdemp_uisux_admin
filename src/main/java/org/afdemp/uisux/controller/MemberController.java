@@ -16,9 +16,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
+import org.afdemp.uisux.repository.UserRepository;
 import org.afdemp.uisux.utility.SecurityUtility;
 
 import org.afdemp.uisux.domain.User;
@@ -53,11 +54,11 @@ public class MemberController {
 	public String newMemberPost(
 			HttpServletRequest request,
 			@ModelAttribute("user") User user,
-			BindingResult memberResult, 
+			BindingResult userResult, 
 			Model model
 			) throws Exception{
 		
-		if (memberResult.hasErrors()) {
+		if (userResult.hasErrors()) {
 			model.addAttribute("insertFailure",true);
 			return "addMember";
 		}
@@ -115,56 +116,47 @@ public class MemberController {
 		return "memberList";
 	}
 	
+	@RequestMapping("/memberInfo")
+	public String memberInfo(@RequestParam("username") String username, Model model) {
+		User user = userService.findByUsername(username);
+		user.setPassword(""); //password not sent to view
+		model.addAttribute("user", user);
+		
+		return "memberInfo";
+	}
 	
-
-//	
-//	@RequestMapping("/productList")
-//	public String productList(Model model) {
-//		List<Product> productList = productService.findAll();
-//		model.addAttribute("productList", productList);		
-//		return "productList";
-//	}
-//	
-//	@RequestMapping(value="/remove", method=RequestMethod.POST)
-//	public String remove(
-//			@ModelAttribute("id") String id, Model model
-//			) {
-//		productService.removeOne(Long.parseLong(id.substring(8)));
-//		List<Product> productList = productService.findAll();
-//		model.addAttribute("productList", productList);
-//		return "redirect:/product/productList";
-//	}
-//	
-//	
-//	@RequestMapping("/productInfo")
-//	public String productInfo(@RequestParam("id") Long id, Model model) {
-//		Product product = productService.findOne(id);
-//		model.addAttribute("product", product);
-//		
-//		return "productInfo";
-//	}
-//	
-
-//	
-//	@RequestMapping(value="/updateProduct", method=RequestMethod.POST)
-//	public String updateProductPost(@ModelAttribute("product") Product product, BindingResult productResult,
-//			@ModelAttribute("type") String type, BindingResult typeResult, Model model) {
-//		
-//		if (productResult.hasErrors() || typeResult.hasErrors()) {
-//			model.addAttribute("updateSuccess",false);
-//			return "redirect:/product/productInfo?id="+product.getId();
-//		}
-//
-//		boolean success;
-//		if (productService.createProduct(product, type) & ImageUtility.trySaveImage(product)) {
-//				success = true;
-//		}else{
-//			success = false;
-//		}
-//		model.addAttribute("updateSuccess",success);
-//		
-//		return "redirect:/product/productInfo?id="+product.getId();
-//	}
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public String updateMemberPost(@ModelAttribute("user") User user, BindingResult userResult,
+			Model model) {
+		
+		if (userResult.hasErrors()) {
+			model.addAttribute("insertFailure",true);
+			return "redirect:/member/memberInfo?id=\"+user.getId()";
+		}
+		
+		model.addAttribute("classActiveNewAccount", true);
+		model.addAttribute("user", user);
+		
+		User existingUser = userService.findByEmail(user.getEmail());
+		
+		if (existingUser != null && !user.getId().equals(existingUser.getId())) {
+			model.addAttribute("emailAlreadyExistsFailure", true);
+			return "redirect:/member/memberInfo?id=\"+user.getId()";
+		}else {
+			existingUser = userService.findByUsername(user.getUsername());
+			if (existingUser != null && !user.getId().equals(existingUser.getId())) {
+				model.addAttribute("usernameAlreadyExistsFailure", true);
+				return "redirect:/member/memberInfo?id=\"+user.getId()";
+			}
+		}
+		
+		existingUser = userService.findOne(user.getId());
+		
+		existingUser.updateUser(user);
+		userService.save(existingUser);
+		model.addAttribute("updateSuccess",true);
+		return "redirect:/member/memberInfo?id=\"+user.getId()";
+	}
 	
 
 

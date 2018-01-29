@@ -129,6 +129,15 @@ public class User implements UserDetails{
 	public boolean isEnabled() {
 		return enabled;
 	}
+	public void updateUser(User user) {
+		// TODO Auto-generated method stub
+		this.email = user.email;
+		this.username = user.username;
+		this.enabled = user.enabled;
+		this.firstName = user.firstName;
+		this.phone = user.phone;
+		this.lastName = user.lastName;
+	}
 	
 	
 	
