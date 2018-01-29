@@ -66,18 +66,17 @@ public class MemberController {
 		model.addAttribute("user", user);
 		
 		User member = userService.findByUsername(user.getUsername());
-		
 		if (member != null) {
-			user = member;
 			Role role = new Role();
-			role.setRoleId(2);
+			role.setRoleId(1);
 			role.setName("ROLE_MEMBER");
-			UserRole memberRole = new UserRole(user, role);
-			user.getUserRoles().add(memberRole);
-			userService.save(user);
+			UserRole memberRole = new UserRole(member, role);
+			member.getUserRoles().add(memberRole);
+			userService.save(member);
+			model.addAttribute("addedRoleToExistingUser", true);
 			return "addMember";
 		}else if (userService.findByEmail(user.getEmail()) != null) {
-			model.addAttribute("emailExists", true);
+			model.addAttribute("emailAlreadyExistsFailure", true);
 			return "addMember";
 		}
 		
@@ -87,7 +86,7 @@ public class MemberController {
 		user.setPassword(encryptedPassword);
 		
 		Role role = new Role();
-		role.setRoleId(2);
+		role.setRoleId(1);
 		role.setName("ROLE_MEMBER");
 		Set<UserRole> userRoles = new HashSet<>();
 		userRoles.add(new UserRole(user, role));
@@ -101,7 +100,7 @@ public class MemberController {
 		SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);
 		
 		mailSender.send(email);
-		
+		user.setPassword(""); //to return empty password to model
 		model.addAttribute("emailSent", "true");
 		
 		return "addMember";
