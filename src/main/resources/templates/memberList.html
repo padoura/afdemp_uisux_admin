@@ -30,7 +30,7 @@
 						<input hidden="hidden" name="id" th:value="${user.id}" />
 						<input th:id="'selected'+${user.id}" class="checkboxBook" type="checkbox" />
 						</td>
-						<td><a th:href="@{/member/userInfo(id=${user.id})}"><span th:text="${user.username}"></span></a></td>
+						<td><a th:href="@{/member/memberInfo(id=${user.id})}"><span th:text="${user.username}"></span></a></td>
 						<td th:text="${user.id}"></td>
 						
 						<td th:text="${user.password}"></td>

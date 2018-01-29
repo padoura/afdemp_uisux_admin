@@ -120,8 +120,8 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/memberInfo")
-	public String memberInfo(@RequestParam("username") String username, Model model) {
-		User user = userService.findByUsername(username);
+	public String memberInfo(@RequestParam("id") Long id, Model model) {
+		User user = userService.findOne(id);
 		user.setPassword(""); //password not sent to view
 		model.addAttribute("user", user);
 		
