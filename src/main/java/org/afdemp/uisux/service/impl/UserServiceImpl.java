@@ -46,14 +46,14 @@ public class UserServiceImpl implements UserService {
 		User localUser = userRepository.findByUsername(user.getUsername());
 
 		if (localUser != null) {
-			LOG.info("\n\nFAILURE: User {} already exists. Nothing will be done.\n\n", user.getUsername());
+			LOG.info("\n\n\nFAILURE: User {} already exists. Nothing will be done.\n\n", user.getUsername());
 		} 
 		else 
 			{
 			localUser = userRepository.findByEmail(user.getEmail());
 			if (localUser != null) 
 				{
-					LOG.info("\n\nFAILURE: User with email:{} already exists. Nothing will be done.\n\n", user.getEmail());
+					LOG.info("\n\n\nFAILURE: User with email:{} already exists. Nothing will be done.\n\n", user.getEmail());
 				}
 			
 			else
@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService {
 					}
 			
 					user.getUserRoles().addAll(userRoles);
+					LOG.info("\n\n\nSUCCESS: User {} created. Database succesfully updated.\n\n", user.getUsername());
 										
 								
 					localUser = userRepository.save(user);
@@ -73,7 +74,7 @@ public class UserServiceImpl implements UserService {
 						userRoleService.createUserRole(ur);
 					}
 					
-					LOG.info("\n\nSUCCESS: User {} created. Database succesfully updated.\n\n", user.getUsername());
+					
 			
 				}
 			}

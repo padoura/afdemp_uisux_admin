@@ -36,12 +36,12 @@ public class UserRoleServiceImpl implements UserRoleService{
 		if(ur==null && userRole.getUser()!=null && userRole.getRole()!=null)
 		{			
 			userRole=userRoleRepository.save(userRole);
-			LOG.info("\n\\nSUCCESS: Added UserRole to user {} \n\n", userRole.getUser().getUsername());
+			LOG.info("\n\n\nSUCCESS: Added UserRole {} to user {} \n\n",userRole.getRole().getName(), userRole.getUser().getUsername());
 			return true;
 		}
 		else
 		{
-			LOG.info("\n\nFAILURE:User {} already has this role.\n\n", userRole.getUser().getUsername());
+			LOG.info("\n\n\nFAILURE:User {} already has this role.\n\n", userRole.getUser().getUsername());
 			return false;
 		}
 			
@@ -55,7 +55,7 @@ public class UserRoleServiceImpl implements UserRoleService{
         Role role=roleRepository.findByName(roleName);
         if(role==null)
         {
-            System.out.println("\n\nNo Such Role Exists\n\n");
+        	LOG.info("\n\n\nNo Such Role Exists\n\n");
             return false;
         }
         UserRole userRole=userRoleRepository.findByRoleAndUser(role,user);
@@ -77,7 +77,7 @@ public class UserRoleServiceImpl implements UserRoleService{
         ArrayList<UserRole> userRoleList=new ArrayList<UserRole>();
         if(role==null)
         {
-            System.out.println("\n\nNo Such Role Exists\n\n");
+        	LOG.info("\n\n\nNo Such Role Exists\n\n");
             return userList;
             
         }
