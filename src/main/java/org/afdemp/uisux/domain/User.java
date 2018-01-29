@@ -35,14 +35,14 @@ public class User implements UserDetails{
 	private String firstName;
 	private String lastName;
 	
-	@Column(nullable = false, updatable = false)
+	@Column(unique = true ,nullable = false, updatable = false)
 	private String email;
 	private String phone;
 	
 	
 	private boolean enabled=true;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<UserRole> userRoles = new HashSet<>();
 	
@@ -128,6 +128,15 @@ public class User implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		return enabled;
+	}
+	public void updateUser(User user) {
+		// TODO Auto-generated method stub
+		this.email = user.email;
+		this.username = user.username;
+		this.enabled = user.enabled;
+		this.firstName = user.firstName;
+		this.phone = user.phone;
+		this.lastName = user.lastName;
 	}
 	
 	

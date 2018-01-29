@@ -16,7 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.utility.SecurityUtility;
@@ -44,64 +44,67 @@ public class MemberController {
 	
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String addMember(Model model) {
-		User member = new User();
-		model.addAttribute(member);
+		User user = new User();
+		model.addAttribute(user);
 		return "addMember";
 	}
 	
 	@RequestMapping(value="/add", method = RequestMethod.POST)
 	public String newMemberPost(
 			HttpServletRequest request,
-			@ModelAttribute("member") User member,
-			BindingResult memberResult, 
+			@ModelAttribute("user") User user,
+			BindingResult userResult, 
 			Model model
 			) throws Exception{
 		
-		if (memberResult.hasErrors()) {
+		if (userResult.hasErrors()) {
 			model.addAttribute("insertFailure",true);
 			return "addMember";
 		}
 		
 		model.addAttribute("classActiveNewAccount", true);
-		model.addAttribute("member", member);
+		model.addAttribute("user", user);
 		
-		User user = userService.findByUsername(member.getUsername());
-		
-		if (user != null) {
-			member = user;
-			Role role = new Role();
-			role.setRoleId(2);
-			role.setName("ROLE_MEMBER");
-			UserRole memberRole = new UserRole(member, role);
-			member.getUserRoles().add(memberRole);
-			userService.save(member);
+		User member = userService.findByUsername(user.getUsername());
+		if (member != null) {
+			if (!userRoleService.hasThisRole("ROLE_MEMBER", member)) {
+				Role role = new Role();
+				role.setRoleId(1);
+				role.setName("ROLE_MEMBER");
+				UserRole memberRole = new UserRole(member, role);
+				member.getUserRoles().add(memberRole);
+				userService.save(member);
+				model.addAttribute("addedRoleToExistingUser", true); //no other changes to existing user takes place
+			}else {
+				model.addAttribute("memberAlreadyExistsFailure", true);
+			}
 			return "addMember";
-		}else if (userService.findByEmail(member.getEmail()) != null) {
-			model.addAttribute("emailExists", true);
+		}else if (userService.findByEmail(user.getEmail()) != null) {
+			model.addAttribute("emailAlreadyExistsFailure", true);
 			return "addMember";
 		}
 		
 		String password = SecurityUtility.randomPassword();
 		
 		String encryptedPassword = SecurityUtility.passwordEncoder().encode(password);
-		member.setPassword(encryptedPassword);
+		user.setPassword(encryptedPassword);
 		
 		Role role = new Role();
-		role.setRoleId(2);
+		role.setRoleId(1);
 		role.setName("ROLE_MEMBER");
 		Set<UserRole> userRoles = new HashSet<>();
-		userRoles.add(new UserRole(member, role));
-		userService.createUser(member, userRoles);
+		userRoles.add(new UserRole(user, role));
+		userService.createUser(user, userRoles);
 		
 		String token = UUID.randomUUID().toString();
-		userService.createPasswordResetTokenForUser(member, token);
+		userService.createPasswordResetTokenForUser(user, token);
 		
 		String appUrl = "http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
 		
-		SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, member, password);
+		SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);
 		
 		mailSender.send(email);
-		
+		user.setPassword(""); //to return empty password to model
 		model.addAttribute("emailSent", "true");
 		
 		return "addMember";
@@ -116,57 +119,45 @@ public class MemberController {
 		return "memberList";
 	}
 	
+	@RequestMapping("/memberInfo")
+	public String memberInfo(@RequestParam("username") String username, Model model) {
+		User user = userService.findByUsername(username);
+		user.setPassword(""); //password not sent to view
+		model.addAttribute("user", user);
+		
+		return "memberInfo";
+	}
 	
-
-//	
-//	@RequestMapping("/productList")
-//	public String productList(Model model) {
-//		List<Product> productList = productService.findAll();
-//		model.addAttribute("productList", productList);		
-//		return "productList";
-//	}
-//	
-//	@RequestMapping(value="/remove", method=RequestMethod.POST)
-//	public String remove(
-//			@ModelAttribute("id") String id, Model model
-//			) {
-//		productService.removeOne(Long.parseLong(id.substring(8)));
-//		List<Product> productList = productService.findAll();
-//		model.addAttribute("productList", productList);
-//		return "redirect:/product/productList";
-//	}
-//	
-//	
-//	@RequestMapping("/productInfo")
-//	public String productInfo(@RequestParam("id") Long id, Model model) {
-//		Product product = productService.findOne(id);
-//		model.addAttribute("product", product);
-//		
-//		return "productInfo";
-//	}
-//	
-
-//	
-//	@RequestMapping(value="/updateProduct", method=RequestMethod.POST)
-//	public String updateProductPost(@ModelAttribute("product") Product product, BindingResult productResult,
-//			@ModelAttribute("type") String type, BindingResult typeResult, Model model) {
-//		
-//		if (productResult.hasErrors() || typeResult.hasErrors()) {
-//			model.addAttribute("updateSuccess",false);
-//			return "redirect:/product/productInfo?id="+product.getId();
-//		}
-//
-//		boolean success;
-//		if (productService.createProduct(product, type) & ImageUtility.trySaveImage(product)) {
-//				success = true;
-//		}else{
-//			success = false;
-//		}
-//		model.addAttribute("updateSuccess",success);
-//		
-//		return "redirect:/product/productInfo?id="+product.getId();
-//	}
-	
-
-
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public String updateMemberPost(@ModelAttribute("user") User user, BindingResult userResult,
+			Model model) {
+		
+		if (userResult.hasErrors()) {
+			model.addAttribute("insertFailure",true);
+			return "redirect:/member/memberInfo?id=\"+user.getId()";
+		}
+		
+		model.addAttribute("classActiveNewAccount", true);
+		model.addAttribute("user", user);
+		
+		User existingUser = userService.findByEmail(user.getEmail());
+		
+		if (existingUser != null && !user.getId().equals(existingUser.getId())) {
+			model.addAttribute("emailAlreadyExistsFailure", true);
+			return "redirect:/member/memberInfo?id=\"+user.getId()";
+		}else {
+			existingUser = userService.findByUsername(user.getUsername());
+			if (existingUser != null && !user.getId().equals(existingUser.getId())) {
+				model.addAttribute("usernameAlreadyExistsFailure", true);
+				return "redirect:/member/memberInfo?id=\"+user.getId()";
+			}
+		}
+		
+		existingUser = userService.findOne(user.getId());
+		
+		existingUser.updateUser(user);
+		userService.save(existingUser);
+		model.addAttribute("updateSuccess",true);
+		return "redirect:/member/memberInfo?id=\"+user.getId()";
+	}
 }
