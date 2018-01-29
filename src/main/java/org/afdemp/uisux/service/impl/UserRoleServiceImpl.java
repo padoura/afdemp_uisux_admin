@@ -9,6 +9,9 @@ import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.RoleRepository;
 import org.afdemp.uisux.repository.UserRoleRepository;
 import org.afdemp.uisux.service.UserRoleService;
+import org.afdemp.uisux.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -17,39 +20,32 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserRoleServiceImpl implements UserRoleService{
 	
+	private static final Logger LOG = LoggerFactory.getLogger(UserRoleService.class);
+	
 	@Autowired
 	private UserRoleRepository userRoleRepository;
 	
 	@Autowired
 	private RoleRepository roleRepository;
 	
+	@Override
 	public boolean createUserRole(UserRole userRole)
 	{
-		try 
-		{
+		
+		UserRole ur=userRoleRepository.findByRoleAndUser(userRole.getRole(), userRole.getUser());
+		if(ur==null && userRole.getUser()!=null && userRole.getRole()!=null)
+		{			
 			userRole=userRoleRepository.save(userRole);
-			System.out.println("\nSUCCESS: Added UserRole to user "+userRole.getUser().getUsername()+".\n");
+			LOG.info("\n\\nSUCCESS: Added UserRole to user {} \n\n", userRole.getUser().getUsername());
 			return true;
 		}
-		catch (DataIntegrityViolationException e)
+		else
 		{
-			System.out.println("\nFAILURE:User " +userRole.getUser().getUsername()+ " already has this role.\n");
+			LOG.info("\n\nFAILURE:User {} already has this role.\n\n", userRole.getUser().getUsername());
 			return false;
 		}
-		catch (InvalidDataAccessApiUsageException e)
-		{
-			System.out.println("\nFAILURE:Illegal Object. (UserRole userRole is null)\n");
-			return false;
-		}	
-	}
-	
-	@Override
-	public List<User> findAllMembers() {
-		// TODO this is just a simulation
+			
 		
-		List<User> memberList = new ArrayList<User>();
-		
-		return memberList;
 	}
 	
 	

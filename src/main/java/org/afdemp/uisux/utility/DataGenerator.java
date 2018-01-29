@@ -11,6 +11,7 @@ import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
+import org.afdemp.uisux.repository.RoleRepository;
 import org.afdemp.uisux.service.CartItemService;
 import org.afdemp.uisux.service.CategoryService;
 import org.afdemp.uisux.service.ProductService;
@@ -40,6 +41,9 @@ public class DataGenerator {
 	
 	@Autowired
 	private ShoppingCartService shoppingCartService;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 
 	
 	
@@ -156,8 +160,12 @@ public class DataGenerator {
 	
 	private void insertExampleMember() throws Exception{
 		Role role1= new Role();
-		role1.setRoleId(2);
+		role1.setRoleId(1);
 		role1.setName("ROLE_MEMBER");
+		
+		Role role2=new Role();
+		role2.setRoleId(2);
+		role2.setName("ROLE_CLIENT");
 		
 		User user1 = new User();
 		user1.setUsername("member");
@@ -173,9 +181,16 @@ public class DataGenerator {
         user2.setPassword(SecurityUtility.passwordEncoder().encode("guest2"));
         user2.setEmail("madryoch@gmail.com");
         userRoles = new HashSet<>();
-        userRoles.add(new UserRole(user2, role1));
+        userRoles.add(new UserRole(user2, role2));
+        
         
         userService.createUser(user2, userRoles);
+        
+        
+        
+        
+        userService.addRole(user2,"ROLE_MEMBER");
+        userService.addRole(user2,"ROLE_ADMIN");
 	}
 
 	
@@ -188,7 +203,7 @@ public class DataGenerator {
 	insertExampleProduct();
 	updateExampleProduct();
 	insertExampleMember();
-	//insertExampleProduct2();
+	insertExampleProduct2();
 	}
 
 }
