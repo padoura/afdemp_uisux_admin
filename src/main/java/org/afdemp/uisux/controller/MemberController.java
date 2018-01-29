@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
-import org.afdemp.uisux.repository.UserRepository;
 import org.afdemp.uisux.utility.SecurityUtility;
 
 import org.afdemp.uisux.domain.User;
@@ -68,13 +67,17 @@ public class MemberController {
 		
 		User member = userService.findByUsername(user.getUsername());
 		if (member != null) {
-			Role role = new Role();
-			role.setRoleId(1);
-			role.setName("ROLE_MEMBER");
-			UserRole memberRole = new UserRole(member, role);
-			member.getUserRoles().add(memberRole);
-			userService.save(member);
-			model.addAttribute("addedRoleToExistingUser", true);
+			if (!userRoleService.hasThisRole("ROLE_MEMBER", member)) {
+				Role role = new Role();
+				role.setRoleId(1);
+				role.setName("ROLE_MEMBER");
+				UserRole memberRole = new UserRole(member, role);
+				member.getUserRoles().add(memberRole);
+				userService.save(member);
+				model.addAttribute("addedRoleToExistingUser", true); //no other changes to existing user takes place
+			}else {
+				model.addAttribute("memberAlreadyExistsFailure", true);
+			}
 			return "addMember";
 		}else if (userService.findByEmail(user.getEmail()) != null) {
 			model.addAttribute("emailAlreadyExistsFailure", true);
@@ -157,7 +160,4 @@ public class MemberController {
 		model.addAttribute("updateSuccess",true);
 		return "redirect:/member/memberInfo?id=\"+user.getId()";
 	}
-	
-
-
 }

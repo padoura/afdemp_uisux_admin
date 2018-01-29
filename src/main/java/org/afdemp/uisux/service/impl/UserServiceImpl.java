@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
 			role=roleRepository.findByName(roleName);
 			
 			//Not checking if the roleName could be wrong but could add
-			//Left it for bussiness logic to deal with it.
+			//Left it for business logic to deal with it.
 			UserRole memberRole = new UserRole(user, role);
 			user.getUserRoles().add(memberRole);
 			
