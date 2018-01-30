@@ -15,15 +15,15 @@
 			<table id="productListTable" class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr>
-						<th> check</th>
+						<th><input th:id="selectAllProducts" type="checkbox" /></th>
 						<th>Product Name</th>
 						<th>id</th>
-						<th>ourPrice</th>
-						<th>inStockNumber</th>
+						<th>our Price</th>
+						<th>Numbers available</th>
 						<th>Category</th>
 						<th>description</th>
 						<th>Price Bougth</th>
-						<th>listPrice</th>
+						<th>list Price</th>
 						<th>active</th>
 						<th>delete</th>
 					</tr>
@@ -56,10 +56,10 @@
 				</tbody>
 			</table>
 		</div>
-	<button th:id="deleteSelected" class="btn btn-danger ">Delete Selected</button>
+	<button th:id="deleteSel" class="btn btn-danger ">Delete Selected</button>
 	</div>
 	
-	<div th:replace="common/header2 :: body-bottom-scripts" />
+	<div th:replace="common/header2 :: body-bottom-scripts"></div> 
 	
 	<script>
 	
