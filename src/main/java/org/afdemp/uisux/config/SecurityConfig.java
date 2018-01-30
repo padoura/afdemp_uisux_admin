@@ -29,24 +29,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return SecurityUtility.passwordEncoder();
 	}
 
-	private static final String[] PUBLIC_MATCHERS = {
+	private static final String[] ADMIN_MATCHERS = {
 			"/css/**",
 			"/js/**",
 			"/image/**",
+			"/login",
 			"/newUser",
 			"/forgetPassword",
-			"/login",
 			"/fonts/**"
-			
 	};
+	
+	private static final String[] PUBLIC_MATCHERS = {
+			"/css/**",
+			"/js/**",
+			"/login",
+			"/image/**"
+	};
+	
+	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests().
 //			antMatchers("/**").
-			antMatchers(PUBLIC_MATCHERS).
-			permitAll().anyRequest().authenticated();
+			antMatchers(ADMIN_MATCHERS).
+			hasRole("ADMIN").
+			anyRequest().authenticated();
+		
+		http
+		.authorizeRequests().
+	/*	antMatchers("/**").*/
+		antMatchers(PUBLIC_MATCHERS).
+		permitAll().anyRequest().authenticated();
 
 		http
 			.csrf().disable().cors().disable()

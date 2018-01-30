@@ -1,12 +1,14 @@
 package org.afdemp.uisux.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import org.afdemp.uisux.domain.User;
+import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.UserRepository;
 
 @Service
@@ -22,6 +24,17 @@ public class UserSecurityService implements UserDetailsService{
 		if(null == user) {
 			throw new UsernameNotFoundException("Username not found");
 		}
+		
+//		for (UserRole ur : user.getUserRoles()) {
+//			if (ur.getRole().getName() == "ROLE_ADMIN")
+//				return user;
+//		}
+//		
+//		if(null == user) {
+//			throw new UsernameNotFoundException("Username not found");
+//		}else if() {
+//			throw new AuthenticationException("User " + user.getUsername() + " has no admin role.");
+//		}
 		
 		return user;
 	}

@@ -1,9 +1,9 @@
 package org.afdemp.uisux.service;
 
-import org.afdemp.uisux.domain.ShoppingCart;
+import org.afdemp.uisux.domain.security.UserRole;
 
 public interface ShoppingCartService {
 
-	public boolean createShoppingCart(ShoppingCart shoppingCart);
+	boolean createShoppingCart(UserRole userRole);
 	
 }

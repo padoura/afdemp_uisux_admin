@@ -29,20 +29,20 @@ public class User implements UserDetails{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(nullable = false, updatable = false)
 	private Long id;
-	@NaturalId
+	@Column(unique = true ,nullable = false, updatable = true)
 	private String username;
 	private String password;
 	private String firstName;
 	private String lastName;
 	
-	@Column(unique = true ,nullable = false, updatable = false)
+	@Column(unique = true ,nullable = false, updatable = true)
 	private String email;
 	private String phone;
 	
 	
 	private boolean enabled=true;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<UserRole> userRoles = new HashSet<>();
 	
@@ -132,8 +132,8 @@ public class User implements UserDetails{
 	public void updateUser(User user) {
 		// TODO Auto-generated method stub
 		this.email = user.email;
-		this.username = user.username;
 		this.enabled = user.enabled;
+		this.username = user.username;
 		this.firstName = user.firstName;
 		this.phone = user.phone;
 		this.lastName = user.lastName;
