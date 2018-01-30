@@ -115,9 +115,7 @@ public class MemberController {
 	@RequestMapping("/memberList")
 	public String memberList(Model model) {
 		List<User> memberList = userRoleService.fetchUsersOfRole("ROLE_MEMBER");
-		
 		model.addAttribute("memberList", memberList);
-
 		return "memberList";
 	}
 	
