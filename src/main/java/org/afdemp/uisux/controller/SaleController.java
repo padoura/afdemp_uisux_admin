@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/sale")
 public class SaleController {
 	
-	@Autowired
-	private ClientOrderService clientOrderService;
+//	@Autowired
+//	private ClientOrderService clientOrderService;
 	
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String searchSales(Model model) {
