@@ -105,14 +105,33 @@
 
 <script th:inline="javascript" >
 var message = [[${classActiveNewAccount}]];
+var message1 = [[${memberAlreadyExistsFailure}]];
+var message2 = [[${emailAlreadyExistsFailure}]];
+
 $(document).ready(function(){
+if(message1!=null||message2!=null){
 	
-	if(message==null ||message==false){
-		
+	if(message1==true){
+		$("#success").append("<h1>member already exist</h1>");
+		}
+	if(message2==true){
+		$("#success").append("<h1>mail already exist</h1>");
+		}
+}
+else{
+if( message!=null ){
+	if(message==true){
+	$("#success").append("<h1> user added </h1>");
 	}
-	else{
-		$("#success").append("<h1>user added </h1>");
-	}
+}
+}
+	
+var delayInMilliseconds = 1000; //1 second
+
+setTimeout(function() {
+	$("#success").remove();
+  //your code to be executed after 1 second
+}, delayInMilliseconds);
 });
 
 </script>

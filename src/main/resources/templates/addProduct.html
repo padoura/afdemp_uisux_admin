@@ -18,6 +18,14 @@ if(message==null ||message==false){
 	document.getElementById("success").innerHTML = " ";
 	
 }
+else{
+	var delayInMilliseconds = 1000; //1 second
+
+	setTimeout(function() {
+		$("#success").remove();
+	  //your code to be executed after 1 second
+	}, delayInMilliseconds);
+}
 
 
 </script>
