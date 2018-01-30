@@ -52,6 +52,8 @@ public class ProductController {
 			success = false;
 		}
 		
+		product = new Product();
+		Category category = new Category();
 		List<Category> categoryList = categoryService.findAll();
 		model.addAttribute("categoryList",categoryList);
 		model.addAttribute("insertSuccess",success);

@@ -1,7 +1,11 @@
 package org.afdemp.uisux.utility;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.afdemp.uisux.domain.CartItem;
@@ -9,6 +13,7 @@ import org.afdemp.uisux.domain.Category;
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.User;
+import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.RoleRepository;
@@ -172,18 +177,41 @@ public class DataGenerator {
         userService.addRoleToExistingUser(user2,"ROLE_MEMBER");
         userService.addRoleToExistingUser(user2,"ROLE_ADMIN");
 	}
+	
+	//TODO use this example to insert sale data in DB when it's ready and make it private
+	public static List<ClientOrder> getFakeOrderList() {
+		List<ClientOrder> clientOrderList = new ArrayList<>();
+		
+		for (int i=0; i<100; i++) {
+			ClientOrder order = new ClientOrder();
+			LocalDate localDate = LocalDate.now().minusDays(120-i);
+			order.setId(Long.valueOf(i));
+			order.setOrderStatus("delivered");
+			order.setSubmittedDate(Date.valueOf(localDate));
+			order.setTotal(randomBigDecimal());
+			order.setShippingDate(Date.valueOf(localDate.plusDays(5)));
+			order.setShippingMethod("Courier");
+			clientOrderList.add(order);
+		}
+		
+		return clientOrderList;
+	}
+	
+	private static BigDecimal randomBigDecimal() {
+		return BigDecimal.valueOf(Math.random()*10 + Math.random());
+	}
 
 	
 	//===============================Generate Method=================================
 	
 	public void generate() throws Exception 
 	{
-	insertFirstAdmin();
-	insertSomeCategories();
-	insertExampleProduct();
-	updateExampleProduct();
-	insertExampleMember();
-	insertExampleProduct2();
+		insertFirstAdmin();
+		insertSomeCategories();
+		insertExampleProduct();
+		updateExampleProduct();
+		insertExampleMember();
+		insertExampleProduct2();
 	}
 
 }

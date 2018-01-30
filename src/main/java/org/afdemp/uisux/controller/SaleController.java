@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.service.ClientOrderService;
+import org.afdemp.uisux.utility.DataGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,10 +37,12 @@ public class SaleController {
 	public String searchSalesPost(@ModelAttribute("fromDate") LocalDate fromDate,
 			@ModelAttribute("toDate") LocalDate toDate, Model model) {
 		
-		List<ClientOrder> clientOrderList = clientOrderService.fetchOrdersByPeriod(Timestamp.valueOf(
-				fromDate.atStartOfDay()), Timestamp.valueOf(
-						toDate.atTime(23, 59, 59)));
-	
+//		List<ClientOrder> clientOrderList = clientOrderService.fetchOrdersByPeriod(Timestamp.valueOf(
+//				fromDate.atStartOfDay()), Timestamp.valueOf(
+//						toDate.atTime(23, 59, 59)));
+		
+		List<ClientOrder> clientOrderList = DataGenerator.getFakeOrderList();
+		
 		model.addAttribute("clientOrderList", clientOrderList);
 		return "searchSales";
 	}

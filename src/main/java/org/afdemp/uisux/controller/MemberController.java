@@ -79,9 +79,11 @@ public class MemberController {
 			}else {
 				model.addAttribute("memberAlreadyExistsFailure", true);
 			}
+			user = new User();
 			return "addMember";
 		}else if (userService.findByEmail(user.getEmail()) != null) {
 			model.addAttribute("emailAlreadyExistsFailure", true);
+			user = new User();
 			return "addMember";
 		}
 		
@@ -105,9 +107,8 @@ public class MemberController {
 		SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);
 		
 		mailSender.send(email);
-		user.setPassword(""); //to return empty password to model
 		model.addAttribute("emailSent", "true");
-		
+		user = new User();
 		return "addMember";
 	}
 	
