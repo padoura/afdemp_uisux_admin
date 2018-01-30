@@ -5,13 +5,17 @@
 
 <body>
 	<div th:replace="common/header2 :: navbar" />
-	
+	<div class="row">
+	<label class="col-md-4 control-label" ></label>
+	<label class="col-md-2 control-label" >Name search</label>
+	<input class="col-md-2 control-label" type="search" id="search2"/>
+	</div>
 	<div class="container">
 		<div class="table-responsive">
 			<table id="productListTable" class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr>
-						<th><input th:id="selectAllProducts" type="checkbox" /></th>
+						<th> check</th>
 						<th>Product Name</th>
 						<th>id</th>
 						<th>ourPrice</th>
@@ -28,7 +32,7 @@
 					<tr data-th-each="product : ${productList}">
 						<td>
 						<input hidden="hidden" name="id" th:value="${product.id}" />
-						<input th:id="'selected'+${product.id}" class="checkboxBook" type="checkbox" />
+						<input th:id="'selected'+${product.id}" class="checkboxproduct" type="checkbox" />
 						</td>
 						<td><a th:href="@{/product/productInfo(id=${product.id})}"><span th:text="${product.name}"></span></a></td>
 						<td th:text="${product.id}"></td>
@@ -55,17 +59,46 @@
 	<button th:id="deleteSelected" class="btn btn-danger ">Delete Selected</button>
 	</div>
 	
-	
 	<div th:replace="common/header2 :: body-bottom-scripts" />
 	
 	<script>
-		$(document).ready(function() {
+	
+		/* $(document).ready(function() {
+			
 			$("#productListTable").DataTable({
+				
 				"lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
 				"ordering": false,
 				stateSave: true
+				
 			});
 		});
-	</script>
+	 */
+		
+	 $(document).ready(function(){    
+		   var table= $('#productListTable').DataTable({
+			   "lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
+				"ordering": false,
+				stateSave: true
+		       
+		    });
+		   $('#search2').on( 'keyup', function () {
+			    table
+			        .columns( 1 )
+			        .search( this.value )
+			        .draw();
+			} );
+		    
+		   
+		    
+		    
+		    
+		    
+		    
+		});
+		
+		
+		</script>
+	
 </body>
 </html>
