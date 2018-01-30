@@ -8,6 +8,6 @@ import org.afdemp.uisux.domain.ClientOrder;
 public interface ClientOrderService {
 
 	//TODO implementation
-	List<ClientOrder> fetchOrdersByPeriod(Timestamp fromTimestamp, Timestamp toTimestamp);
+	//List<ClientOrder> fetchOrdersByPeriod(Timestamp fromTimestamp, Timestamp toTimestamp);
 
 }
