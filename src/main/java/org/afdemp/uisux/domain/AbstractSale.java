@@ -33,7 +33,7 @@ public abstract class AbstractSale {
 	private BigDecimal total;
 	
 
-	@OneToMany(mappedBy="abstractSale", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="abstractSale", cascade=CascadeType.REMOVE, fetch=FetchType.LAZY)
 	@JsonIgnore
 	private List<CartItem> cartItemList;
 	

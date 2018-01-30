@@ -26,7 +26,7 @@ public class ShoppingCart {
 	private Long id;
 	private BigDecimal GrandTotal;
 	
-	@OneToMany(mappedBy="shoppingCart", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="shoppingCart", cascade=CascadeType.REMOVE, fetch=FetchType.LAZY)
 	@JsonIgnore
 	private List<CartItem> cartItemList;
 	

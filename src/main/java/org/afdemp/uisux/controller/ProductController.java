@@ -46,7 +46,7 @@ public class ProductController {
 		}
 
 		boolean success;
-		if (productService.createProduct(product, type) & ImageUtility.trySaveImage(product)) {
+		if ((productService.createProduct(product, type)!=null) & ImageUtility.trySaveImage(product)) {
 				success = true;
 		}else{
 			success = false;
@@ -107,7 +107,7 @@ public class ProductController {
 		}
 
 		boolean success;
-		if (productService.createProduct(product, type) & ImageUtility.trySaveImage(product)) {
+		if ((productService.createProduct(product, type)!=null) & ImageUtility.trySaveImage(product)) {
 				success = true;
 		}else{
 			success = false;

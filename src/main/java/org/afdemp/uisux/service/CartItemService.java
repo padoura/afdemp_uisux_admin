@@ -7,4 +7,6 @@ public interface CartItemService {
 
 	boolean addToCart(ShoppingCart shoppingCart, Product product, int qty);
 	
+	boolean commitSale(ShoppingCart shoppingCart);
+	
 }
