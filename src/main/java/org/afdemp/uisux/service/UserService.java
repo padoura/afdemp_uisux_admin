@@ -14,7 +14,7 @@ public interface UserService {
 	
 	User save(User user);
 	
-	User addRole(User user,String rolename);
+	User addRoleToExistingUser(User user,String rolename);
 	
 	//Non-Functional
 	void updateUserThroughUsername(User user);

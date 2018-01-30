@@ -49,6 +49,7 @@ public class MemberController {
 		return "addMember";
 	}
 	
+	//TODO Use services instead
 	@RequestMapping(value="/add", method = RequestMethod.POST)
 	public String newMemberPost(
 			HttpServletRequest request,
@@ -134,6 +135,7 @@ public class MemberController {
 		return "updateMember";
 	}
 	
+	//TODO Use services instead
 	@RequestMapping(value="/updateMember", method=RequestMethod.POST)
 	public String updateMemberPost(@ModelAttribute("user") User user, BindingResult userResult,
 			Model model) {

@@ -169,8 +169,8 @@ public class DataGenerator {
         
         
         
-        userService.addRole(user2,"ROLE_MEMBER");
-        userService.addRole(user2,"ROLE_ADMIN");
+        userService.addRoleToExistingUser(user2,"ROLE_MEMBER");
+        userService.addRoleToExistingUser(user2,"ROLE_ADMIN");
 	}
 
 	

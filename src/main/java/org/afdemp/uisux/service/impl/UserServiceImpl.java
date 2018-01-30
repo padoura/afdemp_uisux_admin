@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User addRole(User user,String roleName)
+	public User addRoleToExistingUser(User user,String roleName)
 	{
 		//Searching Database for User user
 		user = userService.findByUsername(user.getUsername());

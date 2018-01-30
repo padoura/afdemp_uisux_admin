@@ -38,18 +38,8 @@ public class ProductController {
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addProductPost(@ModelAttribute("product") Product product, BindingResult productResult,
-				@ModelAttribute("type") String type, BindingResult typeResult, Model model) throws Exception {
-		
-		
-//		if (productResult.hasErrors()){
-//			
-//			System.out.println("productResult problem: type = " + type);
-//		}
-//		
-//		if (typeResult.hasErrors()){
-//			System.out.println("typeResult problem");
-//		}
-		
+				@ModelAttribute("type") String type, BindingResult typeResult, Model model) {
+
 		if (productResult.hasErrors() || typeResult.hasErrors()) {
 			model.addAttribute("insertSuccess",false);
 			return "addProduct";
