@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header2 :: common-header" />
+
+<body>
+	<div th:replace="common/header2 :: navbar" />
+	
+	<div class="container">
+		<div class="table-responsive">
+			<table id="userListTable" class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th>status</th>
+						
+						</tr>
+				</thead>
+				
+				<tbody>
+					<tr data-th-each="client : ${clientOrderList}">
+						
+						
+						
+						<td th:text="${client.orderStatus}"></td>
+						
+						
+					
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	
+	<div th:replace="common/header2 :: body-bottom-scripts" />
+	
+	<script th:inline="javascript">
+	
+	
+		$(document).ready(function() {
+			var message = [[${clientOrderList}]];
+			if( message!=null ){
+			alert("adeio");
+			}
+			
+			$("#userListTable").DataTable({
+				"lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
+				"ordering": false,
+				stateSave: true
+			});
+		});
+	</script>
+</body>
+</html>

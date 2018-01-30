@@ -49,7 +49,7 @@ public class DataGenerator {
 	
 	@Autowired
 	private RoleRepository roleRepository;
-
+	
 	
 	
 	//===============================Function Definitions=================================
@@ -179,9 +179,8 @@ public class DataGenerator {
 	}
 	
 	//TODO use this example to insert sale data in DB when it's ready and make it private
-	public static List<ClientOrder> getFakeOrderList() {
-		List<ClientOrder> clientOrderList = new ArrayList<>();
-		
+	public static  List<ClientOrder> getFakeOrderList() {
+		 List<ClientOrder> clientOrderList = new ArrayList<>();
 		for (int i=0; i<100; i++) {
 			ClientOrder order = new ClientOrder();
 			LocalDate localDate = LocalDate.now().minusDays(120-i);
@@ -192,7 +191,10 @@ public class DataGenerator {
 			order.setShippingDate(Date.valueOf(localDate.plusDays(5)));
 			order.setShippingMethod("Courier");
 			clientOrderList.add(order);
+			
 		}
+			
+	
 		
 		return clientOrderList;
 	}
