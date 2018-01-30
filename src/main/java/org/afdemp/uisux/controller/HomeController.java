@@ -20,14 +20,4 @@ public class HomeController {
 	public String login(){
 		return "login";
 	}
-	
-//	@RequestMapping("/bookList2")
-//	public String bookList2(){
-//		return "bookList2";
-//	}
-//	
-//	@RequestMapping("/financial")
-//	public String financial(){
-//		return "financial";
-//	}
 }
