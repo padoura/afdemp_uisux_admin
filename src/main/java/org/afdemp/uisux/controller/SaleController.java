@@ -20,13 +20,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class SaleController {
 	
 //	@Autowired
-//	private ClientOrderService clientOrderService;
+	private ClientOrderService clientOrderService;
 	
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String searchSales(Model model) {
-		LocalDate fromDate = LocalDate.now().minusWeeks(1);
-		LocalDate toDate = LocalDate.now();
+		
+		//LocalDate fromDate = LocalDate.now().minusWeeks(1);
+		//LocalDate toDate = LocalDate.now();
 		List<ClientOrder> clientOrderList = new ArrayList<>();
+		String fromDate="";
+		String toDate="";
+		
 		model.addAttribute("fromDate", fromDate);
 		model.addAttribute("toDate", toDate);
 		model.addAttribute("clientOrderList", clientOrderList);
@@ -34,8 +38,11 @@ public class SaleController {
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public String searchSalesPost(@ModelAttribute("fromDate") LocalDate fromDate,
-			@ModelAttribute("toDate") LocalDate toDate, Model model) {
+	public String searchSalesPost(@ModelAttribute("fromDate") String fromDate,
+			@ModelAttribute("toDate") String toDate, Model model) {
+		System.out.println("asdads");
+		System.out.println(toDate);
+		System.out.println(fromDate);
 		
 //		List<ClientOrder> clientOrderList = clientOrderService.fetchOrdersByPeriod(Timestamp.valueOf(
 //				fromDate.atStartOfDay()), Timestamp.valueOf(

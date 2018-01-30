@@ -30,7 +30,7 @@
 			</table>
 		</div>
 	</div>
-	
+
 <div class="container">
 		<div class="row">
 			<form class="form-horizontal" th:action="@{/sale/search}" method="post"
@@ -40,18 +40,18 @@
 						<label class="col-md-2 control-label" for="title">start date</label>
 
 						<div class="col-md-8">
-							<input type="date" name="phone" class="form-control" id="phone"
-								th:value="${fromDate}"  placeholder="phone" />
+							<input type="date" name="fromDate" class="form-control" id="fromDate"
+								th:value="${fromDate}"  placeholder="fromDate" />
 							<span class="help-block">when to start searching</span>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="toDate">end date</label>
+						<label class="col-md-2 control-label" for="title">end date</label>
 
 						<div class="col-md-8">
-							<input type="date" name="phone" class="form-control" id="phone"
-								th:value="${fromDate}"  placeholder="phone" />
+							<input type="date" name="toDate" class="form-control" id="toDate"
+								th:value="${toDate}"  placeholder="toDate" />
 							<span class="help-block">end of search</span>
 						</div>
 					</div>
@@ -82,8 +82,8 @@
 	
 		$(document).ready(function() {
 			var message = [[${clientOrderList}]];
-			if( message!=null ){
-			alert("adeio");
+			if( message==null ){
+		//	alert("adeio");
 			}
 			
 			$("#userListTable").DataTable({
