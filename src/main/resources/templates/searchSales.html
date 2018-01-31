@@ -76,7 +76,8 @@
 				</fieldset>
 			</form>
 		</div>
-	
+	<button type="button" id="bt1" class="btn btn-info">next</button>
+
 
 
 	
@@ -93,7 +94,203 @@
 				stateSave: true
 		       
 		    });
+		 		 
+		 var myStringArray = [[${clientOrderList}]];
+		 var arrayLength = myStringArray.length;
+		 var dats =[];
+		 var dats2 =[];
+		 var dats3 =[];
+		 var dats4 =[];
+		 var dats5 =[];
+					var p=[];
+		 // alert(myStringArray.length);
+		 if(arrayLength > 0){
+			 for (var i in myStringArray) {
+				 console.log(i);
+			  //   alert(myStringArray[1][i]);
+			dats.push(myStringArray[i].total);
+ 	 		dats2.push(myStringArray[i].submittedDate);
+		p=[myStringArray[i].submittedDate.substring(0, 10),myStringArray[i].total]
+		//p=[myStringArray[i].submittedDate,myStringArray[i].total]
+		  if (i > 59){
+			  dats5.push(p);	
+	 		  }
+	 		  else{
+	 			  
+	 			  if (i > 29){
+			  dats4.push(p);	
+	 		  }
+	 		  else{
+	 			 dats3.push(p);	
+	 		  }
+	 	}
+	 		
+		
+		/* for (var j in myStringArray[i]) {
+				  //console.log(myStringArray[i]);
+				  console.log(j);
+					}  
+			   */
+			  //Do something
+			 }
+			 
+
+Highcharts.chart('container2', {
+	    chart: {
+	        type: 'column'
+	    },
+	    title: {
+	        text: 'sales'
+	    },
+	    xAxis: {
+	        type: 'category',
+	        labels: {
+	            rotation: -45,
+	            style: {
+	                fontSize: '13px',
+	                fontFamily: 'Verdana, sans-serif'
+	            }
+	        }
+	    },
+	    yAxis: {
+	        min: 0,
+	        title: {
+	            text: 'cost (euro)'
+	        }
+	    },
+	    legend: {
+	        enabled: false
+	    },
+	    tooltip: {
+	        pointFormat: 'sale: <b>{point.y:.4f} euro</b>'
+	    },
+	    series: [{
+	        name: 'sales',
+	        data: dats3,
+	        dataLabels: {
+	            enabled: true,
+	            rotation: -90,
+	            color: '#FFFFFF',
+	            align: 'right',
+	            format: '{point.y:.2f}', // one decimal
+	            y: 10, // 10 pixels down from the top
+	            style: {
+	                fontSize: '13px',
+	                fontFamily: 'Verdana, sans-serif'
+	            }
+	        }
+	    }]
+	});
+		if(arrayLength > 30){
+
+Highcharts.chart('container3', {
+	    chart: {
+	        type: 'column'
+	    },
+	    title: {
+	        text: 'sales'
+	    },
+	    xAxis: {
+	        type: 'category',
+	        labels: {
+	            rotation: -45,
+	            style: {
+	                fontSize: '13px',
+	                fontFamily: 'Verdana, sans-serif'
+	            }
+	        }
+	    },
+	    yAxis: {
+	        min: 0,
+	        title: {
+	            text: 'cost (euro)'
+	        }
+	    },
+	    legend: {
+	        enabled: false
+	    },
+	    tooltip: {
+	        pointFormat: 'sale: <b>{point.y:.4f} euro</b>'
+	    },
+	    series: [{
+	        name: 'sales',
+	        data: dats4,
+	        dataLabels: {
+	            enabled: true,
+	            rotation: -90,
+	            color: '#FFFFFF',
+	            align: 'right',
+	            format: '{point.y:.2f}', // one decimal
+	            y: 10, // 10 pixels down from the top
+	            style: {
+	                fontSize: '13px',
+	                fontFamily: 'Verdana, sans-serif'
+	            }
+	        }
+	    }]
+	});
+
+		}
+		if(arrayLength > 60){
+
+			Highcharts.chart('container4', {
+				    chart: {
+				        type: 'column'
+				    },
+				    title: {
+				        text: 'sales'
+				    },
+				    xAxis: {
+				        type: 'category',
+				        labels: {
+				            rotation: -45,
+				            style: {
+				                fontSize: '13px',
+				                fontFamily: 'Verdana, sans-serif'
+				            }
+				        }
+				    },
+				    yAxis: {
+				        min: 0,
+				        title: {
+				            text: 'cost (euro)'
+				        }
+				    },
+				    legend: {
+				        enabled: false
+				    },
+				    tooltip: {
+				        pointFormat: 'sale: <b>{point.y:.4f} euro</b>'
+				    },
+				    series: [{
+				        name: 'sales',
+				        data: dats5,
+				        dataLabels: {
+				            enabled: true,
+				            rotation: -90,
+				            color: '#FFFFFF',
+				            align: 'right',
+				            format: '{point.y:.2f}', // one decimal
+				            y: 10, // 10 pixels down from the top
+				            style: {
+				                fontSize: '13px',
+				                fontFamily: 'Verdana, sans-serif'
+				            }
+				        }
+				    }]
+				});
+
+					}
+
+
+
+		 }
 });
+	 
 	</script>
+	
+	<div id="container2"></div>
+	<div id="container3"></div>
+	<div id="container4"></div>
 </body>
 </html>
