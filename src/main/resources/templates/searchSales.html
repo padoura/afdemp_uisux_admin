@@ -4,34 +4,40 @@
 <head th:replace="common/header2 :: common-header" />
 
 <body>
-	<div th:replace="common/header2 :: navbar" />
-	
+	<div th:replace="common/header2 :: navbar" ></div>
 	<div class="container">
 		<div class="table-responsive">
-			<table id="userListTable" class="table table-bordered table-hover table-striped">
+			<table id="clientListTable" class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr>
-						<th>status</th>
-						
-						</tr>
+						<th>Status</th>
+						<th>Id</th>
+						<th>submittedDate</th>
+						<th>shippingDate</th>
+						<th>shippingMethod</th>
+						<th>Total</th>
+					</tr>
 				</thead>
-				
 				<tbody>
 					<tr data-th-each="client : ${clientOrderList}">
-						
-						
-						
 						<td th:text="${client.orderStatus}"></td>
+						<td th:text="${client.id}"></td>
+						<td th:text="${client.submittedDate}"></td>
+						<td th:text="${client.shippingDate}"></td>
+						<td th:text="${client.shippingMethod}"></td>
+						<td th:text="${client.Total}"></td>
 						
 						
-					
+						
 					</tr>
 				</tbody>
 			</table>
 		</div>
+	
 	</div>
 
-<div class="container">
+
+
 		<div class="row">
 			<form class="form-horizontal" th:action="@{/sale/search}" method="post"
 				enctype="multipart/form-data">
@@ -70,28 +76,24 @@
 				</fieldset>
 			</form>
 		</div>
-	</div>
+	
 
 
 	
 	
-	<div th:replace="common/header2 :: body-bottom-scripts" />
+	<div th:replace="common/header2 :: body-bottom-scripts" ></div>
 	
 	<script th:inline="javascript">
 	
-	
-		$(document).ready(function() {
-			var message = [[${clientOrderList}]];
-			if( message==null ){
-		//	alert("adeio");
-			}
-			
-			$("#userListTable").DataTable({
-				"lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
+
+	 $(document).ready(function(){    
+		 var table= $('#clientListTable').DataTable({
+			   "lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
 				"ordering": false,
 				stateSave: true
-			});
-		});
+		       
+		    });
+});
 	</script>
 </body>
 </html>
