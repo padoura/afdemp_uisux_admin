@@ -1,10 +1,13 @@
 package org.afdemp.uisux.utility;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.afdemp.uisux.domain.Category;
+import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.User;
@@ -16,6 +19,7 @@ import org.afdemp.uisux.repository.UserRepository;
 import org.afdemp.uisux.repository.UserRoleRepository;
 import org.afdemp.uisux.service.CartItemService;
 import org.afdemp.uisux.service.CategoryService;
+import org.afdemp.uisux.service.ClientOrderService;
 import org.afdemp.uisux.service.ProductService;
 import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.UserService;
@@ -28,6 +32,7 @@ public class DataGenerator {
 	
 	//===============================Autowire Section=================================
 	
+	@Autowired ClientOrderService clientOrderService;
 	
 	@Autowired
 	private ProductService productService;
@@ -108,6 +113,9 @@ public class DataGenerator {
 	}
 	
 	private Product insertProductAndAddToCartExample() throws Exception {
+		
+		Date from=new Date(1517349600000L);
+		
 		Product product = new Product();
 		product.setDescription("Awesome Choco Milk!");
 		product.setInStockNumber(10L);
@@ -129,11 +137,28 @@ public class DataGenerator {
 		
 		
 		
+		
+		
+		
 		insertCartItem(userRole.getShoppingCart(), product, 10);
 		
 		concludeSale(userRole.getShoppingCart());
 		
 		
+		
+		
+		Date to=new Date(1517436000000L);
+		
+		List<ClientOrder> orders=clientOrderService.fetchOrdersByPeriod(from, to);
+		
+		System.out.println("\n\n\n");
+		
+		for (ClientOrder co: orders)
+		{
+			System.out.println(co.getId());
+		}
+		
+		System.out.println("\n\n\n");
 		
 		return product;
 	}

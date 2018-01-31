@@ -1,7 +1,7 @@
 package org.afdemp.uisux.service;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.afdemp.uisux.domain.AbstractSale;
@@ -15,6 +15,6 @@ public interface ClientOrderService {
 	AbstractSale createClientOrder(UserRole userRole,BigDecimal grandTotal, Address shippingAddress, Address billingAddress, CreditCard creditCard);
 	
 	//TODO implementation
-	List<ClientOrder> fetchOrdersByPeriod(Timestamp fromTimestamp, Timestamp toTimestamp);
+	List<ClientOrder> fetchOrdersByPeriod(Date from, Date to);
 
 }

@@ -15,6 +15,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.afdemp.uisux.domain.security.UserRole;
 
@@ -27,8 +29,13 @@ public abstract class AbstractSale {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date submittedDate;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date shippingDate;
+	
 	private String shippingMethod;
 	private BigDecimal total;
 	

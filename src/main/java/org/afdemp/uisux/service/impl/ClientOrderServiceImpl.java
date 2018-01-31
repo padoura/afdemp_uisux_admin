@@ -1,7 +1,6 @@
 package org.afdemp.uisux.service.impl;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +27,7 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 	{
 		ClientOrder clientOrder=new ClientOrder();
 		Date submittedDate=new Date();
+		//Hibernate transforms java.util.Date to java.mySQL.Timestamp for MySQL
 		clientOrder.setSubmittedDate(submittedDate);
 		clientOrder.setShippingAddress(shippingAddress);
 		clientOrder.setBillingAddress(billingAddress);
@@ -44,10 +44,12 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 	}
 	
 	@Override
-	public List<ClientOrder> fetchOrdersByPeriod(Timestamp fromTimestamp, Timestamp toTimestamp)
+	public List<ClientOrder> fetchOrdersByPeriod(Date from, Date to)
 	{
-		List<ClientOrder> clientOrder=new ArrayList<ClientOrder>();
-		return clientOrder;
+		List<ClientOrder> clientOrders=new ArrayList<ClientOrder>();
+		
+		clientOrders=clientOrderRepository.findOrdersFromTo(from, to);
+		return clientOrders;
 	}
 
 }
