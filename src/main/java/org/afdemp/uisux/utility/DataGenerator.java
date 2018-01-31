@@ -1,11 +1,13 @@
 package org.afdemp.uisux.utility;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.afdemp.uisux.domain.CartItem;
 import org.afdemp.uisux.domain.Category;
 import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.domain.Product;
@@ -114,7 +116,7 @@ public class DataGenerator {
 	
 	private Product insertProductAndAddToCartExample() throws Exception {
 		
-		Date from=new Date(1517349600000L);
+		
 		
 		Product product = new Product();
 		product.setDescription("Awesome Choco Milk!");
@@ -147,7 +149,10 @@ public class DataGenerator {
 		
 		
 		
-		Date to=new Date(1517436000000L);
+		
+		
+		Timestamp from=new Timestamp(1517349600000L);
+		Timestamp to=new Timestamp(1517400420000L);
 		
 		List<ClientOrder> orders=clientOrderService.fetchOrdersByPeriod(from, to);
 		
@@ -155,8 +160,12 @@ public class DataGenerator {
 		
 		for (ClientOrder co: orders)
 		{
-			System.out.println(co.getId());
+			
+			System.out.println(co.getId()+"\t"+co.getTotal());
+			
 		}
+		
+		
 		
 		System.out.println("\n\n\n");
 		

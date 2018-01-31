@@ -1,6 +1,7 @@
 package org.afdemp.uisux.service.impl;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,11 +45,11 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 	}
 	
 	@Override
-	public List<ClientOrder> fetchOrdersByPeriod(Date from, Date to)
+	public List<ClientOrder> fetchOrdersByPeriod(Timestamp fromTimestamp, Timestamp toTimestamp)
 	{
 		List<ClientOrder> clientOrders=new ArrayList<ClientOrder>();
 		
-		clientOrders=clientOrderRepository.findOrdersFromTo(from, to);
+		clientOrders=clientOrderRepository.findOrdersFromTo(fromTimestamp, toTimestamp);
 		return clientOrders;
 	}
 
