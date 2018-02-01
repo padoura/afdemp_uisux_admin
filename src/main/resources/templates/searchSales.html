@@ -5,7 +5,17 @@
 
 <body>
 	<div th:replace="common/header2 :: navbar" ></div>
-	<div class="container">
+<div class="container" id="deleteAfter" >
+  <div class="jumbotron">
+        
+    <p>To see the customer orders please select the starting and ending date of the search</p>
+  						
+  </div>
+     
+</div>
+	
+	
+	<div class="container" id="all">
 		<div class="table-responsive">
 			<table id="clientListTable" class="table table-bordered table-hover table-striped">
 				<thead>
@@ -76,9 +86,34 @@
 				</fieldset>
 			</form>
 		</div>
-	<button type="button" id="bt1" class="btn btn-info">next</button>
-
-
+<!-- 	<button type="button" id="bt1" class="btn btn-info">next</button>
+ -->
+ 		<div class="container" id="seeDiagramms">
+  <div class="jumbotron">
+        
+    <p>if you want to see the results in diagramms navigate with the buttons bellow</p>
+  			<div class="col-md-2"></div>
+						<div class="col-md-2">
+							<button type="button" id="btn2" class="btn btn-danger">previous diagramm</button>
+						</div>
+						<div class="col-md-2">
+							<button type="button" id="btn1" class="btn btn-success">next diagramm</button>
+						</div>
+			
+  </div>
+     
+</div>
+ 			<div class="row">
+						
+					</div>
+	
+<!--  <button id="btn1">Append text</button><button id="btn2">Previous text</button> -->
+<div id="uu">
+<div id="div1"></div>
+</div>
+<div class="col-md-8">
+							
+						</div>
 
 	
 	
@@ -94,7 +129,9 @@
 				stateSave: true
 		       
 		    });
-		 		 
+		 var datsez =[];
+		 var z=[];
+		 var h=0; 
 		 var myStringArray = [[${clientOrderList}]];
 		 var arrayLength = myStringArray.length;
 		 var dats =[];
@@ -102,39 +139,154 @@
 		 var dats3 =[];
 		 var dats4 =[];
 		 var dats5 =[];
-					var p=[];
+		 var k=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+		var p=[];
+		 dats5=[];
+			var k;
+			var step =-1;
+			var numberOfSteps=parseInt(arrayLength/20);
+			var currentStep=0;
+			var remainder= arrayLength % 20;
+			
+			if(remainder > 0){
+				numberOfSteps++;
+			}
+
+			console.log(remainder);
+			 
+			 console.log(numberOfSteps);
+		/* 	for ( var i in k) {
+					 h++;
+					 z=[h,h];
+					 //console.log(i);
+					// console.log(z);
+					 //p=[myStringArray[i].submittedDate.substring(0, 10),myStringArray[i].total]
+					//p=[myStringArray[i].submittedDate,myStringArray[i].total]
+					  
+						  dats5.push(z);	
+			    
+			} */
+			if(arrayLength == 0){
+					 $("#all").remove();
+					 $("#seeDiagramms").remove();
+					 
+				 }
+				 var stepArray=[];//new Array(numberOfSteps);
+				 var stepValues=new Array(numberOfSteps);
+				 stepValues.fill(0);
+				//	 stepArray.fill(0);
+			 // createVariables(4,stepArray);
+				 console.log(stepArray.length);
+			//	 alert(stepArray);
+			var t=0;
+			var stepsArray2=0;
+			
+			var  katikalo=[];
+			
+						
+				//  alert( katikalo.value);
+				 
+					
 		 // alert(myStringArray.length);
 		 if(arrayLength > 0){
+			 $("#deleteAfter").remove();
 			 for (var i in myStringArray) {
-				 console.log(i);
+				// console.log(i);
 			  //   alert(myStringArray[1][i]);
-			dats.push(myStringArray[i].total);
- 	 		dats2.push(myStringArray[i].submittedDate);
+		//	dats.push(myStringArray[i].total);
+ 	 //		dats2.push(myStringArray[i].submittedDate);
 		p=[myStringArray[i].submittedDate.substring(0, 10),myStringArray[i].total]
 		//p=[myStringArray[i].submittedDate,myStringArray[i].total]
-		  if (i > 59){
-			  dats5.push(p);	
-	 		  }
-	 		  else{
-	 			  
-	 			  if (i > 29){
-			  dats4.push(p);	
-	 		  }
-	 		  else{
-	 			 dats3.push(p);	
-	 		  }
-	 	}
-	 		
+		 dats.push(p);	
+		 
 		
-		/* for (var j in myStringArray[i]) {
-				  //console.log(myStringArray[i]);
-				  console.log(j);
-					}  
-			   */
-			  //Do something
-			 }
+			 		
+		
+	
+	}
+			 var narr=0;
+			 for ( var iii in  stepValues) {
+				 stepArray[narr]=[];
+					for (var ii in k) {
+							  //katikalo[t]=["20*t"]
+							  //[t]=20*t;
+							 //
+						//	 alert(t);
+						//	 alert(dats[t]);
+							 if(dats[t]==null){
+								 
+								 
+							 }
+							 else{
+							stepArray[narr][stepsArray2]=dats[t] ;
+							 }
+							// alert(t);
+							// katikalo.push("20");
+							  t++;
+							  stepsArray2++;
+						  }
+					stepsArray2=0;
+					narr++;		
+			 }  
 			 
-
+			 
+			 //alert(stepArray[0]);
+			 
+			 
+			 
+	$("#btn1").click(function(){
+			      //  $("#div1").remove();
+				//	alert(step);
+		if(numberOfSteps -1 > step)
+			{
+			
+			step++;
+		
+			}
+			//   $("#uu").append("<div id='div1'>mlasdknasd</div>");
+			//$("#div1").append("<div id='div1'>mlasdknasd</div>");
+							
+				myFunction(stepArray[step]);
+					
+					
+					
+					
+			    });
+			 
+			 
+	 
+	$("#btn2").click(function(){
+			      //  $("#div1").remove();
+					
+		if(step > 0)
+			{
+			
+			step--;
+		
+			}
+		else{
+			step=0;
+		}
+			//   $("#uu").append("<div id='div1'>mlasdknasd</div>");
+			//$("#div1").append("<div id='div1'>mlasdknasd</div>");
+							
+				myFunction(stepArray[step]);
+					
+					
+					
+					
+			    });		 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+/* 
 Highcharts.chart('container2', {
 	    chart: {
 	        type: 'column'
@@ -282,11 +434,72 @@ Highcharts.chart('container3', {
 
 					}
 
-
+ */
 
 		 }
 });
-	 
+	
+	 function createVariables(ex,stepArray) {
+		// stepArray=[];
+		 /*<![CDATA[*/
+			 
+		 for (i = 0; i < ex; i++) { 
+			   stepArray[i]
+			}
+		 /*]]>*/
+
+		 
+	 }
+	 function myFunction(dats3) {
+			Highcharts.chart('div1', {
+			    chart: {
+			        type: 'column'
+			    },
+			    title: {
+			        text: 'Sales'
+			    },
+			    
+			    xAxis: {
+			        type: 'category',
+			        labels: {
+			            rotation: -45,
+			            style: {
+			                fontSize: '13px',
+			                fontFamily: 'Verdana, sans-serif'
+			            }
+			        }
+			    },
+			    yAxis: {
+			        min: 0,
+			        title: {
+			            text: 'sales (euro)'
+			        }
+			    },
+			    legend: {
+			        enabled: false
+			    },
+			    tooltip: {
+			        pointFormat: 'Sales per day'
+			    },
+			    series: [{
+			        name: 'salesn',
+			        data: dats3
+			        ,
+			        dataLabels: {
+			            enabled: true,
+			            rotation: -90,
+			            color: '#FFFFFF',
+			            align: 'right',
+			            format: '{point.y:.2f}', // one decimal
+			            y: 10, // 10 pixels down from the top
+			            style: {
+			                fontSize: '13px',
+			                fontFamily: 'Verdana, sans-serif'
+			            }
+			        }
+			    }]
+			});
+		}
 	</script>
 	
 	<div id="container2"></div>
