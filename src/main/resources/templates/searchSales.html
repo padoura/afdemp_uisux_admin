@@ -4,34 +4,40 @@
 <head th:replace="common/header2 :: common-header" />
 
 <body>
-	<div th:replace="common/header2 :: navbar" />
-	
+	<div th:replace="common/header2 :: navbar" ></div>
 	<div class="container">
 		<div class="table-responsive">
-			<table id="userListTable" class="table table-bordered table-hover table-striped">
+			<table id="clientListTable" class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr>
-						<th>status</th>
-						
-						</tr>
+						<th>Status</th>
+						<th>Id</th>
+						<th>submittedDate</th>
+						<th>shippingDate</th>
+						<th>shippingMethod</th>
+						<th>Total</th>
+					</tr>
 				</thead>
-				
 				<tbody>
 					<tr data-th-each="client : ${clientOrderList}">
-						
-						
-						
 						<td th:text="${client.orderStatus}"></td>
+						<td th:text="${client.id}"></td>
+						<td th:text="${client.submittedDate}"></td>
+						<td th:text="${client.shippingDate}"></td>
+						<td th:text="${client.shippingMethod}"></td>
+						<td th:text="${client.Total}"></td>
 						
 						
-					
+						
 					</tr>
 				</tbody>
 			</table>
 		</div>
+	
 	</div>
 
-<div class="container">
+
+
 		<div class="row">
 			<form class="form-horizontal" th:action="@{/sale/search}" method="post"
 				enctype="multipart/form-data">
@@ -70,28 +76,221 @@
 				</fieldset>
 			</form>
 		</div>
-	</div>
+	<button type="button" id="bt1" class="btn btn-info">next</button>
+
 
 
 	
 	
-	<div th:replace="common/header2 :: body-bottom-scripts" />
+	<div th:replace="common/header2 :: body-bottom-scripts" ></div>
 	
 	<script th:inline="javascript">
 	
-	
-		$(document).ready(function() {
-			var message = [[${clientOrderList}]];
-			if( message==null ){
-		//	alert("adeio");
-			}
-			
-			$("#userListTable").DataTable({
-				"lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
+
+	 $(document).ready(function(){    
+		 var table= $('#clientListTable').DataTable({
+			   "lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
 				"ordering": false,
 				stateSave: true
-			});
-		});
+		       
+		    });
+		 		 
+		 var myStringArray = [[${clientOrderList}]];
+		 var arrayLength = myStringArray.length;
+		 var dats =[];
+		 var dats2 =[];
+		 var dats3 =[];
+		 var dats4 =[];
+		 var dats5 =[];
+					var p=[];
+		 // alert(myStringArray.length);
+		 if(arrayLength > 0){
+			 for (var i in myStringArray) {
+				 console.log(i);
+			  //   alert(myStringArray[1][i]);
+			dats.push(myStringArray[i].total);
+ 	 		dats2.push(myStringArray[i].submittedDate);
+		p=[myStringArray[i].submittedDate.substring(0, 10),myStringArray[i].total]
+		//p=[myStringArray[i].submittedDate,myStringArray[i].total]
+		  if (i > 59){
+			  dats5.push(p);	
+	 		  }
+	 		  else{
+	 			  
+	 			  if (i > 29){
+			  dats4.push(p);	
+	 		  }
+	 		  else{
+	 			 dats3.push(p);	
+	 		  }
+	 	}
+	 		
+		
+		/* for (var j in myStringArray[i]) {
+				  //console.log(myStringArray[i]);
+				  console.log(j);
+					}  
+			   */
+			  //Do something
+			 }
+			 
+
+Highcharts.chart('container2', {
+	    chart: {
+	        type: 'column'
+	    },
+	    title: {
+	        text: 'sales'
+	    },
+	    xAxis: {
+	        type: 'category',
+	        labels: {
+	            rotation: -45,
+	            style: {
+	                fontSize: '13px',
+	                fontFamily: 'Verdana, sans-serif'
+	            }
+	        }
+	    },
+	    yAxis: {
+	        min: 0,
+	        title: {
+	            text: 'cost (euro)'
+	        }
+	    },
+	    legend: {
+	        enabled: false
+	    },
+	    tooltip: {
+	        pointFormat: 'sale: <b>{point.y:.4f} euro</b>'
+	    },
+	    series: [{
+	        name: 'sales',
+	        data: dats3,
+	        dataLabels: {
+	            enabled: true,
+	            rotation: -90,
+	            color: '#FFFFFF',
+	            align: 'right',
+	            format: '{point.y:.2f}', // one decimal
+	            y: 10, // 10 pixels down from the top
+	            style: {
+	                fontSize: '13px',
+	                fontFamily: 'Verdana, sans-serif'
+	            }
+	        }
+	    }]
+	});
+		if(arrayLength > 30){
+
+Highcharts.chart('container3', {
+	    chart: {
+	        type: 'column'
+	    },
+	    title: {
+	        text: 'sales'
+	    },
+	    xAxis: {
+	        type: 'category',
+	        labels: {
+	            rotation: -45,
+	            style: {
+	                fontSize: '13px',
+	                fontFamily: 'Verdana, sans-serif'
+	            }
+	        }
+	    },
+	    yAxis: {
+	        min: 0,
+	        title: {
+	            text: 'cost (euro)'
+	        }
+	    },
+	    legend: {
+	        enabled: false
+	    },
+	    tooltip: {
+	        pointFormat: 'sale: <b>{point.y:.4f} euro</b>'
+	    },
+	    series: [{
+	        name: 'sales',
+	        data: dats4,
+	        dataLabels: {
+	            enabled: true,
+	            rotation: -90,
+	            color: '#FFFFFF',
+	            align: 'right',
+	            format: '{point.y:.2f}', // one decimal
+	            y: 10, // 10 pixels down from the top
+	            style: {
+	                fontSize: '13px',
+	                fontFamily: 'Verdana, sans-serif'
+	            }
+	        }
+	    }]
+	});
+
+		}
+		if(arrayLength > 60){
+
+			Highcharts.chart('container4', {
+				    chart: {
+				        type: 'column'
+				    },
+				    title: {
+				        text: 'sales'
+				    },
+				    xAxis: {
+				        type: 'category',
+				        labels: {
+				            rotation: -45,
+				            style: {
+				                fontSize: '13px',
+				                fontFamily: 'Verdana, sans-serif'
+				            }
+				        }
+				    },
+				    yAxis: {
+				        min: 0,
+				        title: {
+				            text: 'cost (euro)'
+				        }
+				    },
+				    legend: {
+				        enabled: false
+				    },
+				    tooltip: {
+				        pointFormat: 'sale: <b>{point.y:.4f} euro</b>'
+				    },
+				    series: [{
+				        name: 'sales',
+				        data: dats5,
+				        dataLabels: {
+				            enabled: true,
+				            rotation: -90,
+				            color: '#FFFFFF',
+				            align: 'right',
+				            format: '{point.y:.2f}', // one decimal
+				            y: 10, // 10 pixels down from the top
+				            style: {
+				                fontSize: '13px',
+				                fontFamily: 'Verdana, sans-serif'
+				            }
+				        }
+				    }]
+				});
+
+					}
+
+
+
+		 }
+});
+	 
 	</script>
+	
+	<div id="container2"></div>
+	<div id="container3"></div>
+	<div id="container4"></div>
 </body>
 </html>
