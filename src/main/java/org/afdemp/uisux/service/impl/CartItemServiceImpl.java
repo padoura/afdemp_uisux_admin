@@ -61,19 +61,32 @@ public class CartItemServiceImpl implements CartItemService{
 	}
 	
 	@Override
-	public boolean commitSale(ShoppingCart shoppingCart)
+	public HashSet<Product> commitSale(ShoppingCart shoppingCart)
 	{
-		
 		AbstractSale abstractSale=new ClientOrder();
-		abstractSale=clientOrderService.createClientOrder(shoppingCart.getUserRole(),shoppingCartService.CalculateGrandTotal(shoppingCart),null,null, null);
+		HashSet<Product> itemsUnavailable=new HashSet<Product>();
 		HashSet<CartItem> itemsInCart=new HashSet<CartItem>();
 		itemsInCart=cartItemRepository.findByShoppingCart(shoppingCart);
+		
+		//Checks if CartItem X in shopping Cart exists in coop's warehouse
+		//and if not then it is removed from itemsInCart about to be passed for sale
+		for(CartItem ci: itemsInCart)
+		{
+			if(cartItemRepository.checkAvailabilityAndUpdate(ci.getProduct(),ci.getQty())==0)
+			{
+				itemsUnavailable.add(ci.getProduct());
+				itemsInCart.remove(ci);
+			}
+		}
+		
+		
 		if(itemsInCart.isEmpty())
 		{
-			return false;
+			return itemsUnavailable;
 		}
 		else
 		{
+			abstractSale=clientOrderService.createClientOrder(shoppingCart.getUserRole(),shoppingCartService.CalculateGrandTotal(shoppingCart),null,null, null);
 			for(CartItem ci: itemsInCart)
 			{
 				ci.setShoppingCart(null);
@@ -82,7 +95,7 @@ public class CartItemServiceImpl implements CartItemService{
 				ci.setAbstractSale(abstractSale);
 				cartItemRepository.save(ci);
 			}
-			return true;
+			return itemsUnavailable;
 		}
 	}
 

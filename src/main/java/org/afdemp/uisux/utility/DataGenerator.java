@@ -174,7 +174,7 @@ public class DataGenerator {
 	
 	private boolean concludeSale(ShoppingCart shoppingCart)
 	{
-		if(cartItemService.commitSale(shoppingCart))
+		if(cartItemService.commitSale(shoppingCart)!=null)
 		{
 			System.out.println("\n\nClient Order successfully placed!");
 			return true;
