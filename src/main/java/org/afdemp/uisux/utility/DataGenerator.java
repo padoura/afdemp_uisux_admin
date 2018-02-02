@@ -1,24 +1,30 @@
 package org.afdemp.uisux.utility;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.afdemp.uisux.domain.CartItem;
 import org.afdemp.uisux.domain.Category;
+import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
+import org.afdemp.uisux.repository.ProductRepository;
 import org.afdemp.uisux.repository.RoleRepository;
+import org.afdemp.uisux.repository.UserRepository;
+import org.afdemp.uisux.repository.UserRoleRepository;
 import org.afdemp.uisux.service.CartItemService;
 import org.afdemp.uisux.service.CategoryService;
+import org.afdemp.uisux.service.ClientOrderService;
 import org.afdemp.uisux.service.ProductService;
 import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.UserService;
@@ -31,6 +37,7 @@ public class DataGenerator {
 	
 	//===============================Autowire Section=================================
 	
+	@Autowired ClientOrderService clientOrderService;
 	
 	@Autowired
 	private ProductService productService;
@@ -45,11 +52,20 @@ public class DataGenerator {
 	private UserService userService;
 	
 	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private UserRoleRepository userRoleRepository;
+	
+	@Autowired
 	private ShoppingCartService shoppingCartService;
 	
 	@Autowired
 	private RoleRepository roleRepository;
 	
+	@Autowired
+	private ProductRepository productRepository;
+
 	
 	
 	//===============================Function Definitions=================================
@@ -83,11 +99,11 @@ public class DataGenerator {
 		Product product = new Product();
 		product.setDescription("Awesome Choco Milk!");
 		product.setInStockNumber(10L);
-		product.setListPrice(1.50);
+		product.setListPrice(BigDecimal.valueOf(1.50));
 		product.setMadeIn("Keramia Crete");
 		product.setName("Choco Milk 0.5L");
-		product.setOurPrice(0.90);
-		product.setPriceBought(0.30);
+		product.setOurPrice(BigDecimal.valueOf(0.90));
+		product.setPriceBought(BigDecimal.valueOf(0.30));
 		product.setActive(true);
 		
 		String type = "Milk";
@@ -101,24 +117,75 @@ public class DataGenerator {
 		productService.createProduct(product, type);
 	}
 	
-	private Product insertExampleProduct2() throws Exception {
+	private Product insertProductAndAddToCartExample() throws Exception {
+		
+		
+		
 		Product product = new Product();
 		product.setDescription("Awesome Choco Milk!");
 		product.setInStockNumber(10L);
-		product.setListPrice(1.50);
+		product.setListPrice(BigDecimal.valueOf(1.50));
 		product.setMadeIn("Keramia Crete");
 		product.setName("Choco Milk 1L");
-		product.setOurPrice(0.90);
-		product.setPriceBought(0.30);
+		product.setOurPrice(BigDecimal.valueOf(0.90));
+		product.setPriceBought(BigDecimal.valueOf(0.30));
 		product.setActive(true);
 		
 		String type = "GTP Milk";
-		productService.createProduct(product, type);
+		product=productService.createProduct(product, type);
+		
+		User user=userRepository.findByUsername("Madryoch");
+		Role role=roleRepository.findByName("ROLE_CLIENT");
+		
+		UserRole userRole=userRoleRepository.findByRoleAndUser(role, user);
+		
+		
+		
+		
+		
+		
+		
+		insertCartItem(userRole.getShoppingCart(), product, 10);
+		
+		concludeSale(userRole.getShoppingCart());
+		
+		
+		
+		
+		
+		
+		Timestamp from=new Timestamp(1517349600000L);
+		Timestamp to=new Timestamp(1517400420000L);
+		
+		List<ClientOrder> orders=clientOrderService.fetchOrdersByPeriod(from, to);
+		
+		System.out.println("\n\n\n");
+		
+		for (ClientOrder co: orders)
+		{
+			
+			System.out.println(co.getId()+"\t"+co.getTotal());
+			
+		}
+		
+		
+		
+		System.out.println("\n\n\n");
 		
 		return product;
 	}
 	
-	private void insertCartItem(Product product,int qty, ShoppingCart shoppingCart)
+	private boolean concludeSale(ShoppingCart shoppingCart)
+	{
+		if(cartItemService.commitSale(shoppingCart)!=null)
+		{
+			System.out.println("\n\nClient Order successfully placed!");
+			return true;
+		}
+		return false;
+	}
+	
+	private void insertCartItem(ShoppingCart shoppingCart,Product product,int qty)
 	{
 		cartItemService.addToCart(shoppingCart,product,qty);
 	}
@@ -133,14 +200,16 @@ public class DataGenerator {
 		Product product = new Product();
 		product.setDescription("Awesome Choco Milk!");
 		product.setInStockNumber(10L);
-		product.setListPrice(3);
+		product.setListPrice(BigDecimal.valueOf(3));
 		product.setMadeIn("Keramia Crete");
 		product.setName("Choco Milk 1L");
-		product.setOurPrice(1.80);
-		product.setPriceBought(0.60);
+		product.setOurPrice(BigDecimal.valueOf(1.80));
+		product.setPriceBought(BigDecimal.valueOf(0.60));
 		
 		String type = "Milk";
 		productService.createProduct(product, type);
+		
+		
 	}
 	
 	private void insertExampleMember() throws Exception{
@@ -208,12 +277,12 @@ public class DataGenerator {
 	
 	public void generate() throws Exception 
 	{
-		insertFirstAdmin();
-		insertSomeCategories();
-		insertExampleProduct();
-		updateExampleProduct();
-		insertExampleMember();
-		insertExampleProduct2();
+	insertFirstAdmin();
+	insertSomeCategories();
+	insertExampleProduct();
+	updateExampleProduct();
+	insertExampleMember();
+	insertProductAndAddToCartExample();
 	}
 
 }

@@ -11,8 +11,6 @@ import org.afdemp.uisux.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -45,23 +43,12 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public boolean createProduct(Product product, String type) 
+	public Product createProduct(Product product, String type) 
 	{
 		
 		
-		 if(type==null)
-		 {
-			 System.out.println("\nFAILURE: String type parameter cannot be null.\n");
-			 return false;
-		 }
-		 
-		 if(product.getName()==null)
-		 {
-			 System.out.println("\nFAILURE: Product.name parameter cannot be null.\n");
-			 return false;
-		 }
-		 
-		 Category category = categoryRepository.findByType(type);
+		 		 
+		  Category category = categoryRepository.findByType(type);
 		 
 			if (category == null) 
 			{
@@ -72,22 +59,20 @@ public class ProductServiceImpl implements ProductService {
 			
 			product.setCategory(category);
 				
-			try 
+			Product tempProduct=productRepository.findByName(product.getName());
+			if(tempProduct==null)
 			{
 				productRepository.save(product);
-				System.out.println("\nSUCCESS: Added product "+product.getName()+".\n");
-				return true;
+				LOG.info("\n\n\nSUCCESS: Added product {}.\n\n",product.getName());
+				return product;
 			}
-			catch (DataIntegrityViolationException e)
+			else
 			{
-				System.out.println("\nFAILURE:There's already an item with the same name.\n");
-				return false;
+				System.out.println("\n\n\nFAILURE:There's already an item with the same name.\n\n");
+				return tempProduct;
 			}
-			catch (InvalidDataAccessApiUsageException e)
-			{
-				System.out.println("\nFAILURE:Illegal Object. (Product product is null or incomplete)\n");
-				return false;
-			}	
+				
+				
 	}
 
 		

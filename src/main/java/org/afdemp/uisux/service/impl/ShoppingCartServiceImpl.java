@@ -1,9 +1,12 @@
 package org.afdemp.uisux.service.impl;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 
+import org.afdemp.uisux.domain.CartItem;
 import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.security.UserRole;
+import org.afdemp.uisux.repository.CartItemRepository;
 import org.afdemp.uisux.repository.ShoppingCartRepository;
 import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.UserService;
@@ -19,6 +22,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService{
 	
 	@Autowired
 	private ShoppingCartRepository shoppingCartRepository;
+	
+	@Autowired
+	private CartItemRepository cartItemRepository;
 	
 	@Override
 	public boolean createShoppingCart(UserRole userRole)
@@ -44,7 +50,22 @@ public class ShoppingCartServiceImpl implements ShoppingCartService{
 		
 		
 		
+		
 
+	}
+	
+	@Override
+	public BigDecimal CalculateGrandTotal(ShoppingCart shoppingCart)
+	{
+		BigDecimal grandTotal=BigDecimal.valueOf(0);
+		HashSet<CartItem> itemsInCart=cartItemRepository.findByShoppingCart(shoppingCart);
+		
+		for(CartItem ci: itemsInCart)
+		{
+			grandTotal=grandTotal.add(ci.getProduct().getOurPrice().multiply(BigDecimal.valueOf(ci.getQty())));
+		}
+		
+		return grandTotal;
 	}
 
 }

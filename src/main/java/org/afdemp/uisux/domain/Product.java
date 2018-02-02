@@ -1,5 +1,6 @@
 package org.afdemp.uisux.domain;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -28,10 +29,10 @@ public class Product {
 	private String name;
 	private String madeIn;
 	private Long inStockNumber;
-	private double listPrice;
-	private double ourPrice;
+	private BigDecimal listPrice;
+	private BigDecimal ourPrice;
 	private boolean active;
-	private double priceBought;
+	private BigDecimal priceBought;
 	
 	public Product() {}
 	
@@ -101,23 +102,7 @@ public class Product {
 		this.inStockNumber = inStockNumber;
 	}
 
-	public double getListPrice() {
-		return listPrice;
-	}
-
-	public void setListPrice(double listPrice) {
-		this.listPrice = listPrice;
-	}
-
-	public double getOurPrice() {
-		return ourPrice;
-	}
-
-	public void setOurPrice(double ourPrice) {
-		this.ourPrice = ourPrice;
-	}
-
-		public boolean isActive() {
+	public boolean isActive() {
 		return active;
 	}
 
@@ -125,17 +110,57 @@ public class Product {
 		this.active = active;
 	}
 
-public double getPriceBought() {
+	public String getDescription() {
+		return description;
+	}
+
+	public BigDecimal getListPrice() {
+		return listPrice;
+	}
+
+
+
+	public void setListPrice(BigDecimal listPrice) {
+		this.listPrice = listPrice;
+	}
+
+
+
+	public BigDecimal getOurPrice() {
+		return ourPrice;
+	}
+
+
+
+	public void setOurPrice(BigDecimal ourPrice) {
+		this.ourPrice = ourPrice;
+	}
+
+
+
+	public BigDecimal getPriceBought() {
 		return priceBought;
 	}
 
-	public void setPriceBought(double priceBought) {
+
+
+	public void setPriceBought(BigDecimal priceBought) {
 		this.priceBought = priceBought;
 	}
 
-		public String getDescription() {
-		return description;
+
+
+	public Set<CartItem> getCartItems() {
+		return cartItems;
 	}
+
+
+
+	public void setCartItems(Set<CartItem> cartItems) {
+		this.cartItems = cartItems;
+	}
+
+
 
 	public void setDescription(String description) {
 		this.description = description;
