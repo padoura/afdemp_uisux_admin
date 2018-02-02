@@ -25,18 +25,11 @@ public class UserSecurityService implements UserDetailsService{
 			throw new UsernameNotFoundException("Username not found");
 		}
 		
-//		for (UserRole ur : user.getUserRoles()) {
-//			if (ur.getRole().getName() == "ROLE_ADMIN")
-//				return user;
-//		}
-//		
-//		if(null == user) {
-//			throw new UsernameNotFoundException("Username not found");
-//		}else if() {
-//			throw new AuthenticationException("User " + user.getUsername() + " has no admin role.");
-//		}
-		
-		return user;
+		for (UserRole ur : user.getUserRoles()) {
+			if (ur.getRole().getName().equals("ROLE_ADMIN"))
+				return user;
+		}
+			throw new UsernameNotFoundException("User " + user.getUsername() + " has no admin role.");
 	}
 
 }

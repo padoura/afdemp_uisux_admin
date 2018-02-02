@@ -34,8 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/js/**",
 			"/image/**",
 			"/login",
-			"/newUser",
-			"/forgetPassword",
 			"/fonts/**"
 	};
 	
@@ -50,6 +48,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
+//		 http
+//		 .csrf().disable().cors().disable()
+//	      .authorizeRequests()
+//	        .antMatchers(PUBLIC_MATCHERS).permitAll() // #4
+//	        .antMatchers(ADMIN_MATCHERS).hasRole("ADMIN") // #6
+//	        .anyRequest().authenticated() // 7
+//	        .and()
+//	    .formLogin().failureUrl("/login?error")
+//		.defaultSuccessUrl("/")  // #8
+//	        .loginPage("/login") // #9
+//	        .permitAll().and()
+//			.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//			.logoutSuccessUrl("/?logout").deleteCookies("remember-me").permitAll()
+//			.and()
+//			.rememberMe();; // #5
+		
 		http
 			.authorizeRequests().
 //			antMatchers("/**").
@@ -63,16 +78,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		antMatchers(PUBLIC_MATCHERS).
 		permitAll().anyRequest().authenticated();
 
-//		http
-//			.csrf().disable().cors().disable()
-//			.formLogin().failureUrl("/login?error")
-//			.defaultSuccessUrl("/")
-//			.loginPage("/login").permitAll()
-//			.and()
-//			.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//			.logoutSuccessUrl("/?logout").deleteCookies("remember-me").permitAll()
-//			.and()
-//			.rememberMe();
+		http
+			.csrf().disable().cors().disable()
+			.formLogin().failureUrl("/login?error")
+			.defaultSuccessUrl("/")
+			.loginPage("/login").permitAll()
+			.and()
+			.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+			.logoutSuccessUrl("/?logout").deleteCookies("remember-me").permitAll()
+			.and()
+			.rememberMe();
 	}
 
 	@Autowired

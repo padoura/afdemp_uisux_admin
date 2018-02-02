@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
