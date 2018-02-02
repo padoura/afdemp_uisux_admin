@@ -28,7 +28,6 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 	{
 		ClientOrder clientOrder=new ClientOrder();
 		Date submittedDate=new Date();
-		//Hibernate transforms java.util.Date to java.mySQL.Timestamp for MySQL
 		clientOrder.setSubmittedDate(submittedDate);
 		clientOrder.setShippingAddress(shippingAddress);
 		clientOrder.setBillingAddress(billingAddress);
