@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header2 :: common-header" />
+
+<body>
+	<div th:replace="common/header2 :: navbar" />
+<div id="success" >
+
+</div>
+	<div class="container">
+		<div class="row">
+			<form class="form-horizontal" th:action="@{/member/add}" method="post"
+				enctype="multipart/form-data">
+				<fieldset>
+					<legend class="center-block">
+						New Member Information<span style="font-size: small"> * is a
+							required field</span>
+					</legend>
+
+
+						<input hidden="hidden" name="id" th:value="${user.id}" />
+
+
+					<!-- title -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="title">*UserName</label>
+
+						<div class="col-md-8">
+							<input type="text" name="username" class="form-control" id="username"
+								th:value="${user.username}" required="required" placeholder="username" />
+							<span class="help-block">userName</span>
+						</div>
+					</div>
+					<!-- title -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="title">*password</label>
+
+						<div class="col-md-8">
+							<input type="text" name="password" class="form-control" id="password"
+								th:value="${user.password}" required="required" placeholder="password" />
+							<span class="help-block">pass</span>
+						</div>
+					</div>
+					<!-- title -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="title">*firstName</label>
+
+						<div class="col-md-8">
+							<input type="text" name="firstName" class="form-control" id="firstName"
+								th:value="${user.firstName}" required="required" placeholder="firstName" />
+							<span class="help-block">firstName</span>
+						</div>
+					</div>
+					<!-- title -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="title">*lastName</label>
+
+						<div class="col-md-8">
+							<input type="text" name="lastName" class="form-control" id="lastName"
+								th:value="${user.lastName}" required="required" placeholder="lastName" />
+							<span class="help-block">lastName</span>
+						</div>
+					</div>
+					<!-- title -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="title">*email</label>
+
+						<div class="col-md-8">
+							<input type="text" name="email" class="form-control" id="email"
+								th:value="${user.email}" required="required" placeholder="email" />
+							<span class="help-block">email</span>
+						</div>
+					</div>
+					<!-- title -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="title">phone</label>
+
+						<div class="col-md-8">
+							<input type="text" name="phone" class="form-control" id="phone"
+								th:value="${user.phone}"  placeholder="phone" />
+							<span class="help-block">phone</span>
+						</div>
+					</div>
+
+
+
+
+
+					<div class="form-group">
+						<div class="col-md-2"></div>
+						<div class="col-md-8">
+							<button type="submit" class="btn btn-success">add member</button>
+							<a class="btn btn-danger" th:href="@{/member/memberList}">Cancel</a>
+						</div>
+						
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+
+
+	<div th:replace="common/header2 :: body-bottom-scripts" />
+
+<script th:inline="javascript" >
+var message = [[${classActiveNewAccount}]];
+$(document).ready(function(){
+	
+	if(message==null ||message==false){
+		
+	}
+	else{
+		$("#success").append("<h1>user added </h1>");
+	}
+});
+
+</script>
+
+</body>
+</html>

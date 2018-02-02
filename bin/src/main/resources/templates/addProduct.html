@@ -5,8 +5,25 @@
 
 <body>
 	<div th:replace="common/header2 :: navbar" />
+<div id="success" >
+<h1>product added successfully</h1>
+</div>
 
-	<div class="container">
+
+
+<script th:inline="javascript">
+
+var message = [[${insertSuccess}]];
+if(message==null ||message==false){
+	document.getElementById("success").innerHTML = " ";
+	
+}
+
+
+</script>
+<button onclick="myFunction()">Create new category</button>
+
+	<div class="container" th:with="someVariable=${someValue}">
 		<div class="row">
 			<form class="form-horizontal" th:action="@{/product/add}" method="post"
 				enctype="multipart/form-data">
@@ -17,9 +34,12 @@
 					</legend>
 
 
-					<!-- Product Name -->
+						<input hidden="hidden" name="id" th:value="${product.id}" />
+
+
+					<!-- title -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="name">* Name</label>
+						<label class="col-md-2 control-label" for="title">*Name</label>
 
 						<div class="col-md-8">
 							<input type="text" name="name" class="form-control" id="name"
@@ -28,57 +48,86 @@
 						</div>
 					</div>
 
-					<!-- Stock -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="inStockNumbers">Remaining Stock</label>
+						<label class="col-md-2 control-label" for="madeIn">*
+							Country of origin</label>
 						<div class="col-md-8">
-							<input type="text" name="inStockNumbers" class="form-control"
-								id="inStockNumbers" th:value="${product.inStockNumber}"
-								placeholder="Stock" /> <span class="help-block">remaining amount of the product</span>
+							<input type="text" name="madeIn" class="form-control" id="madeIn"
+								th:value="${product.madeIn}" required="required"
+								placeholder="madeIn" /> <span class="help-block">country of origin of the product</span>
 						</div>
 					</div>
 
-					<!-- Made In -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="madeIn">Made In</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control" id="madeIn"
-								name="madeIn" th:value="${product.madeIn}"
-								placeholder="Made In" /> <span class="help-block">Location of origin</span>
-						</div>
-					</div>
 
-					<!-- category -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="type">*
+<div class="form-group">
+						<label class="col-md-2 control-label" for="category">*
 							Category</label>
-						<div class="col-md-8">
+					
+
+					<div class="col-md-8" id="hi">
 							<select th:value="${type}" id="type" name="type"
 								class="form-control">
 								<option value="" selected="selected" disabled="disabled">Please
-									select an option...</option>
-								<option value="Fruits"
+									select an category...</option>
+								<option th:each="prod : ${categoryList}" th:value="${prod.type}" th:text="${prod.type}"
+									th:selected="(${type}=='${prod.type}'  )"></option></select>
+						</div>
+						
+					<div class="col-md-8" id="hi2">
+									<input type="text" name="type" class="form-control" id="type"
+								th:value="${type}"
+								placeholder="type" />	
+					</div>		
+						</div>
+					
+					<script>
+function myFunction() {
+	document.getElementById("hi2").style.visibility = 'visible';
+	document.getElementById("hi").style.visibility = 'hidden';
+ // 	document.getElementById("hi").remove();
+  
+
+// document.getElementById("new").innerHTML = "Hello World";
+//var new2=document.getElementById("new").innerText;
+
+//alert(new2);
+}
+</script>
+					
+					
+					
+					<!-- 
+					
+						
+					
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="category">*
+							Category</label>
+						<div class="col-md-8">
+							<select th:value="${type}" id="category" name="category"
+								class="form-control">
+					<option th:each="prod : ${categoryList}" value="prod.type" th:text="${prod.type}"
+									th:selected="(${type}==${prod.type}  )"></option>
+									<option value="Fruits"
 									th:selected="(${type}=='Fruits')">Fruits</option>
-								<option value="Vegetables"
-									th:selected="(${type}=='Vegetables')">Vegetables</option>
-								<option value="Milk"
-									th:selected="(${type}=='Milk')">Milk</option>
+								
 							</select>
 						</div>
 					</div>
-
-					<!-- price bought -->
+category -->
+					
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="priceBought">Buying Price</label>
+						<label class="col-md-2 control-label" for="inStockNumber">Number of products in stock</label>
+
 						<div class="col-md-8">
-							<div class="input-group">
-								<span class="input-group-addon">$</span> <input
-									th:value="${product.priceBought}" type="number" name="priceBought" step="0.01"
-									class="form-control" id="priceBought" placeholder="Price Bought" />
-							</div>
-							<span class="help-block">Current buying price from members</span>
+							<input type="number" name="inStockNumber" class="form-control"
+								id="inStockNumber" th:value="${product.inStockNumber}"
+								placeholder="stock" /> <span class="help-block">Number
+								of products</span>
 						</div>
 					</div>
+
 
 					<!-- list price -->
 					<div class="form-group">
@@ -86,11 +135,11 @@
 							Price</label>
 						<div class="col-md-8">
 							<div class="input-group">
-								<span class="input-group-addon">$</span> <input
-									th:value="${product.listPrice}" type="number" name="listPrice" step="0.01"
+								<span class="input-group-addon"> &euro;</span> <input
+									th:value="${product.listPrice}" type="number" min="0" name="listPrice" step="0.01"
 									class="form-control" id="listPrice" placeholder="List Price" />
 							</div>
-							<span class="help-block">List price of the product</span>
+							<span class="help-block">List price product</span>
 						</div>
 					</div>
 
@@ -100,22 +149,37 @@
 							Price</label>
 						<div class="col-md-8">
 							<div class="input-group">
-								<span class="input-group-addon">$</span> <input
-									th:value="${product.ourPrice}" type="number" name="ourPrice" step="0.01"
+								<span class="input-group-addon">&euro;</span> <input
+									th:value="${product.ourPrice}" type="number" min="0" name="ourPrice" step="0.01"
 									class="form-control" id="ourPrice" placeholder="Our Price" />
 							</div>
-							<span class="help-block">Our price of the product</span>
+							<span class="help-block">Our price of the book</span>
 						</div>
 					</div>
 
-					<!-- status of product -->
+					<!-- our price -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="ourPrice">priceBought</label>
+						<div class="col-md-8">
+							<div class="input-group">
+								<span class="input-group-addon">&euro;</span> <input
+									th:value="${product.priceBought}" type="number" min="0" name="priceBought" step="0.01"
+									class="form-control" id="priceBought" placeholder="priceBought" />
+							</div>
+							<span class="help-block">priceBought of the book</span>
+						</div>
+					</div>
+
+
+
+					<!-- status of book -->
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="status">Status</label>
 						<div class="col-md-8">
 							<label><input value="true" type="radio" name="active"
-								checked="checked" /> Enabled </label> <label><input
-								value="false" type="radio" name="active" />
-								Disabled </label> <span class="help-block">Whether the product is
+								th:checked="${product.active}" /> Active </label> <label><input
+								value="false" type="radio" name="active" th:checked="${!product.active}"/>
+								Inactive </label> <span class="help-block">Whether the product is
 								active or inactive</span>
 						</div>
 					</div>
@@ -125,8 +189,8 @@
 						<label class="col-md-2 control-label" for="description">Description</label>
 						<div class="col-md-8">
 							<textarea name="description" rows="5" class="form-control"
-								id="description" th:value="${product.description}"
-								placeholder="Description" />
+								id="description" th:value="${product.description}" 
+								placeholder="Description" ></textarea>
 							<span class="help-block">Description of the product</span>
 						</div>
 					</div>
@@ -145,8 +209,8 @@
 					<div class="form-group">
 						<div class="col-md-2"></div>
 						<div class="col-md-8">
-							<button type="submit" class="btn btn-success">Add product</button>
-							<a class="btn btn-danger" th:href="@{/}">Cancel</a>
+							<button type="submit" class="btn btn-success">add product</button>
+							<a class="btn btn-danger" th:href="@{/product/home}">Cancel</a>
 						</div>
 					</div>
 				</fieldset>
@@ -156,5 +220,19 @@
 
 
 	<div th:replace="common/header2 :: body-bottom-scripts" />
+<script >
+
+$(document).ready(function(){
+	document.getElementById("hi2").style.visibility = 'hidden';
+    $("#btn1").click(function(){
+    	
+    
+    	//$("#hi2").css('display','block');
+    	
+    	    });
+});
+
+</script>
+
 </body>
 </html>
