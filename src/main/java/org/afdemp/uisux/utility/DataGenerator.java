@@ -145,9 +145,15 @@ public class DataGenerator {
 		
 		
 		
-		insertCartItem(userRole.getShoppingCart(), product, 10);
+		insertCartItem(userRole.getShoppingCart(), product, 5);
 		
 		concludeSale(userRole.getShoppingCart());
+		
+		ClientOrder clientOrder=new ClientOrder();
+		clientOrder.setId(1L);
+		clientOrderService.updateOrderStatusToShipped(clientOrder);
+		
+		clientOrderService.updateOrderStatusToDelivered(clientOrder);
 		
 		
 		
@@ -177,9 +183,19 @@ public class DataGenerator {
 	
 	private boolean concludeSale(ShoppingCart shoppingCart)
 	{
-		if(cartItemService.commitSale(shoppingCart)!=null)
+		HashSet<Product> itemsReturned=new HashSet<Product>();
+		itemsReturned=cartItemService.commitSale(shoppingCart);
+		System.out.println("\n\n");
+		for(Product p:itemsReturned)
 		{
-			System.out.println("\n\nClient Order successfully placed!");
+			System.out.println(p.getName());
+		}
+		System.out.println("\n\n");
+		
+		
+		if(itemsReturned.isEmpty())
+		{
+			System.out.println("\n\nClient Order successfully placed!\n\n");
 			return true;
 		}
 		return false;
