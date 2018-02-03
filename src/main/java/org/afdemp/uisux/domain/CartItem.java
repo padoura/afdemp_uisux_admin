@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @Entity
-//@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "shoppingCart"})})
+
 public class CartItem {
 
 	@Id
@@ -25,6 +25,8 @@ public class CartItem {
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Product product;
+	
+	private boolean isVisible=false;
 		
 	private int qty;
 		
@@ -86,6 +88,14 @@ public class CartItem {
 
 	public void setProduct(Product product) {
 		this.product = product;
+	}
+
+	public boolean isVisible() {
+		return isVisible;
+	}
+
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
 	}
 	
 	

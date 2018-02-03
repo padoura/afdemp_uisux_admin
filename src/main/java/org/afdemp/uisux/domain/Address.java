@@ -3,6 +3,7 @@ package org.afdemp.uisux.domain;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,17 +26,30 @@ public class Address {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
+	@Column(nullable=false)
 	private String receiverName;
+	
+	@Column(nullable=false)
 	private String street1;
 	private String street2;
+	
+	@Column(nullable=false)
 	private String city;
+	
+	@Column(nullable=false)
 	private String state;
-	private String country;
+	
+	@Column(nullable=false)
+	private String country="Greece";
+	
+	@Column(nullable=false)
 	private String zipcode;
-	private boolean userShippingDefault;
+	
+	
+	private boolean userShippingDefault=false;
 	
 	@ManyToOne
-	@JoinColumn(name="user_role_id")
+	@JoinColumn(name="user_role_id",nullable=false)
 	private UserRole userRole;
 	
 	public boolean isUserShippingDefault() {
@@ -68,14 +82,8 @@ public class Address {
 	public List<AbstractSale> getBillingSaleList() {
 		return billingSaleList;
 	}
-	public void setBillingSaleList(List<AbstractSale> billingSaleList) {
-		this.billingSaleList = billingSaleList;
-	}
 	public List<AbstractSale> getShippingSaleList() {
 		return shippingSaleList;
-	}
-	public void setShippingSaleList(List<AbstractSale> shippingSaleList) {
-		this.shippingSaleList = shippingSaleList;
 	}
 	public void setId(Long id) {
 		this.id = id;
@@ -86,6 +94,7 @@ public class Address {
 	public void setId(long id) {
 		this.id = id;
 	}
+	
 	public String getReceiverName() {
 		return receiverName;
 	}
