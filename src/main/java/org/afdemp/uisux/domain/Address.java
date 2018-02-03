@@ -49,8 +49,7 @@ public class Address {
 	private boolean userShippingDefault=false;
 	
 	@ManyToOne
-	@Column(nullable=false)
-	@JoinColumn(name="user_role_id")
+	@JoinColumn(name="user_role_id",nullable=false)
 	private UserRole userRole;
 	
 	public boolean isUserShippingDefault() {

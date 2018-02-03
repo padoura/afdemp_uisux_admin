@@ -37,15 +37,11 @@ public class CartItemServiceImpl implements CartItemService{
 		{	
 			cartItem=new CartItem();
 			
-			System.out.print("\n\nCartItem =new\n\n");
 			cartItem.setShoppingCart(shoppingCart);
 			cartItem.setProduct(product);
 			cartItem.setQty(qty);
 			
-			System.out.print("\n\nCartItem Before SAVE\n\n");
 			cartItemRepository.save(cartItem);
-			
-			System.out.println("\n\nCartItem created");
 			
 			return true;
 		}
@@ -86,11 +82,13 @@ public class CartItemServiceImpl implements CartItemService{
 		}
 		else
 		{
-			abstractSale=clientOrderService.createClientOrder(shoppingCart.getUserRole(),shoppingCartService.CalculateGrandTotal(shoppingCart),null,null, null);
+			ClientOrder clientOrder=new ClientOrder();
+			clientOrder.setUserRole(shoppingCart.getUserRole());
+			clientOrder.setTotal(shoppingCartService.CalculateGrandTotal(shoppingCart));
+			abstractSale=clientOrderService.createClientOrder(clientOrder);
 			for(CartItem ci: itemsInCart)
 			{
 				ci.setShoppingCart(null);
-				//Need to change double to BigDecimal on prices in Product and remove valueOf
 				ci.setCurrentPrice(ci.getProduct().getOurPrice()); 
 				ci.setAbstractSale(abstractSale);
 				cartItemRepository.save(ci);

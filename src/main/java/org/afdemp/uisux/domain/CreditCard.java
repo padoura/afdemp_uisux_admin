@@ -45,16 +45,13 @@ public class CreditCard {
 	private boolean defaultCreditCard;
 	
 	@OneToMany(mappedBy="creditCard", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@Column(nullable=false)
 	private List<AbstractSale> abstractSaleList;
 	
 	@OneToOne(fetch=FetchType.EAGER)
-	@Column(nullable=false)
 	private Address billingAddress;
 	
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@Column(nullable=false) 
-	@JoinColumn(name="user_role_id")
+	@JoinColumn(name="user_role_id",nullable=false)
 	private UserRole userRole;
 
 	public boolean isDefaultCreditCard() {

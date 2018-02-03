@@ -12,28 +12,27 @@ import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.domain.CreditCard;
 import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.ClientOrderRepository;
+import org.afdemp.uisux.service.AddressService;
 import org.afdemp.uisux.service.ClientOrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ClientOrderServiceImpl implements ClientOrderService{
 	
+	private static final Logger LOG = LoggerFactory.getLogger(ClientOrderService.class);
 	
 	@Autowired
 	private ClientOrderRepository clientOrderRepository;
 	
 	@Override
-	public AbstractSale createClientOrder(UserRole userRole,BigDecimal grandTotal,Address shippingAddress, Address billingAddress, CreditCard creditCard)
+	public AbstractSale createClientOrder(ClientOrder clientOrder)
 	{
-		ClientOrder clientOrder=new ClientOrder();
+		
 		Date submittedDate=new Date();
 		clientOrder.setSubmittedDate(submittedDate);
-		clientOrder.setShippingAddress(shippingAddress);
-		clientOrder.setBillingAddress(billingAddress);
-		clientOrder.setUserRole(userRole);
-		clientOrder.setCreditCard(creditCard);
-		clientOrder.setTotal(grandTotal);
 		clientOrder.setOrderStatus("Processing");
 		
 		clientOrderRepository.save(clientOrder);
@@ -42,6 +41,41 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 		
 		
 	}
+	
+	@Override
+	public ClientOrder updateOrderStatusToShipped(ClientOrder clientOrder)
+	{
+		clientOrder=clientOrderRepository.findOne(clientOrder.getId());
+		if(clientOrder!=null)
+		{
+			clientOrder.setOrderStatus("Shipped");
+			clientOrderRepository.save(clientOrder);
+			LOG.info("SUCCESS: Order Status changed to Shipped.");
+		}
+		else
+		{
+			LOG.info("FAILURE: Unable to find Client Order");
+		}
+		return clientOrder;
+	}
+	
+	@Override
+	public ClientOrder updateOrderStatusToDelivered(ClientOrder clientOrder)
+	{
+		clientOrder=clientOrderRepository.findOne(clientOrder.getId());
+		if(clientOrder!=null)
+		{
+			clientOrder.setOrderStatus("Delivered");
+			clientOrderRepository.save(clientOrder);
+			LOG.info("SUCCESS: Order Status changed to Delivered.");
+		}
+		else
+		{
+			LOG.info("FAILURE: Unable to find Client Order");
+		}
+		return clientOrder;
+	}
+	
 	
 	@Override
 	public List<ClientOrder> fetchOrdersByPeriod(Timestamp fromTimestamp, Timestamp toTimestamp)
