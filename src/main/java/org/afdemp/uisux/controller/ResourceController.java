@@ -16,16 +16,29 @@ public class ResourceController {
 	@Autowired
 	private ProductService productService;
 	
-	@RequestMapping(value="/product/removeList", method=RequestMethod.POST)
-	public String removeProductList(
+	@RequestMapping(value="/product/deactivateList", method=RequestMethod.POST)
+	public String deactivateProductList(
 			@RequestBody ArrayList<String> productIdList, Model model
 			){
 		
 		for (String id : productIdList) {
 			String productId =id.substring(8);
-			productService.removeOne(Long.parseLong(productId));
+			productService.deactivate(Long.parseLong(productId));
 		}
 		
-		return "delete success";
+		return "deactivate success";
+	}
+	
+	@RequestMapping(value="/product/activateList", method=RequestMethod.POST)
+	public String activateProductList(
+			@RequestBody ArrayList<String> productIdList, Model model
+			){
+		
+		for (String id : productIdList) {
+			String productId =id.substring(8);
+			productService.activate(Long.parseLong(productId));
+		}
+		
+		return "activate success";
 	}
 }

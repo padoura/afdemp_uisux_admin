@@ -75,6 +75,23 @@ public class ProductServiceImpl implements ProductService {
 				
 	}
 
+	@Override
+	public void toggleActive(Product product) {
+		product.setActive(!product.isActive());
+	}
+
+	@Override
+	public void deactivate(Long id) {
+		Product product = findOne(id);
+		product.setActive(false);
+	}
+
+	@Override
+	public void activate(Long id) {
+		Product product = findOne(id);
+		product.setActive(true);
+	}
+
 		
 }
 

@@ -16,4 +16,10 @@ public interface ProductService {
 	void removeOne(Long id);
 
 	Product createProduct(Product product, String type);
+	
+	void toggleActive(Product product);
+
+	void deactivate(Long id);
+	
+	void activate(Long id);
 }

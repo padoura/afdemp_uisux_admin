@@ -90,29 +90,31 @@ public class UserServiceImpl implements UserService {
 	public User addRoleToExistingUser(User user,String roleName)
 	{
 		//Searching Database for User user
-		user = userService.findByUsername(user.getUsername());
+		User existingUser = userService.findByUsername(user.getUsername());
 		
-		if (user != null) 
+		if (existingUser != null) 
 		{
-			//Finding the role
-			Role role = new Role();
-			role=roleRepository.findByName(roleName);
 			
-			//Creating  a UserRole object
-			UserRole roleToAdd = new UserRole(user, role);
 			
 			//Checking if it exists in user object's Set of UserRoles
 			//and if it isn't part of it create it and add it to user object.
-			if(!user.getUserRoles().contains(roleToAdd))
+			if(!userRoleService.hasThisRole(roleName,existingUser))
 			{
+				//Finding the role
+				Role role = new Role();
+				role=roleRepository.findByName(roleName);
+				
+				//Creating  a UserRole object
+				UserRole roleToAdd = new UserRole(existingUser, role);
+				
 				userRoleService.createUserRole(roleToAdd);
-				user.getUserRoles().add(roleToAdd);
-				userService.save(user);
+				existingUser.getUserRoles().add(roleToAdd);
+				userService.save(existingUser);
 			}
 		}
 		
 		//Returning the final user or null in case the user search yielded no results
-		return user;
+		return existingUser;
 	}
 	
 	//Non Functional
