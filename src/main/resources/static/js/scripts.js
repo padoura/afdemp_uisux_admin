@@ -180,7 +180,7 @@ $(document).ready(function() {
 		console.log(productIdList);
 		
 		/*<![CDATA[*/
-	    var path = /*[[@{/}]]*/'removeList';
+	    var path = /*[[@{/}]]*/'deactivateList';
 	    /*]]>*/
 	    
 	    bootbox.confirm({
