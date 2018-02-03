@@ -74,8 +74,7 @@ public class CartItemServiceImpl implements CartItemService{
 				itemsInCart.remove(ci);
 			}
 		}
-		
-		
+				
 		if(itemsInCart.isEmpty())
 		{
 			return itemsUnavailable;
@@ -95,6 +94,34 @@ public class CartItemServiceImpl implements CartItemService{
 			}
 			return itemsUnavailable;
 		}
+	}
+	
+	//@Override
+	public boolean putProductUpForSale(ShoppingCart shoppingCart, Product product, int qty)
+	{
+		CartItem cartItem=new CartItem();
+		cartItem=cartItemRepository.findByShoppingCartAndProduct(shoppingCart, product);
+		if(cartItem==null)
+		{	
+			cartItem=new CartItem();
+			
+			cartItem.setShoppingCart(shoppingCart);
+			cartItem.setProduct(product);
+			cartItem.setQty(qty);
+						
+			cartItemRepository.save(cartItem);
+			
+			return true;
+		}
+		else if (cartItem !=null && qty >0)
+		{
+			cartItem.setQty(cartItem.getQty()+qty);
+			cartItemRepository.save(cartItem);
+			
+			System.out.println("\n\nCartItem modified");
+			return true;
+		}
+		return false;
 	}
 
 }

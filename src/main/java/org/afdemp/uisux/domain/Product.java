@@ -45,6 +45,9 @@ public class Product {
 	@OneToMany(mappedBy="product", fetch=FetchType.LAZY)
 	private Set<CartItem> cartItems;
 	
+	@OneToMany(mappedBy="product", fetch=FetchType.LAZY)
+	private Set<MemberCartItem> memberCartItems;
+	
 	@OneToMany(mappedBy="product", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JsonIgnore
 	private List<WishlistProduct> wishlistProductList;

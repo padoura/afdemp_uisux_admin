@@ -9,15 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
-
-import org.springframework.web.multipart.MultipartFile;
-
-
 
 @Entity
+public class MemberCartItem {
 
-public class CartItem {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -26,6 +21,8 @@ public class CartItem {
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Product product;
 	
+	private boolean isVisible=false;
+		
 	private int qty;
 		
 	@ManyToOne
@@ -36,24 +33,38 @@ public class CartItem {
 	@JoinColumn(name="abstract_sale_id")
 	private AbstractSale abstractSale;
 	
-	private BigDecimal currentPrice;
-
-	public CartItem() {}
+	private BigDecimal currentPurchasePrice;
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public boolean isVisible() {
+		return isVisible;
+	}
+
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
+	}
+
 	public int getQty() {
 		return qty;
 	}
 
 	public void setQty(int qty) {
 		this.qty = qty;
-	}
-	
-	public BigDecimal getCurrentPrice() {
-		return currentPrice;
-	}
-
-	public void setCurrentPrice(BigDecimal currentPrice) {
-		this.currentPrice = currentPrice;
 	}
 
 	public ShoppingCart getShoppingCart() {
@@ -72,21 +83,16 @@ public class CartItem {
 		this.abstractSale = abstractSale;
 	}
 
-	public Long getId() {
-		return id;
+	public BigDecimal getCurrentPurchasePrice() {
+		return currentPurchasePrice;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setCurrentPurchasePrice(BigDecimal currentPurchasePrice) {
+		this.currentPurchasePrice = currentPurchasePrice;
 	}
-
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-
+	
+	//-------------------------Getters and Setters-------------------------//
+	
+	
 	
 }

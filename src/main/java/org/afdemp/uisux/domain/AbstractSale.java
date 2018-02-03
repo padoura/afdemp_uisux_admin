@@ -44,6 +44,10 @@ public abstract class AbstractSale {
 	@JsonIgnore
 	private List<CartItem> cartItemList;
 	
+	@OneToMany(mappedBy="abstractSale", cascade=CascadeType.REMOVE, fetch=FetchType.LAZY)
+	@JsonIgnore
+	private List<MemberCartItem> memberCartItemList;
+	
 	@OneToMany(mappedBy="abstractSale", fetch=FetchType.LAZY)
 	private List<Transaction> TransactionList;
 
