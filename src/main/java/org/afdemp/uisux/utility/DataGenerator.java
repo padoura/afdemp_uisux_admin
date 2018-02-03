@@ -232,7 +232,7 @@ public class DataGenerator {
 		
 		User user2=new User();
         user2.setUsername("madryoch");
-        user2.setPassword(SecurityUtility.passwordEncoder().encode("guest2"));
+        user2.setPassword(SecurityUtility.passwordEncoder().encode("madryoch"));
         user2.setEmail("madryoch@gmail.com");
         userRoles = new HashSet<>();
         userRoles.add(new UserRole(user2, role2));
