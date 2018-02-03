@@ -3,6 +3,7 @@ package org.afdemp.uisux.domain;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,21 +23,37 @@ public class CreditCard {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
+	@Column(nullable=false)
 	private String type;
+	
+	@Column(nullable=false)
 	private String cardNumber;
+	
+	@Column(nullable=false)
 	private int expiryMonth;
+	
+	@Column(nullable=false)
 	private int expiryYear;
+	
+	@Column(nullable=false)
 	private int cvc;
+	
+	@Column(nullable=false)
 	private String holderName;
+	
+	@Column(nullable=false)
 	private boolean defaultCreditCard;
 	
 	@OneToMany(mappedBy="creditCard", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@Column(nullable=false)
 	private List<AbstractSale> abstractSaleList;
 	
 	@OneToOne(fetch=FetchType.EAGER)
+	@Column(nullable=false)
 	private Address billingAddress;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@Column(nullable=false) 
 	@JoinColumn(name="user_role_id")
 	private UserRole userRole;
 
