@@ -57,6 +57,8 @@ $(document).ready(function() {
 			}
 		});
 	});
+
+	
 	
 	
 	
@@ -164,6 +166,63 @@ $(document).ready(function() {
 		});
 	});
 
+
+
+	$('#disSel').click(function() {
+		var idList= $('.checkboxproduct');
+		var productIdList=[];
+		for (var i = 0; i < idList.length; i++) {
+			if(idList[i].checked==true) {
+				productIdList.push(idList[i]['id'])
+			}
+		}
+		
+		console.log(productIdList);
+		
+		/*<![CDATA[*/
+	    var path = /*[[@{/}]]*/'removeList';
+	    /*]]>*/
+	    
+	    bootbox.confirm({
+			message: "Are you sure to change the status of these profucts",
+			buttons: {
+				cancel: {
+					label:'<i class="fa fa-times"></i> Cancel'
+				},
+				confirm: {
+					label:'<i class="fa fa-check"></i> Confirm'
+				}
+			},
+			callback: function(confirmed) {
+				if(confirmed) {
+					$.ajax({
+						type: 'POST',
+						url: path,
+						data: JSON.stringify(productIdList),
+						contentType: "application/json",
+						success: function(res) {
+							console.log(res); 
+							location.reload()
+							},
+						error: function(res){
+							console.log(res); 
+							location.reload();
+							}
+					});
+				}
+			}
+		});
+	});
+
+
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	$("#selectAllProducts").click(function() {
 		if($(this).prop("checked")==true) {
