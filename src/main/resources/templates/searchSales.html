@@ -91,7 +91,7 @@
  		<div class="container" id="seeDiagramms">
   <div class="jumbotron">
         
-    <p>if you want to see the results in diagramms navigate with the buttons bellow</p>
+    <p>if you want to see the results in diagramms navigate with the buttons bellow the diagramms will dipslay next/previous 20 results</p>
   			<div class="col-md-2"></div>
 						<div class="col-md-2">
 							<button type="button" id="btn2" class="btn btn-danger">previous diagramm</button>
@@ -108,9 +108,10 @@
 					</div>
 	
 <!--  <button id="btn1">Append text</button><button id="btn2">Previous text</button> -->
-<div id="uu">
-<div id="div1"></div>
+
+<div id="div1">
 </div>
+
 <div class="col-md-8">
 							
 						</div>
@@ -120,7 +121,7 @@
 	<div th:replace="common/header2 :: body-bottom-scripts" ></div>
 	
 	<script th:inline="javascript">
-	
+	 /*<![CDATA[*/
 
 	 $(document).ready(function(){    
 		 var table= $('#clientListTable').DataTable({
@@ -129,74 +130,51 @@
 				stateSave: true
 		       
 		    });
-		 var datsez =[];
-		 var z=[];
-		 var h=0; 
+			
+		 
 		 var myStringArray = [[${clientOrderList}]];
 		 var arrayLength = myStringArray.length;
-		 var dats =[];
-		 var dats2 =[];
-		 var dats3 =[];
-		 var dats4 =[];
-		 var dats5 =[];
-		 var k=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+		 var dats =[];//data sum olla ta antikeimena pou exei to clientorderlist
+		 
+		 var datsChart =[];//edw dimiourgoume to antikeimeno pou tha baloume sto hightable kathe fora
+		 
+		 
+		 var k=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];//mia metabliti me 20 times pou xrisimopoihoume sto iteration
 		var p=[];
-		 dats5=[];
-			var k;
-			var step =-1;
-			var numberOfSteps=parseInt(arrayLength/20);
+		
+			
+			var step =-1;//the step to see the charts 0 shows the first 20 1 shows the next 20 ect
+			var numberOfSteps=parseInt(arrayLength/20);//how many chart we have 
 			var currentStep=0;
-			var remainder= arrayLength % 20;
+			var remainder= arrayLength % 20;//if there is a modulo we add one to the number of  charts that can be created
 			
 			if(remainder > 0){
 				numberOfSteps++;
 			}
-
-			console.log(remainder);
-			 
-			 console.log(numberOfSteps);
-		/* 	for ( var i in k) {
-					 h++;
-					 z=[h,h];
-					 //console.log(i);
-					// console.log(z);
-					 //p=[myStringArray[i].submittedDate.substring(0, 10),myStringArray[i].total]
-					//p=[myStringArray[i].submittedDate,myStringArray[i].total]
-					  
-						  dats5.push(z);	
-			    
-			} */
+		
 			if(arrayLength == 0){
 					 $("#all").remove();
 					 $("#seeDiagramms").remove();
 					 
 				 }
-				 var stepArray=[];//new Array(numberOfSteps);
+			//some variables used for iterating
+				 var stepArray=[];
 				 var stepValues=new Array(numberOfSteps);
 				 stepValues.fill(0);
-				//	 stepArray.fill(0);
-			 // createVariables(4,stepArray);
-				 console.log(stepArray.length);
-			//	 alert(stepArray);
 			var t=0;
 			var stepsArray2=0;
 			
+			 
 			var  katikalo=[];
 			
-						
-				//  alert( katikalo.value);
-				 
-					
-		 // alert(myStringArray.length);
+			 
+			 for (i = 0; i < 22; i++) { 
+				}
+			 
 		 if(arrayLength > 0){
 			 $("#deleteAfter").remove();
 			 for (var i in myStringArray) {
-				// console.log(i);
-			  //   alert(myStringArray[1][i]);
-		//	dats.push(myStringArray[i].total);
- 	 //		dats2.push(myStringArray[i].submittedDate);
 		p=[myStringArray[i].submittedDate.substring(0, 10),myStringArray[i].total]
-		//p=[myStringArray[i].submittedDate,myStringArray[i].total]
 		 dats.push(p);	
 		 
 		
@@ -208,11 +186,7 @@
 			 for ( var iii in  stepValues) {
 				 stepArray[narr]=[];
 					for (var ii in k) {
-							  //katikalo[t]=["20*t"]
-							  //[t]=20*t;
-							 //
-						//	 alert(t);
-						//	 alert(dats[t]);
+							 
 							 if(dats[t]==null){
 								 
 								 
@@ -220,8 +194,6 @@
 							 else{
 							stepArray[narr][stepsArray2]=dats[t] ;
 							 }
-							// alert(t);
-							// katikalo.push("20");
 							  t++;
 							  stepsArray2++;
 						  }
@@ -230,22 +202,20 @@
 			 }  
 			 
 			 
-			 //alert(stepArray[0]);
+		
+			 
 			 
 			 
 			 
 	$("#btn1").click(function(){
-			      //  $("#div1").remove();
-				//	alert(step);
+			     
 		if(numberOfSteps -1 > step)
 			{
 			
 			step++;
 		
 			}
-			//   $("#uu").append("<div id='div1'>mlasdknasd</div>");
-			//$("#div1").append("<div id='div1'>mlasdknasd</div>");
-							
+								
 				myFunction(stepArray[step]);
 					
 					
@@ -256,7 +226,7 @@
 			 
 	 
 	$("#btn2").click(function(){
-			      //  $("#div1").remove();
+			    
 					
 		if(step > 0)
 			{
@@ -267,8 +237,7 @@
 		else{
 			step=0;
 		}
-			//   $("#uu").append("<div id='div1'>mlasdknasd</div>");
-			//$("#div1").append("<div id='div1'>mlasdknasd</div>");
+			
 							
 				myFunction(stepArray[step]);
 					
@@ -279,178 +248,18 @@
 			 
 			 
 			 
+	/*]]>*/	 
 			 
 			 
 			 
 			 
-			 
-			 
-			 
-/* 
-Highcharts.chart('container2', {
-	    chart: {
-	        type: 'column'
-	    },
-	    title: {
-	        text: 'sales'
-	    },
-	    xAxis: {
-	        type: 'category',
-	        labels: {
-	            rotation: -45,
-	            style: {
-	                fontSize: '13px',
-	                fontFamily: 'Verdana, sans-serif'
-	            }
-	        }
-	    },
-	    yAxis: {
-	        min: 0,
-	        title: {
-	            text: 'cost (euro)'
-	        }
-	    },
-	    legend: {
-	        enabled: false
-	    },
-	    tooltip: {
-	        pointFormat: 'sale: <b>{point.y:.4f} euro</b>'
-	    },
-	    series: [{
-	        name: 'sales',
-	        data: dats3,
-	        dataLabels: {
-	            enabled: true,
-	            rotation: -90,
-	            color: '#FFFFFF',
-	            align: 'right',
-	            format: '{point.y:.2f}', // one decimal
-	            y: 10, // 10 pixels down from the top
-	            style: {
-	                fontSize: '13px',
-	                fontFamily: 'Verdana, sans-serif'
-	            }
-	        }
-	    }]
-	});
-		if(arrayLength > 30){
 
-Highcharts.chart('container3', {
-	    chart: {
-	        type: 'column'
-	    },
-	    title: {
-	        text: 'sales'
-	    },
-	    xAxis: {
-	        type: 'category',
-	        labels: {
-	            rotation: -45,
-	            style: {
-	                fontSize: '13px',
-	                fontFamily: 'Verdana, sans-serif'
-	            }
-	        }
-	    },
-	    yAxis: {
-	        min: 0,
-	        title: {
-	            text: 'cost (euro)'
-	        }
-	    },
-	    legend: {
-	        enabled: false
-	    },
-	    tooltip: {
-	        pointFormat: 'sale: <b>{point.y:.4f} euro</b>'
-	    },
-	    series: [{
-	        name: 'sales',
-	        data: dats4,
-	        dataLabels: {
-	            enabled: true,
-	            rotation: -90,
-	            color: '#FFFFFF',
-	            align: 'right',
-	            format: '{point.y:.2f}', // one decimal
-	            y: 10, // 10 pixels down from the top
-	            style: {
-	                fontSize: '13px',
-	                fontFamily: 'Verdana, sans-serif'
-	            }
-	        }
-	    }]
-	});
-
-		}
-		if(arrayLength > 60){
-
-			Highcharts.chart('container4', {
-				    chart: {
-				        type: 'column'
-				    },
-				    title: {
-				        text: 'sales'
-				    },
-				    xAxis: {
-				        type: 'category',
-				        labels: {
-				            rotation: -45,
-				            style: {
-				                fontSize: '13px',
-				                fontFamily: 'Verdana, sans-serif'
-				            }
-				        }
-				    },
-				    yAxis: {
-				        min: 0,
-				        title: {
-				            text: 'cost (euro)'
-				        }
-				    },
-				    legend: {
-				        enabled: false
-				    },
-				    tooltip: {
-				        pointFormat: 'sale: <b>{point.y:.4f} euro</b>'
-				    },
-				    series: [{
-				        name: 'sales',
-				        data: dats5,
-				        dataLabels: {
-				            enabled: true,
-				            rotation: -90,
-				            color: '#FFFFFF',
-				            align: 'right',
-				            format: '{point.y:.2f}', // one decimal
-				            y: 10, // 10 pixels down from the top
-				            style: {
-				                fontSize: '13px',
-				                fontFamily: 'Verdana, sans-serif'
-				            }
-				        }
-				    }]
-				});
-
-					}
-
- */
 
 		 }
 });
 	
-	 function createVariables(ex,stepArray) {
-		// stepArray=[];
-		 /*<![CDATA[*/
-			 
-		 for (i = 0; i < ex; i++) { 
-			   stepArray[i]
-			}
-		 /*]]>*/
-
-		 
-	 }
-	 function myFunction(dats3) {
+	 
+	 function myFunction(datsChart) {
 			Highcharts.chart('div1', {
 			    chart: {
 			        type: 'column'
@@ -483,7 +292,7 @@ Highcharts.chart('container3', {
 			    },
 			    series: [{
 			        name: 'salesn',
-			        data: dats3
+			        data: datsChart
 			        ,
 			        dataLabels: {
 			            enabled: true,
