@@ -197,6 +197,12 @@ public class DataGenerator {
 		if(memberCartItemService.putUpForSale(product, qty, userRole.getShoppingCart()))
 		{
 			memberCartItemService.activate(1L);
+			List<MemberCartItem> tempList=memberCartItemService.findAllAvailableItems(2L);
+			for(MemberCartItem mci:tempList)
+			{
+				System.out.println("\n\n\n\n\n"+mci.getProduct().getName()+"\t"+mci.getProduct().getCategory().getType()+"\n\n\n\n\n");
+			}
+			
 			return true;
 		}
 		return false;
