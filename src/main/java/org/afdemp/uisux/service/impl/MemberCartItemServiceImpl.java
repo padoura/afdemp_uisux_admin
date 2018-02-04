@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MemberCartItemImpl implements MemberCartItemService{
+public class MemberCartItemServiceImpl implements MemberCartItemService{
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ClientOrderService.class);
 	
@@ -130,9 +130,21 @@ public class MemberCartItemImpl implements MemberCartItemService{
 			return false;
 		}
 		
-		
 	}
 	
+	@Override
+    public void deactivate(Long id) {
+        MemberCartItem memberCartItem = memberCartItemRepository.findOne(id);
+        memberCartItem.setVisible(false);
+        memberCartItemRepository.save(memberCartItem);
+    }
+
+    @Override
+    public void activate(Long id) {
+    	MemberCartItem memberCartItem = memberCartItemRepository.findOne(id);
+        memberCartItem.setVisible(true);
+        memberCartItemRepository.save(memberCartItem);
+    }
 	
 	
 	
