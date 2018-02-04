@@ -7,6 +7,7 @@ import java.util.List;
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.domain.Transaction;
 import org.afdemp.uisux.domain.Account;
+import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.service.AccountService;
 import org.afdemp.uisux.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,13 @@ public class TransactionController {
 //		model.addAttribute("account", withdrawList);
 //		model.addAttribute("account", depositList);
 //		return "redirect:/transaction/accountInfo?id="+account.getId();
+//	}
+//	
+//	@RequestMapping(value = "/sendEarnings", method = RequestMethod.GET)
+//	public String sendEarnings(Model model) {
+//		List<ClientOrder> clientOrderList = accountService.findAllUndistributedEarnings();
+////		model.addAttribute("accountList", accountList);
+//		return "sendEarnings";
 //	}
 	
 	
