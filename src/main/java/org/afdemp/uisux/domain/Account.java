@@ -1,5 +1,6 @@
 package org.afdemp.uisux.domain;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -35,7 +36,7 @@ public class Account {
 	@JoinColumn(name="user_role_id")
 	private UserRole userRole;
 	
-	private double balance;
+	private BigDecimal balance;
 
 	public UserRole getUserRole() {
 		return userRole;
@@ -69,11 +70,11 @@ public class Account {
 		this.depositList = depositList;
 	}
 
-	public double getBalance() {
+	public BigDecimal getBalance() {
 		return balance;
 	}
 
-	public void setBalance(double balance) {
+	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
 	}
 	
