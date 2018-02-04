@@ -20,29 +20,13 @@ public class ResourceController {
 	public String deactivateProductList(
 			@RequestBody ArrayList<String> productIdList, Model model
 			){
-	String	productId2="keno";
+		
 		for (String id : productIdList) {
 			String productId =id.substring(8);
 			productService.deactivate(Long.parseLong(productId));
-			productId2=productId2+productId;
 		}
 		
-		return productId2;
-	}
-	@RequestMapping(value="/deactivateList", method=RequestMethod.POST)
-	public String deactivateList(
-			
-			//out.println("ascadedwed");
-			
-			@RequestBody ArrayList<String> productIdList, Model model
-			){
-		String productId="keno";
-		for (String id : productIdList) {
-			 productId =id.substring(8);
-			productService.deactivate(Long.parseLong(productId));
-				}
-		
-		return productId;
+		return "deactivate success";
 	}
 	
 	@RequestMapping(value="/product/activateList", method=RequestMethod.POST)

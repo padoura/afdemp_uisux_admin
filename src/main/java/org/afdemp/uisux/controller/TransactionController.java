@@ -1,11 +1,30 @@
 package org.afdemp.uisux.controller;
 
+import java.util.List;
+
+import org.afdemp.uisux.domain.Product;
+import org.afdemp.uisux.domain.Account;
+import org.afdemp.uisux.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/transaction")
 public class TransactionController {
+	
+	
+	@Autowired
+	private AccountService accountService;
+	
+	@RequestMapping("/accountList")
+	public String accountList(Model model) {
+		List<Account> accountList = accountService.findAll();
+		model.addAttribute("accountList", accountList);		
+		return "accountList";
+	}
+	
 	
 	
 	
