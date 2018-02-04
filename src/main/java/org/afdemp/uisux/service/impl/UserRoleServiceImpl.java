@@ -8,6 +8,7 @@ import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.RoleRepository;
 import org.afdemp.uisux.repository.UserRoleRepository;
+import org.afdemp.uisux.service.AccountService;
 import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.UserRoleService;
 import org.slf4j.Logger;
@@ -29,21 +30,33 @@ public class UserRoleServiceImpl implements UserRoleService{
 	@Autowired
 	private ShoppingCartService shoppingCartService;
 	
+	@Autowired
+	private AccountService accountService;
+	
 	@Override
 	public boolean createUserRole(UserRole userRole)
 	{
 		
 		UserRole ur=userRoleRepository.findByRoleAndUser(userRole.getRole(), userRole.getUser());
 		if(ur==null && userRole.getUser()!=null && userRole.getRole()!=null)
-		{			
+		{	
 			userRole=userRoleRepository.save(userRole);
 			shoppingCartService.createShoppingCart(userRole);
+			
+			if(userRole.getRole().getRoleId()==1L)
+			{
+				accountService.createAccount(userRole, 0.00);
+			}
+			else if(userRole.getRole().getRoleId()==0L)
+			{
+				accountService.createAccount(userRole, 100000.00);
+			}
 			LOG.info("\n\n\nSUCCESS: Added UserRole {} to user {} \n\n",userRole.getRole().getName(), userRole.getUser().getUsername());
 			return true;
 		}
 		else
 		{
-			LOG.info("\n\n\nFAILURE:User {} already has this role.\n\n", userRole.getUser().getUsername());
+			LOG.info("\n\n\nFAILURE: User {} already has this role.\n\n", userRole.getUser().getUsername());
 			return false;
 		}
 			

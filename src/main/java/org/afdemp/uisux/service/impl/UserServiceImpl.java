@@ -105,7 +105,9 @@ public class UserServiceImpl implements UserService {
 				role=roleRepository.findByName(roleName);
 				
 				//Creating  a UserRole object
-				UserRole roleToAdd = new UserRole(existingUser, role);
+				UserRole roleToAdd = new UserRole();
+				roleToAdd.setUser(existingUser);
+				roleToAdd.setRole(role);
 				
 				userRoleService.createUserRole(roleToAdd);
 				existingUser.getUserRoles().add(roleToAdd);

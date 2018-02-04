@@ -287,7 +287,7 @@ public class DataGenerator {
         
         
         userService.addRoleToExistingUser(user2,"ROLE_MEMBER");
-        userService.addRoleToExistingUser(user2,"ROLE_ADMIN");
+        
 	}
 	
 	//TODO use this example to insert sale data in DB when it's ready and make it private
@@ -325,8 +325,9 @@ public class DataGenerator {
 	insertExampleProduct();
 	updateExampleProduct();
 	insertExampleMember();
-	insertProductAndAddToCartExample();
-	createMemberCartItemForTesting(300);
+	//insertProductAndAddToCartExample();
+	//createMemberCartItemForTesting(300);
+	
 	}
 
 }

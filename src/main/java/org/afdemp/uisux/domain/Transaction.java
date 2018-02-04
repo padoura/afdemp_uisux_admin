@@ -22,6 +22,16 @@ public class Transaction {
 	private BigDecimal amount;
 	private Timestamp dateTime;
 	
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	private Account depositAccount;
+	
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	private Account withdrawAccount;
+	
+	@ManyToOne
+	@JoinColumn(name="abstract_sale_id")
+	private AbstractSale abstractSale;
+	
 	
 	public BigDecimal getAmount() {
 		return amount;
@@ -38,16 +48,6 @@ public class Transaction {
 	public void setDateTime(Timestamp dateTime) {
 		this.dateTime = dateTime;
 	}
-
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	private Account depositAccount;
-	
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	private Account withdrawAccount;
-	
-	@ManyToOne
-	@JoinColumn(name="abstract_sale_id")
-	private AbstractSale abstractSale;
 	
 	public AbstractSale getAbstractSale() {
 		return abstractSale;
