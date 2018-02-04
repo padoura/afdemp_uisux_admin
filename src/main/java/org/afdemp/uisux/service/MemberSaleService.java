@@ -12,7 +12,7 @@ import org.afdemp.uisux.domain.security.UserRole;
 
 public interface MemberSaleService {
 	
-	AbstractSale createMemberSale(UserRole userRole,BigDecimal grandTotal,Address shippingAddress, Address billingAddress, CreditCard creditCard);
+	AbstractSale createMemberSale(MemberSale memberSale);
 	
 	List<MemberSale> fetchSalesByPeriod(Timestamp fromTimestamp, Timestamp toTimestamp);
 

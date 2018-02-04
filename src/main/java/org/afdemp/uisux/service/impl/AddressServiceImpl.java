@@ -23,10 +23,10 @@ public class AddressServiceImpl implements AddressService{
 		}
 		else
 		{
-			
+//			TODO correct NullPointerException
 			Address tempAddress = new Address();
 			tempAddress=addressRepository.findByReceiverNameAndStreet1AndCityAndZipcode(address.getReceiverName(), address.getStreet1(), address.getCity(), address.getZipcode());
-			if(tempAddress==null)
+			if(tempAddress==null) 
 			{
 				tempAddress.setReceiverName(tempAddress.getReceiverName());
 				tempAddress.setStreet1(tempAddress.getStreet1());
