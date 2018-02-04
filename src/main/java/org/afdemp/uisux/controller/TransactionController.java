@@ -23,53 +23,53 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class TransactionController {
 	
 	
-	@Autowired
-	private AccountService accountService;
-	
-	@Autowired
-	private TransactionService transactionService;
-	
-	@RequestMapping("/accountList")
-	public String accountList(Model model) {
-		List<Account> accountList = accountService.findAll();
-		model.addAttribute("accountList", accountList);		
-		return "accountList";
-	}
-	
-	
-	@RequestMapping(value = "/accountInfo", method = RequestMethod.GET)
-	public String accountInfo(@RequestParam("id") Long id, Model model) {
-		Account account = accountService.findOne(id);
-		
-		List<Transaction> withdrawList = transactionService.fetchAccountWithdrawsByPeriod(account, Timestamp.valueOf(
-		LocalDate.now().minusDays(6).atStartOfDay()), Timestamp.valueOf(LocalDate.now().atTime(23, 59, 59)));
-		
-		List<Transaction> depositList = transactionService.fetchAccountDepositsByPeriod(account, Timestamp.valueOf(
-		LocalDate.now().minusDays(6).atStartOfDay()), Timestamp.valueOf(LocalDate.now().atTime(23, 59, 59)));
-		
-		model.addAttribute("account", account);
-		model.addAttribute("account", withdrawList);
-		model.addAttribute("account", depositList);
-		return "accountInfo";
-	}
-	
-	@RequestMapping(value = "/accountInfo", method = RequestMethod.POST)
-	public String searchAccountInfoByPeriod(@ModelAttribute("id") Long id,
-			@ModelAttribute("fromDate") String fromDate,
-			@ModelAttribute("toDate") String toDate, Model model) {
-		Account account = accountService.findOne(id);
-		
-		List<Transaction> withdrawList = transactionService.fetchAccountWithdrawsByPeriod(account, Timestamp.valueOf(
-				LocalDate.parse(fromDate).atStartOfDay()), Timestamp.valueOf(LocalDate.parse(toDate).atTime(23, 59, 59)));
-		
-		List<Transaction> depositList = transactionService.fetchAccountDepositsByPeriod(account, Timestamp.valueOf(
-				LocalDate.parse(fromDate).atStartOfDay()), Timestamp.valueOf(LocalDate.parse(toDate).atTime(23, 59, 59)));
-		
-		model.addAttribute("account", account);
-		model.addAttribute("account", withdrawList);
-		model.addAttribute("account", depositList);
-		return "redirect:/transaction/accountInfo?id="+account.getId();
-	}
+//	@Autowired
+//	private AccountService accountService;
+//	
+//	@Autowired
+//	private TransactionService transactionService;
+//	
+//	@RequestMapping("/accountList")
+//	public String accountList(Model model) {
+//		List<Account> accountList = accountService.findAll();
+//		model.addAttribute("accountList", accountList);		
+//		return "accountList";
+//	}
+//	
+//	
+//	@RequestMapping(value = "/accountInfo", method = RequestMethod.GET)
+//	public String accountInfo(@RequestParam("id") Long id, Model model) {
+//		Account account = accountService.findOne(id);
+//		
+//		List<Transaction> withdrawList = transactionService.fetchAccountWithdrawsByPeriod(account, Timestamp.valueOf(
+//		LocalDate.now().minusDays(6).atStartOfDay()), Timestamp.valueOf(LocalDate.now().atTime(23, 59, 59)));
+//		
+//		List<Transaction> depositList = transactionService.fetchAccountDepositsByPeriod(account, Timestamp.valueOf(
+//		LocalDate.now().minusDays(6).atStartOfDay()), Timestamp.valueOf(LocalDate.now().atTime(23, 59, 59)));
+//		
+//		model.addAttribute("account", account);
+//		model.addAttribute("account", withdrawList);
+//		model.addAttribute("account", depositList);
+//		return "accountInfo";
+//	}
+//	
+//	@RequestMapping(value = "/accountInfo", method = RequestMethod.POST)
+//	public String searchAccountInfoByPeriod(@ModelAttribute("id") Long id,
+//			@ModelAttribute("fromDate") String fromDate,
+//			@ModelAttribute("toDate") String toDate, Model model) {
+//		Account account = accountService.findOne(id);
+//		
+//		List<Transaction> withdrawList = transactionService.fetchAccountWithdrawsByPeriod(account, Timestamp.valueOf(
+//				LocalDate.parse(fromDate).atStartOfDay()), Timestamp.valueOf(LocalDate.parse(toDate).atTime(23, 59, 59)));
+//		
+//		List<Transaction> depositList = transactionService.fetchAccountDepositsByPeriod(account, Timestamp.valueOf(
+//				LocalDate.parse(fromDate).atStartOfDay()), Timestamp.valueOf(LocalDate.parse(toDate).atTime(23, 59, 59)));
+//		
+//		model.addAttribute("account", account);
+//		model.addAttribute("account", withdrawList);
+//		model.addAttribute("account", depositList);
+//		return "redirect:/transaction/accountInfo?id="+account.getId();
+//	}
 	
 	
 
