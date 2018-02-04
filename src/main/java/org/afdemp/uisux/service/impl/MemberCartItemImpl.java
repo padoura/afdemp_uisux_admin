@@ -30,14 +30,40 @@ public class MemberCartItemImpl implements MemberCartItemService{
 	
 	@Override
 	public MemberCartItem findById(Long memberCartItemId) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return memberCartItemRepository.findOne(memberCartItemId);
 	}
 
 	@Override
 	public boolean putUpForSale(Product product, int qty, ShoppingCart shoppingCart) {
-		// TODO Auto-generated method stub
+
+		MemberCartItem memberCartItem;
+		memberCartItem=memberCartItemRepository.findByShoppingCartAndProduct(shoppingCart, product);
+		if(memberCartItem==null)
+		{	
+			memberCartItem=new MemberCartItem();
+			
+			memberCartItem.setShoppingCart(shoppingCart);
+			memberCartItem.setProduct(product);
+			memberCartItem.setQty(qty);
+			memberCartItem.setCurrentPurchasePrice(product.getPriceBought());
+			
+			memberCartItemRepository.save(memberCartItem);
+			
+			return true;
+		}
+		else if (memberCartItem !=null && qty >0)
+		{
+			memberCartItem.setQty(memberCartItem.getQty()+qty);
+			memberCartItem.setCurrentPurchasePrice(memberCartItem.getProduct().getPriceBought());
+			memberCartItemRepository.save(memberCartItem);
+			
+			
+			System.out.println("\n\nMemberCartItem modified");
+			return true;
+		}
 		return false;
+	
 	}
 
 	@Override
@@ -82,14 +108,29 @@ public class MemberCartItemImpl implements MemberCartItemService{
 
 	@Override
 	public List<MemberCartItem> findAllAvailableItems(Long productId) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return memberCartItemRepository.findByProductAndIsVisibleTrue(productId);
 	}
 
 	@Override
-	public boolean toggleVisible(MemberCartItem memberCartItem) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean toggleVisible(MemberCartItem memberCartItem) 
+	{
+		memberCartItem.setVisible(!memberCartItem.isVisible());
+		memberCartItem.setCurrentPurchasePrice(memberCartItem.getProduct().getPriceBought());
+		
+		try 
+		{
+			memberCartItemRepository.save(memberCartItem);
+			LOG.info("\n\n\nSUCCESS: Visibility switch concluded\n\n");
+			return true;
+		}
+		catch(Exception e)
+		{
+			LOG.info("\n\n\nFAILURE: Failed to switch Visibility\n\n");
+			return false;
+		}
+		
+		
 	}
 	
 	
