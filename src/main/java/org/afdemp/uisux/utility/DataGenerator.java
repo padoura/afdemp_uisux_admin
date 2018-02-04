@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.afdemp.uisux.domain.Category;
 import org.afdemp.uisux.domain.ClientOrder;
+import org.afdemp.uisux.domain.MemberCartItem;
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.User;
@@ -185,6 +186,8 @@ public class DataGenerator {
 		return product;
 	}
 	
+	
+	
 	private boolean createMemberCartItemForTesting(int qty)
 	{
 		Product product=productRepository.findByName("Choco Milk 1L");
@@ -193,6 +196,7 @@ public class DataGenerator {
 		UserRole userRole=userRoleRepository.findByRoleAndUser(role, user);
 		if(memberCartItemService.putUpForSale(product, qty, userRole.getShoppingCart()))
 		{
+			memberCartItemService.activate(1L);
 			return true;
 		}
 		return false;

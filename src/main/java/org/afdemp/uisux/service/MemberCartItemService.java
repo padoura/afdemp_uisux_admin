@@ -20,4 +20,8 @@ public interface MemberCartItemService {
 	
 	boolean toggleVisible(MemberCartItem memberCartItem);
 	
+	void activate(Long id);
+	
+	void deactivate(Long id);
+	
 }
