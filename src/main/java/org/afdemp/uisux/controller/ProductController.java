@@ -166,13 +166,13 @@ public class ProductController {
 		return "stockUpConfirm";
 	}
 	
-	@RequestMapping(value = "/stockUp2")
+	@RequestMapping(value = "/stockUp", method = RequestMethod.POST)
 	public String stockUpPost(@ModelAttribute("memberCartItemId") Long memberCartItemId,
-			@ModelAttribute("qty") int qty,
+			@ModelAttribute("qty") Integer qty,
 			Model model) {
 		
 		MemberCartItem memberCartItem = memberCartItemService.findById(memberCartItemId);
-	//	Integer qty= Integer.valueOf(qty2);
+		
 		if (qty > memberCartItem.getQty()) {
 			model.addAttribute("requestExceedsAvailability", true);
 			return "productList";
@@ -183,7 +183,7 @@ public class ProductController {
 		}
 		
 		model.addAttribute("stockUpSuccess", true);
-		return "productList";
+		return "redirect:/product/productList";
 	}
 
 

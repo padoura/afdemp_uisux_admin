@@ -69,7 +69,7 @@
 						<td th:text="${product.lastName}"></td>
 						<td th:text="${product.qty}"></td>
 						<!-- <td><span style=" padding-RIGHT: 6px;"></span><a th:href="@{/product/stockUp2(memberCartItemId=${product.memberCartItemId},qty=${'1'})}"><span th:text="  1 "></span></a><span style=" padding-RIGHT: 3px;"></span><a th:href="@{/product/stockUp2(memberCartItemId=${product.memberCartItemId},qty=${5})}"><span th:text=" 5 "></span><span style=" padding-RIGHT: 3px;"></span></a><a th:href="@{/product/stockUp2(memberCartItemId=${product.memberCartItemId},qty=${10})}"><span th:text=" 10 "></span></a><span style=" padding-RIGHT: 3px;"></span><a th:href="@{/product/stockUp2(memberCartItemId=${product.memberCartItemId},qty=${20})}"><span th:text=" 20 "></span></a><span style=" padding-RIGHT: 3px;"></span><a th:href="@{/product/stockUp2(memberCartItemId=${product.memberCartItemId},qty=${50})}"><span th:text=" 50 "></span></a></td> -->
-				<td><form method="POST" th:action="@{/product/stockUp2(memberCartItemId=${product.memberCartItemId})}">
+				<td><form method="POST" th:action="@{/product/stockUp(memberCartItemId=${product.memberCartItemId})}">
       <input type="number" name="qty" id="qty" th:value="${qty}"  th:text="${product.qty}" min="0" th:max="${product.qty}"/>
       
       <button type="submit" name="submit" value="value" >buy</button></form> 
