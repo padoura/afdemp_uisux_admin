@@ -155,9 +155,19 @@ public class ProductController {
 		return "stockUp";
 	}
 	
+	@RequestMapping(value = "/stockUpConfirm", method = RequestMethod.GET)
+	public String stockUpConfirm(@RequestParam("memberCartItemId") Long memberCartItemId, Model model) {
+		
+		MemberCartItem memberCartItem = memberCartItemService.findById(memberCartItemId);
+		
+		MemberCartItemWrapper memberCartItemWrapper = new MemberCartItemWrapper(memberCartItem.getShoppingCart().getUserRole().getUser(), memberCartItem);
+		
+		model.addAttribute("memberCartItemWrapper", memberCartItemWrapper);
+		return "stockUpConfirm";
+	}
+	
 	@RequestMapping(value = "/stockUp", method = RequestMethod.POST)
 	public String stockUpPost(@ModelAttribute("memberCartItemId") Long memberCartItemId,
-			@ModelAttribute("userId") Long userId,
 			@ModelAttribute("qty") Integer qty,
 			Model model) {
 		

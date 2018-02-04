@@ -28,11 +28,11 @@ public class TransactionController {
 	@Autowired
 	private AccountService accountService;
 	
-	@Autowired
-	private ClientOrderService clientOrderService;
-	
-	@Autowired
-	private TransactionService transactionService;
+//	@Autowired
+//	private ClientOrderService clientOrderService;
+//	
+//	@Autowired
+//	private TransactionService transactionService;
 	
 	@RequestMapping("/accountList")
 	public String accountList(Model model) {
