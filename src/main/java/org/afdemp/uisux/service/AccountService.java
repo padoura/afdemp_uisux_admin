@@ -11,6 +11,4 @@ public interface AccountService {
 
 	Account findOne(Long id);
 
-	List<ClientOrder> findAllUndistributedEarnings();
-
 }

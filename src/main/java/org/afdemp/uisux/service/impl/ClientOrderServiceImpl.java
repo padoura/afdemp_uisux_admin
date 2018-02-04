@@ -119,4 +119,16 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 		return clientOrder;
 	}
 
+	@Override
+	public List<ClientOrder> findAllUndistributedEarnings() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void distributeEarningsToAllMembers(Long clientOrderId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

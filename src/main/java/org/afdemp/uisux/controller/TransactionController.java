@@ -9,6 +9,7 @@ import org.afdemp.uisux.domain.Transaction;
 import org.afdemp.uisux.domain.Account;
 import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.service.AccountService;
+import org.afdemp.uisux.service.ClientOrderService;
 import org.afdemp.uisux.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,12 +25,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class TransactionController {
 	
 	
-//	@Autowired
-//	private AccountService accountService;
-//	
-//	@Autowired
-//	private TransactionService transactionService;
-//	
+	@Autowired
+	private AccountService accountService;
+	
+	@Autowired
+	private ClientOrderService clientOrderService;
+	
+	@Autowired
+	private TransactionService transactionService;
+	
 //	@RequestMapping("/accountList")
 //	public String accountList(Model model) {
 //		List<Account> accountList = accountService.findAll();
@@ -74,11 +78,9 @@ public class TransactionController {
 //	
 //	@RequestMapping(value = "/sendEarnings", method = RequestMethod.GET)
 //	public String sendEarnings(Model model) {
-//		List<ClientOrder> clientOrderList = accountService.findAllUndistributedEarnings();
-////		model.addAttribute("accountList", accountList);
+//		List<ClientOrder> clientOrderList = clientOrderService.findAllUndistributedEarnings();
+//		model.addAttribute("clientOrderList", clientOrderList);
 //		return "sendEarnings";
 //	}
-	
-	
 
 }

@@ -21,4 +21,8 @@ public interface ClientOrderService {
 
 	ClientOrder updateShippingDate(ClientOrder clientOrder, Date date);
 
+	List<ClientOrder> findAllUndistributedEarnings();
+
+	void distributeEarningsToAllMembers(Long clientOrderId);
+
 }
