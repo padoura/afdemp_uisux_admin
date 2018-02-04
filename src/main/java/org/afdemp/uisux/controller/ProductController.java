@@ -166,13 +166,13 @@ public class ProductController {
 		return "stockUpConfirm";
 	}
 	
-	@RequestMapping(value = "/stockUp", method = RequestMethod.POST)
+	@RequestMapping(value = "/stockUp2")
 	public String stockUpPost(@ModelAttribute("memberCartItemId") Long memberCartItemId,
-			@ModelAttribute("qty") Integer qty,
+			@ModelAttribute("qty") int qty,
 			Model model) {
 		
 		MemberCartItem memberCartItem = memberCartItemService.findById(memberCartItemId);
-		
+	//	Integer qty= Integer.valueOf(qty2);
 		if (qty > memberCartItem.getQty()) {
 			model.addAttribute("requestExceedsAvailability", true);
 			return "productList";
