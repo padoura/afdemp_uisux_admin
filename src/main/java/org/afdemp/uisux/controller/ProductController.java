@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.afdemp.uisux.domain.Category;
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.domain.ShoppingCart;
-//import org.afdemp.uisux.domain.MemberCartItem;
+import org.afdemp.uisux.domain.MemberCartItem;
 import org.afdemp.uisux.domain.User;
-//import org.afdemp.uisux.service.MemberCartItemService;
+import org.afdemp.uisux.service.MemberCartItemService;
 import org.afdemp.uisux.service.CategoryService;
 import org.afdemp.uisux.service.ProductService;
 import org.afdemp.uisux.utility.ImageUtility;
@@ -30,8 +30,8 @@ public class ProductController {
 	@Autowired
 	private CategoryService categoryService;
 
-//	@Autowired
-//	private  MemberCartItemService memberCartItemService;
+	@Autowired
+	private  MemberCartItemService memberCartItemService;
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String addProduct(Model model) {
@@ -139,42 +139,42 @@ public class ProductController {
 		return "productList";
 	}
 	
-//	@RequestMapping(value = "/stockUp", method = RequestMethod.GET)
-//	public String stockUp(@RequestParam("id") Long id, Model model) {
-//		Product product = productService.findOne(id);
-//		List<MemberCartItem> memberCartItemList = memberCartItemService.findAllAvailableItems(id);
-//		List<User> memberList = new ArrayList<>();
-//		
-//		for (MemberCartItem memberCartItem : memberCartItemList) {
-//			memberList.add(memberCartItem.getShoppingCart().getUserRole().getUser()); 
-//		}
-//		
-//		model.addAttribute("product", product);
-//		model.addAttribute("userList", memberList);
-//		model.addAttribute("cartItemList", memberCartItemList);
-//		return "stockUp";
-//	}
-//	
-//	@RequestMapping(value = "/stockUp", method = RequestMethod.POST)
-//	public String stockUpPost(@ModelAttribute("memberCartItemId") Long memberCartItemId,
-//			@ModelAttribute("userId") Long userId,
-//			@ModelAttribute("qty") Integer qty,
-//			Model model) {
-//		
-//		MemberCartItem memberCartItem = memberCartItemService.findById(memberCartItemId);
-//		
-//		if (qty > memberCartItem.getQty()) {
-//			model.addAttribute("requestExceedsAvailability", true);
-//			return "productList";
-//		}else if (qty == memberCartItem.getQty()) {
-//			memberCartItemService.fullPurchaseFromMember(memberCartItem);
-//		}else {
-//			memberCartItemService.partialPurchaseFromMember(memberCartItem, qty);
-//		}
-//		
-//		model.addAttribute("stockUpSuccess", true);
-//		return "productList";
-//	}
+	@RequestMapping(value = "/stockUp", method = RequestMethod.GET)
+	public String stockUp(@RequestParam("id") Long id, Model model) {
+		Product product = productService.findOne(id);
+		List<MemberCartItem> memberCartItemList = memberCartItemService.findAllAvailableItems(id);
+		List<User> memberList = new ArrayList<>();
+		
+		for (MemberCartItem memberCartItem : memberCartItemList) {
+			memberList.add(memberCartItem.getShoppingCart().getUserRole().getUser()); 
+		}
+		
+		model.addAttribute("product", product);
+		model.addAttribute("userList", memberList);
+		model.addAttribute("cartItemList", memberCartItemList);
+		return "stockUp";
+	}
+	
+	@RequestMapping(value = "/stockUp", method = RequestMethod.POST)
+	public String stockUpPost(@ModelAttribute("memberCartItemId") Long memberCartItemId,
+			@ModelAttribute("userId") Long userId,
+			@ModelAttribute("qty") Integer qty,
+			Model model) {
+		
+		MemberCartItem memberCartItem = memberCartItemService.findById(memberCartItemId);
+		
+		if (qty > memberCartItem.getQty()) {
+			model.addAttribute("requestExceedsAvailability", true);
+			return "productList";
+		}else if (qty == memberCartItem.getQty()) {
+			memberCartItemService.fullPurchaseFromMember(memberCartItem);
+		}else {
+			memberCartItemService.partialPurchaseFromMember(memberCartItem, qty);
+		}
+		
+		model.addAttribute("stockUpSuccess", true);
+		return "productList";
+	}
 
 
 }
