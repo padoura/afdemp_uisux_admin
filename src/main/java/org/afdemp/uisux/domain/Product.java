@@ -28,7 +28,7 @@ public class Product {
 	@Column(unique=true,nullable=false)
 	private String name;
 	private String madeIn;
-	private Long inStockNumber;
+	private Long inStockNumber = Long.valueOf(0);
 	private BigDecimal listPrice;
 	private BigDecimal ourPrice;
 	private boolean active;

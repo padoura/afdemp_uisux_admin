@@ -142,17 +142,17 @@ public class ProductController {
 	@RequestMapping(value = "/stockUp", method = RequestMethod.GET)
 	public String stockUp(@RequestParam("id") Long id, Model model) {
 		Product product = productService.findOne(id);
-		List<MemberCartItem> memberCartItemList = memberCartItemService.findAllAvailableItems(id);
-		List<User> memberList = new ArrayList<>();
-		
-		for (MemberCartItem memberCartItem : memberCartItemList) {
+	//	List<MemberCartItem> memberCartItemList = memberCartItemService.findAllAvailableItems(id);
+		//List<User> memberList = new ArrayList<>();
+		/*for (MemberCartItem memberCartItem : memberCartItemList) {
 			memberList.add(memberCartItem.getShoppingCart().getUserRole().getUser()); 
 		}
-		
+		*/
 		model.addAttribute("product", product);
-		model.addAttribute("userList", memberList);
-		model.addAttribute("cartItemList", memberCartItemList);
+		//model.addAttribute("userList", memberList);
+	//	model.addAttribute("cartItemList", memberCartItemList);
 		return "stockUp";
+		//return "productInfo";
 	}
 	
 	@RequestMapping(value = "/stockUp", method = RequestMethod.POST)
