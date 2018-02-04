@@ -151,7 +151,7 @@ public class ProductController {
 		
 		model.addAttribute("product", product);
 		model.addAttribute("userList", memberList);
-		model.addAttribute("cartItemList", memberCartItemList);
+		model.addAttribute("memberCartItemList", memberCartItemList);
 		return "stockUp";
 	}
 	
