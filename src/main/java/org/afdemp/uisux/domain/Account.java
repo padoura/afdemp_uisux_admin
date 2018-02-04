@@ -13,6 +13,8 @@ import javax.persistence.OneToOne;
 
 import org.afdemp.uisux.domain.security.UserRole;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity
@@ -22,9 +24,11 @@ public class Account {
 	private Long id;
 	
 	@OneToMany(mappedBy="withdrawAccount", fetch=FetchType.LAZY)
+	@JsonIgnore
 	private List<Transaction> withdrawList;
 	
 	@OneToMany(mappedBy="depositAccount", fetch=FetchType.LAZY)
+	@JsonIgnore
 	private List<Transaction> depositList;
 	
 	@OneToOne(fetch = FetchType.EAGER)

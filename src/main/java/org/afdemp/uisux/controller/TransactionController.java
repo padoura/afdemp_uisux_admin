@@ -1,14 +1,22 @@
 package org.afdemp.uisux.controller;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.afdemp.uisux.domain.Product;
+import org.afdemp.uisux.domain.Transaction;
 import org.afdemp.uisux.domain.Account;
 import org.afdemp.uisux.service.AccountService;
+import org.afdemp.uisux.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/transaction")
@@ -18,6 +26,9 @@ public class TransactionController {
 	@Autowired
 	private AccountService accountService;
 	
+	@Autowired
+	private TransactionService transactionService;
+	
 	@RequestMapping("/accountList")
 	public String accountList(Model model) {
 		List<Account> accountList = accountService.findAll();
@@ -26,39 +37,40 @@ public class TransactionController {
 	}
 	
 	
+	@RequestMapping(value = "/accountInfo", method = RequestMethod.GET)
+	public String accountInfo(@RequestParam("id") Long id, Model model) {
+		Account account = accountService.findOne(id);
+		
+		List<Transaction> withdrawList = transactionService.fetchAccountWithdrawsByPeriod(account, Timestamp.valueOf(
+		LocalDate.now().minusDays(6).atStartOfDay()), Timestamp.valueOf(LocalDate.now().atTime(23, 59, 59)));
+		
+		List<Transaction> depositList = transactionService.fetchAccountDepositsByPeriod(account, Timestamp.valueOf(
+		LocalDate.now().minusDays(6).atStartOfDay()), Timestamp.valueOf(LocalDate.now().atTime(23, 59, 59)));
+		
+		model.addAttribute("account", account);
+		model.addAttribute("account", withdrawList);
+		model.addAttribute("account", depositList);
+		return "accountInfo";
+	}
+	
+	@RequestMapping(value = "/accountInfo", method = RequestMethod.POST)
+	public String searchAccountInfoByPeriod(@ModelAttribute("id") Long id,
+			@ModelAttribute("fromDate") String fromDate,
+			@ModelAttribute("toDate") String toDate, Model model) {
+		Account account = accountService.findOne(id);
+		
+		List<Transaction> withdrawList = transactionService.fetchAccountWithdrawsByPeriod(account, Timestamp.valueOf(
+				LocalDate.parse(fromDate).atStartOfDay()), Timestamp.valueOf(LocalDate.parse(toDate).atTime(23, 59, 59)));
+		
+		List<Transaction> depositList = transactionService.fetchAccountDepositsByPeriod(account, Timestamp.valueOf(
+				LocalDate.parse(fromDate).atStartOfDay()), Timestamp.valueOf(LocalDate.parse(toDate).atTime(23, 59, 59)));
+		
+		model.addAttribute("account", account);
+		model.addAttribute("account", withdrawList);
+		model.addAttribute("account", depositList);
+		return "redirect:/transaction/accountInfo?id="+account.getId();
+	}
 	
 	
-//	@Autowired
-//	private ClientOrderService clientOrderService;
-//	
-//	@RequestMapping(value = "/search", method = RequestMethod.GET)
-//	public String searchSales(Model model) {
-//		
-//		List<ClientOrder> clientOrderList = new ArrayList<>();
-//		String fromDate=LocalDate.now().minusWeeks(1).toString();
-//		String toDate=LocalDate.now().toString();
-//		
-//		model.addAttribute("fromDate", fromDate);
-//		model.addAttribute("toDate", toDate);
-//		model.addAttribute("clientOrderList", clientOrderList);
-//		return "searchSales";
-//	}
-//	
-//	@RequestMapping(value = "/search", method = RequestMethod.POST)
-//	public String searchSalesPost(@ModelAttribute("fromDate") String fromDate, BindingResult fromResult,
-//			@ModelAttribute("toDate") String toDate, BindingResult toResult, Model model) {
-//		
-//		List<ClientOrder> clientOrderList2 = clientOrderService.fetchOrdersByPeriod(Timestamp.valueOf(
-//				LocalDate.parse(fromDate).atStartOfDay()), Timestamp.valueOf(LocalDate.parse(toDate).atTime(23, 59, 59)));
-//		List<ClientOrder> clientOrderList = new ArrayList<>();
-//		for (ClientOrder co : clientOrderList2) {
-//			clientOrderList.add(SaleUtility.copyValuesToNewObject(co));
-//		}
-//		
-////		List<ClientOrder> clientOrderList = DataGenerator.getFakeOrderList();
-//		
-//		model.addAttribute("clientOrderList", clientOrderList);
-//		return "searchSales";
-//	}
 
 }

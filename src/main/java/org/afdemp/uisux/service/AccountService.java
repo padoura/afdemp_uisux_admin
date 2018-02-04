@@ -8,4 +8,6 @@ public interface AccountService {
 
 	List<Account> findAll();
 
+	Account findOne(Long id);
+
 }
