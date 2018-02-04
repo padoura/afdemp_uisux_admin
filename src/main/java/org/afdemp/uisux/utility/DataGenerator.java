@@ -1,21 +1,19 @@
 package org.afdemp.uisux.utility;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.sql.Timestamp;
-import java.sql.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.afdemp.uisux.domain.CartItem;
 import org.afdemp.uisux.domain.Category;
 import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.User;
-import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.ClientOrderRepository;
@@ -26,11 +24,11 @@ import org.afdemp.uisux.repository.UserRoleRepository;
 import org.afdemp.uisux.service.CartItemService;
 import org.afdemp.uisux.service.CategoryService;
 import org.afdemp.uisux.service.ClientOrderService;
+import org.afdemp.uisux.service.MemberCartItemService;
 import org.afdemp.uisux.service.ProductService;
 import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -71,7 +69,8 @@ public class DataGenerator {
 	@Autowired
 	private ClientOrderRepository clientOrderRepository;
 
-	
+	@Autowired
+	private MemberCartItemService memberCartItemService;
 	
 	//===============================Function Definitions=================================
 	
@@ -143,12 +142,7 @@ public class DataGenerator {
 		Role role=roleRepository.findByName("ROLE_CLIENT");
 		
 		UserRole userRole=userRoleRepository.findByRoleAndUser(role, user);
-		
-		
-		
-		
-		
-		
+				
 		
 		insertCartItem(userRole.getShoppingCart(), product, 5);
 		
@@ -189,6 +183,19 @@ public class DataGenerator {
 		System.out.println("\n\n\n");
 		
 		return product;
+	}
+	
+	private boolean createMemberCartItemForTesting(int qty)
+	{
+		Product product=productRepository.findByName("Choco Milk 1L");
+		Role role=roleRepository.findByName("ROLE_MEMBER");
+		User user=userRepository.findByUsername("Madryoch");
+		UserRole userRole=userRoleRepository.findByRoleAndUser(role, user);
+		if(memberCartItemService.putUpForSale(product, qty, userRole.getShoppingCart()))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	private boolean concludeSale(ShoppingCart shoppingCart)
@@ -274,22 +281,22 @@ public class DataGenerator {
 	}
 	
 	//TODO use this example to insert sale data in DB when it's ready and make it private
-	public static  List<ClientOrder> getFakeOrderList() {
-		 List<ClientOrder> clientOrderList = new ArrayList<>();
-		for (int i=0; i<35; i++) {
-			ClientOrder order = new ClientOrder();
-			LocalDate localDate = LocalDate.now().minusDays(120-i);
-			order.setId(Long.valueOf(i));
-			order.setOrderStatus("delivered");
-			order.setSubmittedDate(Date.valueOf(localDate));
-			order.setTotal(randomBigDecimal());
-			order.setShippingDate(Date.valueOf(localDate.plusDays(5)));
-			order.setShippingMethod("Courier");
-			clientOrderList.add(order);
+	public static  List<ClientOrder> getFakeOrderList() 
+	{
+		List<ClientOrder> clientOrderList = new ArrayList<>();
+		for (int i=0; i<35; i++) 
+		{
+				ClientOrder order = new ClientOrder();
+				LocalDate localDate = LocalDate.now().minusDays(120-i);
+				order.setId(Long.valueOf(i));
+				order.setOrderStatus("delivered");
+				order.setSubmittedDate(Date.valueOf(localDate));
+				order.setTotal(randomBigDecimal());
+				order.setShippingDate(Date.valueOf(localDate.plusDays(5)));
+				order.setShippingMethod("Courier");
+				clientOrderList.add(order);
 			
 		}
-			
-	
 		
 		return clientOrderList;
 	}
@@ -309,6 +316,7 @@ public class DataGenerator {
 	updateExampleProduct();
 	insertExampleMember();
 	insertProductAndAddToCartExample();
+	createMemberCartItemForTesting(300);
 	}
 
 }
