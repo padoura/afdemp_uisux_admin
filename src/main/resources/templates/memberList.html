@@ -11,10 +11,9 @@
 			<table id="userListTable" class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr>
-						<th><input th:id="selectAllUsers" type="checkbox" /></th>
+						
 						<th>username</th>
 						<th>id</th>
-						<th>password</th>
 						<th>first_name</th>
 						<th>last_name</th>
 						<th>phone</th>
@@ -25,14 +24,9 @@
 				
 				<tbody>
 					<tr data-th-each="user : ${memberList}">
-						<td>
-						<input hidden="hidden" name="id" th:value="${user.id}" />
-						<input th:id="'selected'+${user.id}" class="checkboxBook" type="checkbox" />
-						</td>
 						<td><a th:href="@{/member/memberInfo(id=${user.id})}"><span th:text="${user.username}"></span></a></td>
 						<td th:text="${user.id}"></td>
 						
-						<td th:text="${user.password}"></td>
 						<td th:text="${user.firstName}"></td>
 						
 						<td th:text="${user.lastName}"></td>

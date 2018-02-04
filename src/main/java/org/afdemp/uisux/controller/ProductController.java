@@ -131,8 +131,9 @@ public class ProductController {
 	
 	
 	@RequestMapping("/toggleProductActive")
-	public String toggleProductActive(@RequestParam("id") Long id, Model model) {
-		Product product = productService.findOne(id);
+	public String toggleProductActive(@RequestParam("id") String id, Model model) {
+		String productId =id.substring(8);
+		Product product = productService.findOne(Long.parseLong(productId));
 		productService.toggleActive(product);
 		model.addAttribute("product", product);
 		return "productList";
