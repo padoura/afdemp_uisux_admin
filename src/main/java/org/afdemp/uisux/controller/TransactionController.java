@@ -34,12 +34,12 @@ public class TransactionController {
 	@Autowired
 	private TransactionService transactionService;
 	
-//	@RequestMapping("/accountList")
-//	public String accountList(Model model) {
-//		List<Account> accountList = accountService.findAll();
-//		model.addAttribute("accountList", accountList);		
-//		return "accountList";
-//	}
+	@RequestMapping("/accountList")
+	public String accountList(Model model) {
+		List<Account> accountList = accountService.findAll();
+		model.addAttribute("accountList", accountList);		
+		return "accountList";
+	}
 //	
 //	
 //	@RequestMapping(value = "/accountInfo", method = RequestMethod.GET)
