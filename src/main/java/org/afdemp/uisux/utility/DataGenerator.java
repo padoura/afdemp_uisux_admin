@@ -22,6 +22,7 @@ import org.afdemp.uisux.repository.ProductRepository;
 import org.afdemp.uisux.repository.RoleRepository;
 import org.afdemp.uisux.repository.UserRepository;
 import org.afdemp.uisux.repository.UserRoleRepository;
+import org.afdemp.uisux.service.AccountService;
 import org.afdemp.uisux.service.CartItemService;
 import org.afdemp.uisux.service.CategoryService;
 import org.afdemp.uisux.service.ClientOrderService;
@@ -31,6 +32,7 @@ import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class DataGenerator {
@@ -38,7 +40,11 @@ public class DataGenerator {
 	
 	//===============================Autowire Section=================================
 	
-	@Autowired ClientOrderService clientOrderService;
+	@Autowired 
+	private ClientOrderService clientOrderService;
+	
+	@Autowired
+	private AccountService accountService;
 	
 	@Autowired
 	private ProductService productService;
@@ -290,6 +296,19 @@ public class DataGenerator {
         
 	}
 	
+	@Transactional
+	private boolean withdrawFromAdminDepositToMadryoch(BigDecimal amount)
+	{
+		UserRole userRole=userRoleRepository.findByRoleAndUser(roleRepository.findByName("ROLE_ADMIN"),userRepository.findByUsername("admin"));
+		if(accountService.withdraw(userRole.getAccount(), amount))
+		{
+			UserRole tempUserRole=userRoleRepository.findByRoleAndUser(roleRepository.findByName("ROLE_MEMBER"),userRepository.findByUsername("madryoch"));
+			accountService.deposit(tempUserRole.getAccount(), amount);
+			return true;
+		}
+		return false;
+	}
+	
 	//TODO use this example to insert sale data in DB when it's ready and make it private
 	public static  List<ClientOrder> getFakeOrderList() 
 	{
@@ -314,6 +333,8 @@ public class DataGenerator {
 	private static BigDecimal randomBigDecimal() {
 		return BigDecimal.valueOf(Math.random()*10 + Math.random());
 	}
+	
+	
 
 	
 	//===============================Generate Method=================================
@@ -325,6 +346,7 @@ public class DataGenerator {
 	insertExampleProduct();
 	updateExampleProduct();
 	insertExampleMember();
+	withdrawFromAdminDepositToMadryoch(BigDecimal.valueOf(10000));
 	//insertProductAndAddToCartExample();
 	//createMemberCartItemForTesting(300);
 	

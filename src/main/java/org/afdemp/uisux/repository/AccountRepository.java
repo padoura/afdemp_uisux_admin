@@ -8,4 +8,6 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
 
 	Account findByUserRole(UserRole userRole);
 	
+	Account findOne(Long id);
+	
 }

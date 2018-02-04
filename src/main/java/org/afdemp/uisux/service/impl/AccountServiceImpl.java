@@ -1,5 +1,6 @@
 package org.afdemp.uisux.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.afdemp.uisux.domain.Account;
@@ -27,7 +28,7 @@ public class AccountServiceImpl implements AccountService {
 		if(account==null)
 		{
 			account=new Account();
-			account.setBalance(initialBalance);
+			account.setBalance(BigDecimal.valueOf(initialBalance));
 			account.setUserRole(userRole);
 			account=accountRepository.save(account);
 			if(account!=null)
@@ -40,6 +41,8 @@ public class AccountServiceImpl implements AccountService {
 		return null;
 	}
 	
+	
+	
 
 	@Override
 	public List<Account> findAll() {
@@ -50,5 +53,47 @@ public class AccountServiceImpl implements AccountService {
 	public Account findOne(Long id) {
 		return accountRepository.findOne(id);
 	}
+
+
+
+
+	@Override
+	public boolean deposit(Account account, BigDecimal amount) 
+	{
+		account=accountRepository.findOne(account.getId());
+		if(account!=null)
+		{
+			account.setBalance(account.getBalance().add(amount));
+			if(accountRepository.save(account)!=null)
+			{
+				LOG.info("\n\n SUCCESS: Completed deposit of {}\n",amount);
+				return true;
+			}
+		}
+		LOG.info("\n\nFAILURE: Unable to complete deposit\n");
+		return false;
+	}
+
+
+
+
+	@Override
+	public boolean withdraw(Account account, BigDecimal amount) 
+	{
+		account=accountRepository.findOne(account.getId());
+		if(account!=null && account.getBalance().compareTo(amount)>=0)
+		{
+			account.setBalance(account.getBalance().subtract(amount));
+			if(accountRepository.save(account)!=null)
+			{
+				LOG.info("\n\n SUCCESS: Completed withdraw of {}\n",amount);
+				return true;
+			}
+			
+		}
+		LOG.info("\n\nFAILURE: Withdraw Failed\n");
+		return false;
+	}
+	
 
 }

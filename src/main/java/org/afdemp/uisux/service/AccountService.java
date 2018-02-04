@@ -1,5 +1,6 @@
 package org.afdemp.uisux.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.afdemp.uisux.domain.Account;
@@ -12,5 +13,9 @@ public interface AccountService {
 	List<Account> findAll();
 
 	Account findOne(Long id);
+	
+	boolean deposit(Account account, BigDecimal amount);
+	
+	boolean withdraw(Account account, BigDecimal amount);
 
 }
