@@ -2,8 +2,9 @@ package org.afdemp.uisux.service.impl;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import org.afdemp.uisux.domain.AbstractSale;
@@ -24,7 +25,7 @@ public class MemberSaleServiceImpl implements MemberSaleService{
 	public AbstractSale createMemberSale(UserRole userRole,BigDecimal grandTotal,Address shippingAddress, Address billingAddress, CreditCard creditCard)
 	{
 		MemberSale memberSale=new MemberSale();
-		Date submittedDate=new Date();
+		Date submittedDate=Date.valueOf(LocalDate.now());
 		memberSale.setSubmittedDate(submittedDate);
 		memberSale.setShippingAddress(shippingAddress);
 		memberSale.setBillingAddress(billingAddress);

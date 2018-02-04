@@ -1,5 +1,6 @@
 package org.afdemp.uisux.service;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -15,5 +16,9 @@ public interface ClientOrderService {
 	ClientOrder updateOrderStatusToShipped(ClientOrder clientOrder);
 	
 	ClientOrder updateOrderStatusToDelivered(ClientOrder clientOrder);
+
+	ClientOrder updateShippingMethod(ClientOrder clientOrder, String method);
+
+	ClientOrder updateShippingDate(ClientOrder clientOrder, Date date);
 
 }

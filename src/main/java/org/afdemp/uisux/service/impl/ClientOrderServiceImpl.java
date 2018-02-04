@@ -2,8 +2,9 @@ package org.afdemp.uisux.service.impl;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import org.afdemp.uisux.domain.AbstractSale;
@@ -31,7 +32,7 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 	public AbstractSale createClientOrder(ClientOrder clientOrder)
 	{
 		
-		Date submittedDate=new Date();
+		Date submittedDate=Date.valueOf(LocalDate.now());
 		clientOrder.setSubmittedDate(submittedDate);
 		clientOrder.setOrderStatus("Processing");
 		
@@ -84,6 +85,38 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 		
 		clientOrders=clientOrderRepository.findOrdersFromTo(fromTimestamp, toTimestamp);
 		return clientOrders;
+	}
+
+	@Override
+	public ClientOrder updateShippingMethod(ClientOrder clientOrder, String method) {
+		clientOrder=clientOrderRepository.findOne(clientOrder.getId());
+		if(clientOrder!=null)
+		{
+			clientOrder.setShippingMethod(method);
+			clientOrderRepository.save(clientOrder);
+			LOG.info("SUCCESS: Shipping method changed to " + method  + ".");
+		}
+		else
+		{
+			LOG.info("FAILURE: Unable to find Client Order");
+		}
+		return clientOrder;
+	}
+
+	@Override
+	public ClientOrder updateShippingDate(ClientOrder clientOrder, Date date) {
+		clientOrder=clientOrderRepository.findOne(clientOrder.getId());
+		if(clientOrder!=null)
+		{
+			clientOrder.setShippingDate(date);
+			clientOrderRepository.save(clientOrder);
+			LOG.info("SUCCESS: Shipping date changed to " + date  + ".");
+		}
+		else
+		{
+			LOG.info("FAILURE: Unable to find Client Order");
+		}
+		return clientOrder;
 	}
 
 }

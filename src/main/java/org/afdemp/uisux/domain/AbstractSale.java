@@ -30,10 +30,8 @@ public abstract class AbstractSale {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date submittedDate;
-	
-	@Temporal(TemporalType.TIMESTAMP)
+
 	private Date shippingDate;
 	
 	private String shippingMethod;
@@ -41,7 +39,6 @@ public abstract class AbstractSale {
 	
 
 	@OneToMany(mappedBy="abstractSale", cascade=CascadeType.REMOVE, fetch=FetchType.LAZY)
-	@JsonIgnore
 	private List<CartItem> cartItemList;
 	
 	@OneToMany(mappedBy="abstractSale", fetch=FetchType.LAZY)
@@ -50,18 +47,22 @@ public abstract class AbstractSale {
 	
 	@ManyToOne
 	@JoinColumn(name="user_role_id")
+	@JsonIgnore
 	private UserRole userRole;
 	
 	@ManyToOne
 	@JoinColumn(name="shipping_address_id")
+	@JsonIgnore
 	private Address shippingAddress;
 	
 	@ManyToOne
 	@JoinColumn(name="billing_address_id")
+	@JsonIgnore
 	private Address billingAddress;
 	
 	@ManyToOne
 	@JoinColumn(name="credit_card_id")
+	@JsonIgnore
 	private CreditCard creditCard;
 	
 	
