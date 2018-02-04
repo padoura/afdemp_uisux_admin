@@ -19,6 +19,7 @@ import org.afdemp.uisux.service.MemberCartItemService;
 import org.afdemp.uisux.service.CategoryService;
 import org.afdemp.uisux.service.ProductService;
 import org.afdemp.uisux.utility.ImageUtility;
+import org.afdemp.uisux.utility.MemberCartItemWrapper;
 
 @Controller
 @RequestMapping("/product")
@@ -143,15 +144,14 @@ public class ProductController {
 	public String stockUp(@RequestParam("id") Long id, Model model) {
 		Product product = productService.findOne(id);
 		List<MemberCartItem> memberCartItemList = memberCartItemService.findAllAvailableItems(id);
-		List<User> memberList = new ArrayList<>();
 		
+		List<MemberCartItemWrapper> wrapperList = new ArrayList<>();
 		for (MemberCartItem memberCartItem : memberCartItemList) {
-			memberList.add(memberCartItem.getShoppingCart().getUserRole().getUser()); 
+			wrapperList.add(new MemberCartItemWrapper(memberCartItem.getShoppingCart().getUserRole().getUser(), memberCartItem)); 
 		}
 		
 		model.addAttribute("product", product);
-		model.addAttribute("userList", memberList);
-		model.addAttribute("memberCartItemList", memberCartItemList);
+		model.addAttribute("wrapperList", wrapperList);
 		return "stockUp";
 	}
 	
