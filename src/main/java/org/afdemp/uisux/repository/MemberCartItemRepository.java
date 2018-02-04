@@ -24,8 +24,9 @@ MemberCartItem findByShoppingCartAndProduct(ShoppingCart shoppingCart, Product p
 	
 	
 	@Modifying
+	@Transactional
 	@Query("UPDATE MemberCartItem mci SET mci.qty=mci.qty-:qty WHERE mci.product=:product AND mci.qty>:qty AND mci.shoppingCart=:shoppingCart")
-	int partialPurchase(@Param("product") Product product,@Param("qty") long qty, @Param("shoppingCart") ShoppingCart shoppingCart);
+	int partialPurchase(@Param("product") Product product,@Param("qty") int qty, @Param("shoppingCart") ShoppingCart shoppingCart);
 	
 	
 	@Modifying
