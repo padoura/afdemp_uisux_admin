@@ -38,7 +38,7 @@ MemberCartItem findByShoppingCartAndProduct(ShoppingCart shoppingCart, Product p
 //	int updateVisible(@Param("id") Long id,@Param("isVisible") boolean isVisible);
 	
 	
-	List<MemberCartItem> findByProductAndIsVisibleTrue(Long id);
+	List<MemberCartItem> findByProductIdAndIsVisibleTrue(Long id);
 
 	
 }

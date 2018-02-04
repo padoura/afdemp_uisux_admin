@@ -109,7 +109,7 @@ public class MemberCartItemServiceImpl implements MemberCartItemService{
 	@Override
 	public List<MemberCartItem> findAllAvailableItems(Long productId) {
 		
-		return memberCartItemRepository.findByProductAndIsVisibleTrue(productId);
+		return memberCartItemRepository.findByProductIdAndIsVisibleTrue(productId);
 	}
 
 	@Override
