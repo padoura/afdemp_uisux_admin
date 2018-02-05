@@ -1,5 +1,6 @@
 package org.afdemp.uisux.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.afdemp.uisux.domain.Category;
@@ -45,10 +46,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Product createProduct(Product product, String type) 
 	{
-		
-		
-		 		 
-		  Category category = categoryRepository.findByType(type);
+		    Category category = categoryRepository.findByType(type);
 		 
 			if (category == null) 
 			{
@@ -94,7 +92,29 @@ public class ProductServiceImpl implements ProductService {
 		product.setActive(true);
 		productRepository.save(product);
 	}
+	
+	@Override
+	public ArrayList<Product> search(String name)
+	{
+		ArrayList<Product> searchResult=new ArrayList<Product>();
+		searchResult=productRepository.findByNameContaining(name);
+		return searchResult;
+		
+	}
 
+	@Override
+	public boolean restock(Long productId, int qty)
+	{
+		Product product=findOne(productId);
+		product.setInStockNumber(product.getInStockNumber()+qty);
+		if(productRepository.save(product)!=null)
+		{
+			LOG.info("\n\nSUCCESS: Restocked for product {} completed.\n",productId);
+			return true;
+		}
+		LOG.info("\n\nFAILURE: Unable to restock product {}",productId);
+		return false;
+	}
 		
 }
 

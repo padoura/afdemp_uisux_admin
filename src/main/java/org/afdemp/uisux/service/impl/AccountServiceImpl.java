@@ -104,7 +104,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public boolean hasEnoughBalance(BigDecimal amount) {
-		UserRole userRole = userRoleRepository.findOne(0L);
+		UserRole userRole = userRoleRepository.findOne(1L);
 		BigDecimal currentBalance = accountRepository.findByUserRole(userRole).getBalance();
 		return amount.compareTo(currentBalance) <= 0;
 	}

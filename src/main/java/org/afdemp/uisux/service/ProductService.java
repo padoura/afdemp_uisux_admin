@@ -1,11 +1,9 @@
 package org.afdemp.uisux.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.afdemp.uisux.domain.Product;
-import org.afdemp.uisux.domain.User;
-import org.afdemp.uisux.domain.security.UserRole;
 
 public interface ProductService {
 
@@ -13,9 +11,13 @@ public interface ProductService {
 	
 	Product findOne(Long id);
 	
+	ArrayList<Product> search(String name);
+	
 	void removeOne(Long id);
 
 	Product createProduct(Product product, String type);
+	
+	boolean restock(Long productId, int qty);
 	
 	void toggleActive(Product product);
 

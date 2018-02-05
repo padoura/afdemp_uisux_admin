@@ -8,14 +8,19 @@ import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.repository.CartItemRepository;
+import org.afdemp.uisux.service.AddressService;
 import org.afdemp.uisux.service.CartItemService;
 import org.afdemp.uisux.service.ClientOrderService;
 import org.afdemp.uisux.service.ShoppingCartService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CartItemServiceImpl implements CartItemService{
+	
+	private static final Logger LOG = LoggerFactory.getLogger(CartItemService.class);
 	
 	@Autowired
 	private CartItemRepository cartItemRepository;
@@ -124,4 +129,28 @@ public class CartItemServiceImpl implements CartItemService{
 		return false;
 	}
 
+	@Override
+	public boolean removeCartItem(Long id,Long shoppingCartId)
+	{
+		if(cartItemRepository.deleteByIdAndShoppingCartId(id,shoppingCartId)>0)
+		{
+			LOG.info("\n\nSUCCESS: Removed cartItem {} from shoppingCart\n",id);
+			return true;
+		}
+		LOG.info("\n\nFAILURE: Removing cartItem {} failed miserably.",id);
+		return false;
+	}
+	
+	@Override
+	public boolean emptyCart(Long shoppingCartId)
+	{
+		if(cartItemRepository.deleteByShoppingCartId(shoppingCartId)>0)
+		{
+			LOG.info("\n\nSUCCESS: Shopping Cart cleared.");
+			return true;
+		}
+		LOG.info("\n\nFAILURE: Emptying the Shopping Cart {} failed miserably.");
+		return false;
+	}
+	
 }

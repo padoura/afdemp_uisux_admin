@@ -15,12 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface MemberCartItemRepository extends CrudRepository<MemberCartItem, Long>{
 	
-MemberCartItem findByShoppingCartAndProduct(ShoppingCart shoppingCart, Product product);
+	MemberCartItem findByShoppingCartAndProduct(ShoppingCart shoppingCart, Product product);
 	
 	HashSet<MemberCartItem> findByShoppingCart(ShoppingCart shoppingCart);
 	
 	MemberCartItem findOne(Long memberCartItemId);
 
+	int deleteByIdAndShoppingCartId(Long id, Long shoppingCartId);
+	
+	int deleteByShoppingCartId(Long shoppingCartId);
 	
 	@Transactional
 	@Modifying
@@ -33,6 +36,8 @@ MemberCartItem findByShoppingCartAndProduct(ShoppingCart shoppingCart, Product p
 	int fullPurchase(@Param("product") Product product, @Param("shoppingCart") ShoppingCart shoppingCart,@Param("sale") AbstractSale abstractSale);
 	
 	List<MemberCartItem> findByProductIdAndIsVisibleTrue(Long id);
+	
+	
 
 	
 }
