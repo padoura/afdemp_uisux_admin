@@ -12,6 +12,7 @@ import org.afdemp.uisux.domain.security.UserRole;
 public class ClientOrder extends AbstractSale {
 	
 	private String orderStatus;
+	boolean distributed=false;
 	
 	public ClientOrder() {};
 
@@ -23,4 +24,12 @@ public class ClientOrder extends AbstractSale {
 		this.orderStatus = orderStatus;
 	}
 
+	public boolean isDistributed() {
+		return distributed;
+	}
+
+	public void setDistributed(boolean distributed) {
+		this.distributed = distributed;
+	}
+	
 }

@@ -98,7 +98,7 @@ public class MemberCartItemServiceImpl implements MemberCartItemService{
 		soldCartItem.setCurrentPurchasePrice(memberCartItem.getCurrentPurchasePrice());
 		soldCartItem.setProduct(memberCartItem.getProduct());
 		soldCartItem.setQty(qty);
-		soldCartItem.setVisible(true);
+		soldCartItem.setVisible(false);
 		memberCartItemRepository.save(soldCartItem);
 		LOG.info("\n\n\nSUCCESS: Purchase of {} successful\n\n",qty);
 		return true;

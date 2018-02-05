@@ -22,21 +22,15 @@ MemberCartItem findByShoppingCartAndProduct(ShoppingCart shoppingCart, Product p
 	MemberCartItem findOne(Long memberCartItemId);
 
 	
-	
+	@Transactional
 	@Modifying
 	@Query("UPDATE MemberCartItem mci SET mci.qty=mci.qty-:qty WHERE mci.product=:product AND mci.qty>:qty AND mci.shoppingCart=:shoppingCart")
-	int partialPurchase(@Param("product") Product product,@Param("qty") long qty, @Param("shoppingCart") ShoppingCart shoppingCart);
+	int partialPurchase(@Param("product") Product product,@Param("qty") int qty, @Param("shoppingCart") ShoppingCart shoppingCart);
 	
-	
+	@Transactional
 	@Modifying
-	@Query("UPDATE MemberCartItem mci SET mci.abstractSale=:sale,mci.shoppingCart=null WHERE mci.product=:product AND mci.shoppingCart=:shoppingCart")
+	@Query("UPDATE MemberCartItem mci SET mci.abstractSale=:sale,mci.shoppingCart=null,mci.isVisible=false WHERE mci.product=:product AND mci.shoppingCart=:shoppingCart")
 	int fullPurchase(@Param("product") Product product, @Param("shoppingCart") ShoppingCart shoppingCart,@Param("sale") AbstractSale abstractSale);
-	
-
-//	@Modifying
-//	@Query("UPDATE MemberCartItem mci SET mci.isVisible=:isVisible WHERE mci.id=:id")
-//	int updateVisible(@Param("id") Long id,@Param("isVisible") boolean isVisible);
-	
 	
 	List<MemberCartItem> findByProductIdAndIsVisibleTrue(Long id);
 
