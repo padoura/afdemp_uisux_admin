@@ -2,15 +2,18 @@ package org.afdemp.uisux.controller;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.domain.Transaction;
+import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.Account;
 import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.service.AccountService;
 import org.afdemp.uisux.service.ClientOrderService;
 import org.afdemp.uisux.service.TransactionService;
+import org.afdemp.uisux.utility.UserAccountWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,14 +40,21 @@ public class TransactionController {
 	@RequestMapping("/accountList")
 	public String accountList(Model model) {
 		List<Account> accountList = accountService.findAll();
-		model.addAttribute("accountList", accountList);		
+		List<UserAccountWrapper> userAccountWrapperList = new ArrayList<>();
+		
+		for (Account ac : accountList) {
+			userAccountWrapperList.add(new UserAccountWrapper(ac.getUserRole().getUser(), ac));
+		}
+		
+		model.addAttribute("userAccountWrapperList",userAccountWrapperList);
 		return "accountList";
 	}
-//	
-//	
+	
+	
 //	@RequestMapping(value = "/accountInfo", method = RequestMethod.GET)
 //	public String accountInfo(@RequestParam("id") Long id, Model model) {
 //		Account account = accountService.findOne(id);
+//		
 //		
 //		List<Transaction> withdrawList = transactionService.fetchAccountWithdrawsByPeriod(account, Timestamp.valueOf(
 //		LocalDate.now().minusDays(6).atStartOfDay()), Timestamp.valueOf(LocalDate.now().atTime(23, 59, 59)));
@@ -52,9 +62,10 @@ public class TransactionController {
 //		List<Transaction> depositList = transactionService.fetchAccountDepositsByPeriod(account, Timestamp.valueOf(
 //		LocalDate.now().minusDays(6).atStartOfDay()), Timestamp.valueOf(LocalDate.now().atTime(23, 59, 59)));
 //		
+//		model.addAttribute("user", account.getUserRole().getUser());
 //		model.addAttribute("account", account);
-//		model.addAttribute("account", withdrawList);
-//		model.addAttribute("account", depositList);
+//		model.addAttribute("withdrawList", withdrawList);
+//		model.addAttribute("depositList", depositList);
 //		return "accountInfo";
 //	}
 //	
@@ -71,8 +82,8 @@ public class TransactionController {
 //				LocalDate.parse(fromDate).atStartOfDay()), Timestamp.valueOf(LocalDate.parse(toDate).atTime(23, 59, 59)));
 //		
 //		model.addAttribute("account", account);
-//		model.addAttribute("account", withdrawList);
-//		model.addAttribute("account", depositList);
+//		model.addAttribute("withdrawList", withdrawList);
+//		model.addAttribute("depositList", depositList);
 //		return "redirect:/transaction/accountInfo?id="+account.getId();
 //	}
 //	

@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header2 :: common-header" />
+
+<body>
+	<div th:replace="common/header2 :: navbar" />
+	<div class="container-fluid">
+		<div class="table-responsive">
+			<table id="productListTable" class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+					
+						<th>id</th>
+						<th>withdrawList</th>
+						<th>depositList</th>
+						<th>balance</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-th-each="product : ${accountList}">
+						<td th:text="${product.id}"></td>
+						<td th:text="${product.withdrawList}"></td>
+						<td th:text="${product.depositList}"></td>
+						<td th:text="${product.balance}"></td>
+						
+						
+					</tr>
+				</tbody>
+			</table>
+	</div> <div class="jumbotron">
+        <form method="POST" th:action="@{/}">
+        
+	<button type="submit" class="btn btn-primary btn-lg">Click to share the money(earnings)</button>
+	</form>
+	</div>
+	
+	</div>
+	<div th:replace="common/header2 :: body-bottom-scripts"></div> 
+	
+	<script>
+	
+		/* $(document).ready(function() {
+			
+			$("#productListTable").DataTable({
+				
+				"lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
+				"ordering": false,
+				stateSave: true
+				
+			});
+		});
+	 */
+		
+	 $(document).ready(function(){    
+		   var table= $('#productListTable').DataTable({
+			   "lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
+				"ordering": false,
+				stateSave: true
+		       
+		    });
+		  
+		   
+		    
+		    
+		    
+		    
+		    
+		});
+		
+		
+		</script>
+	
+</body>
+</html>
