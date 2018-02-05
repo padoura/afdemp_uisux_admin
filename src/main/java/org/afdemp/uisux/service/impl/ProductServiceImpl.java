@@ -117,8 +117,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> findByCategory(String categoryType) {
-		return productRepository.findByCategoryId(categoryRepository.findByType(categoryType).getId());
+	public List<Product> findByCategory(Category category) {
+		return productRepository.findByCategory(category);
 	}
 		
 }

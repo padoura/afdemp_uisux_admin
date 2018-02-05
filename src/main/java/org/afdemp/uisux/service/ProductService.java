@@ -3,6 +3,7 @@ package org.afdemp.uisux.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.afdemp.uisux.domain.Category;
 import org.afdemp.uisux.domain.Product;
 
 public interface ProductService {
@@ -25,5 +26,5 @@ public interface ProductService {
 	
 	void activate(Long id);
 
-	List<Product> findByCategory(String category);
+	List<Product> findByCategory(Category category);
 }

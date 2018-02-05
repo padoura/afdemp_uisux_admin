@@ -3,6 +3,8 @@ package org.afdemp.uisux.service.impl;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.afdemp.uisux.domain.Address;
+import org.afdemp.uisux.domain.CreditCard;
 import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.security.PasswordResetToken;
 import org.afdemp.uisux.domain.security.Role;
