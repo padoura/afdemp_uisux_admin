@@ -24,4 +24,6 @@ public interface ProductService {
 	void deactivate(Long id);
 	
 	void activate(Long id);
+
+	List<Product> findByCategory(String category);
 }

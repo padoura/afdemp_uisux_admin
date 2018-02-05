@@ -7,4 +7,5 @@ import org.afdemp.uisux.domain.security.Role;
 
 public interface RoleRepository extends CrudRepository<Role, Long> {
 	Role findByName(String name);
+	
 }

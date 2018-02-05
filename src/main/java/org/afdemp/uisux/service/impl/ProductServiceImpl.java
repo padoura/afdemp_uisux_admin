@@ -115,6 +115,11 @@ public class ProductServiceImpl implements ProductService {
 		LOG.info("\n\nFAILURE: Unable to restock product {}",productId);
 		return false;
 	}
+
+	@Override
+	public List<Product> findByCategory(String categoryType) {
+		return productRepository.findByCategoryId(categoryRepository.findByType(categoryType).getId());
+	}
 		
 }
 

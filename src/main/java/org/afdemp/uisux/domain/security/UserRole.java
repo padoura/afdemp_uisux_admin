@@ -54,31 +54,15 @@ public class UserRole {
 	
 	@OneToMany(mappedBy="userRole", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JsonIgnore
-	private List<AbstractSale> abstractSale;
+	private List<AbstractSale> abstractSaleList;
 	
 	@OneToMany(mappedBy="userRole", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JsonIgnore
-	private List<Address> userShippingAddress;
+	private List<Address> userShippingAddressList;
 	
 	@OneToMany(mappedBy="userRole", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JsonIgnore
-	private List<CreditCard> creditCard;
-	
-	public List<Address> getUserShippingAddress() {
-		return userShippingAddress;
-	}
-
-	public void setUserShippingAddress(List<Address> userShippingAddress) {
-		this.userShippingAddress = userShippingAddress;
-	}
-
-	public List<CreditCard> getCreditCard() {
-		return creditCard;
-	}
-
-	public void setCreditCard(List<CreditCard> creditCard) {
-		this.creditCard = creditCard;
-	}
+	private List<CreditCard> creditCardList;
 
 	public Account getAccount() {
 		return account;
@@ -87,13 +71,29 @@ public class UserRole {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-
-	public List<AbstractSale> getAbstractSale() {
-		return abstractSale;
+	
+	public List<AbstractSale> getAbstractSaleList() {
+		return abstractSaleList;
 	}
 
-	public void setAbstractSale(List<AbstractSale> abstractSale) {
-		this.abstractSale = abstractSale;
+	public void setAbstractSaleList(List<AbstractSale> abstractSaleList) {
+		this.abstractSaleList = abstractSaleList;
+	}
+
+	public List<Address> getUserShippingAddressList() {
+		return userShippingAddressList;
+	}
+
+	public void setUserShippingAddressList(List<Address> userShippingAddressList) {
+		this.userShippingAddressList = userShippingAddressList;
+	}
+
+	public List<CreditCard> getCreditCardList() {
+		return creditCardList;
+	}
+
+	public void setCreditCardList(List<CreditCard> creditCardList) {
+		this.creditCardList = creditCardList;
 	}
 
 	public Wishlist getWishlist() {

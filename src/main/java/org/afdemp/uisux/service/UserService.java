@@ -29,4 +29,6 @@ public interface UserService {
 	User findByEmail (String email);
 
 	User findOne(Long id);
+
+	PasswordResetToken getPasswordResetToken(final String token);
 }

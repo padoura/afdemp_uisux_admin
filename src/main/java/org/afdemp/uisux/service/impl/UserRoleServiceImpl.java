@@ -112,4 +112,10 @@ public class UserRoleServiceImpl implements UserRoleService{
     }
 
 
+	@Override
+	public UserRole findByUserAndRole(User user, String roleType) {
+		return userRoleRepository.findByUserAndRole(user, roleRepository.findByName(roleType));
+	}
+
+
 }

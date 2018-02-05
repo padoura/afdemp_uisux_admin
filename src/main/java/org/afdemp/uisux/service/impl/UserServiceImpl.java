@@ -172,5 +172,10 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userRepository.findOne(id);
 	}
+	
+	@Override
+	public PasswordResetToken getPasswordResetToken(final String token) {
+		return passwordResetTokenRepository.findByToken(token);
+	}
 
 }

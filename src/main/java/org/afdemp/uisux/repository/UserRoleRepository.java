@@ -12,6 +12,8 @@ public interface UserRoleRepository extends CrudRepository<UserRole, Long> {
 	public UserRole findByRoleAndUser(Role role, User user);
     
     public ArrayList<UserRole> findByRole(Role role);
+
+	public UserRole findByUserAndRole(User user, Role findByName);
    	
 	
 }

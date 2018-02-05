@@ -278,6 +278,7 @@ public class DataGenerator {
 		role2.setRoleId(2);
 		role2.setName("ROLE_CLIENT");
 		
+		// Member "member"
 		User user1 = new User();
 		user1.setUsername("member");
 		user1.setPassword(SecurityUtility.passwordEncoder().encode("member"));
@@ -287,6 +288,8 @@ public class DataGenerator {
 		
 		userService.createUser(user1, userRoles);
 		
+		
+		// Member-Client "madryoch"
 		User user2=new User();
         user2.setUsername("madryoch");
         user2.setPassword(SecurityUtility.passwordEncoder().encode("madryoch"));
@@ -296,11 +299,18 @@ public class DataGenerator {
         
         
         userService.createUser(user2, userRoles);
-        
-        
-        
-        
         userService.addRoleToExistingUser(user2,"ROLE_MEMBER");
+        
+        // Client "padoura"
+        User user3=new User();
+        user3.setUsername("padoura");
+        user3.setPassword(SecurityUtility.passwordEncoder().encode("client"));
+        user3.setEmail("padoura21@hotmail.com");
+        userRoles = new HashSet<>();
+        userRoles.add(new UserRole(user3, role2));
+        
+        
+        userService.createUser(user3, userRoles);
         
 	}
 	

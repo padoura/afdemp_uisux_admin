@@ -12,5 +12,7 @@ public interface UserRoleService {
 	List<User> fetchUsersOfRole(String roleName);
 	
 	boolean createUserRole(UserRole userRole);
+
+	UserRole findByUserAndRole(User user, String roleType);
 	
 }
