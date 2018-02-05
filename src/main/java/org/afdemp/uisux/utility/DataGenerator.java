@@ -194,15 +194,15 @@ public class DataGenerator {
 	
 	
 	
-	private boolean createMemberCartItemForTesting(int qty)
+	private boolean createMemberCartItemForTesting(int qty, String username)
 	{
 		Product product=productRepository.findByName("Choco Milk 1L");
 		Role role=roleRepository.findByName("ROLE_MEMBER");
-		User user=userRepository.findByUsername("Madryoch");
+		User user=userRepository.findByUsername(username);
 		UserRole userRole=userRoleRepository.findByRoleAndUser(role, user);
 		if(memberCartItemService.putUpForSale(product, qty, userRole.getShoppingCart()))
 		{
-			memberCartItemService.activate(1L);
+//			memberCartItemService.activate(1L);
 			List<MemberCartItem> tempList=memberCartItemService.findAllAvailableItems(2L);
 			for(MemberCartItem mci:tempList)
 			{
@@ -212,6 +212,14 @@ public class DataGenerator {
 			return true;
 		}
 		return false;
+	}
+	
+	private void makeAllMemberCartItemsVisible() {
+		List<MemberCartItem> cartItemList = memberCartItemService.findAll();
+		
+		for (MemberCartItem ci : cartItemList) {
+			memberCartItemService.activate(ci.getId());
+		}
 	}
 	
 	private boolean concludeSale(ShoppingCart shoppingCart)
@@ -347,8 +355,10 @@ public class DataGenerator {
 	updateExampleProduct();
 	insertExampleMember();
 	withdrawFromAdminDepositToMadryoch(BigDecimal.valueOf(10000));
-	//insertProductAndAddToCartExample();
-	//createMemberCartItemForTesting(300);
+	insertProductAndAddToCartExample();
+	createMemberCartItemForTesting(300, "Madryoch");
+	createMemberCartItemForTesting(300, "member");
+	makeAllMemberCartItemsVisible();
 	
 	}
 

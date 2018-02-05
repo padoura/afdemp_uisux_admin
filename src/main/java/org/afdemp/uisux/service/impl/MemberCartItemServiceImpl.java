@@ -145,6 +145,11 @@ public class MemberCartItemServiceImpl implements MemberCartItemService{
         memberCartItem.setVisible(true);
         memberCartItemRepository.save(memberCartItem);
     }
+
+	@Override
+	public List<MemberCartItem> findAll() {
+		return (List<MemberCartItem>) memberCartItemRepository.findAll();
+	}
 	
 	
 	

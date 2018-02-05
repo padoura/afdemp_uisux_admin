@@ -183,7 +183,7 @@ public class ProductController {
 		}
 		
 		model.addAttribute("stockUpSuccess", true);
-		return "productList";
+		return "redirect:/product/productList";
 	}
 
 

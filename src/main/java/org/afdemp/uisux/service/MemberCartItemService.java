@@ -23,5 +23,7 @@ public interface MemberCartItemService {
 	void activate(Long id);
 	
 	void deactivate(Long id);
+
+	List<MemberCartItem> findAll();
 	
 }
