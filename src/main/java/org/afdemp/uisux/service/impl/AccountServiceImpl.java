@@ -6,6 +6,7 @@ import java.util.List;
 import org.afdemp.uisux.domain.Account;
 import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.AccountRepository;
+import org.afdemp.uisux.repository.UserRoleRepository;
 import org.afdemp.uisux.service.AccountService;
 import org.afdemp.uisux.service.UserRoleService;
 import org.slf4j.Logger;
@@ -20,6 +21,9 @@ public class AccountServiceImpl implements AccountService {
 
 	@Autowired
 	private AccountRepository accountRepository;
+
+	@Autowired
+	private UserRoleRepository userRoleRepository;
 	
 	@Override
 	public Account createAccount(UserRole userRole, double initialBalance)
@@ -93,6 +97,16 @@ public class AccountServiceImpl implements AccountService {
 		}
 		LOG.info("\n\nFAILURE: Withdraw Failed\n");
 		return false;
+	}
+
+
+
+
+	@Override
+	public boolean hasEnoughBalance(BigDecimal amount) {
+		UserRole userRole = userRoleRepository.findOne(0L);
+		BigDecimal currentBalance = accountRepository.findByUserRole(userRole).getBalance();
+		return amount.compareTo(currentBalance) <= 0;
 	}
 	
 

@@ -18,4 +18,6 @@ public interface AccountService {
 	
 	boolean withdraw(Account account, BigDecimal amount);
 
+	boolean hasEnoughBalance(BigDecimal setScale);
+
 }

@@ -1,5 +1,6 @@
 package org.afdemp.uisux.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.MemberCartItem;
 import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.service.MemberCartItemService;
+import org.afdemp.uisux.service.AccountService;
 import org.afdemp.uisux.service.CategoryService;
 import org.afdemp.uisux.service.ProductService;
 import org.afdemp.uisux.utility.ImageUtility;
@@ -33,6 +35,9 @@ public class ProductController {
 
 	@Autowired
 	private  MemberCartItemService memberCartItemService;
+	
+	@Autowired
+	private AccountService accountService;
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String addProduct(Model model) {
@@ -107,14 +112,6 @@ public class ProductController {
 	public String updateProductPost(@ModelAttribute("product") Product product, BindingResult productResult,
 			@ModelAttribute("type") String type, BindingResult typeResult, Model model) {
 		
-//		if (productResult.hasErrors()){
-//			System.out.println("productResult problem");
-//		}
-//		
-//		if (typeResult.hasErrors()){
-//			System.out.println("typeResult problem");
-//		}
-		
 		if (productResult.hasErrors() || typeResult.hasErrors()) {
 			return "redirect:/product/productInfo?id="+product.getId();
 		}
@@ -175,14 +172,16 @@ public class ProductController {
 		
 		if (qty > memberCartItem.getQty()) {
 			model.addAttribute("requestExceedsAvailability", true);
-			return "productList";
+		}else if (!accountService.hasEnoughBalance(memberCartItem.getCurrentPurchasePrice().multiply(BigDecimal.valueOf(qty)))) {
+			model.addAttribute("notEnoughBalanceFailure", true);
 		}else if (qty == memberCartItem.getQty()) {
 			memberCartItemService.fullPurchaseFromMember(memberCartItem);
+			model.addAttribute("stockUpSuccess", true);
 		}else {
 			memberCartItemService.partialPurchaseFromMember(memberCartItem, qty);
+			model.addAttribute("stockUpSuccess", true);
 		}
-		
-		model.addAttribute("stockUpSuccess", true);
+
 		return "redirect:/product/productList";
 	}
 

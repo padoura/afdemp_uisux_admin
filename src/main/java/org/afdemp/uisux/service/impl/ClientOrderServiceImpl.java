@@ -131,4 +131,9 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 		
 	}
 
+	@Override
+	public ClientOrder findOne(Long id) {
+		return clientOrderRepository.findOne(id);
+	}
+
 }

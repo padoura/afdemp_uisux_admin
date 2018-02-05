@@ -25,4 +25,6 @@ public interface ClientOrderService {
 
 	void distributeEarningsToAllMembers(Long clientOrderId);
 
+	ClientOrder findOne(Long l);
+
 }
