@@ -4,11 +4,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.afdemp.uisux.domain.Account;
+import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.AccountRepository;
+import org.afdemp.uisux.repository.RoleRepository;
 import org.afdemp.uisux.repository.UserRoleRepository;
 import org.afdemp.uisux.service.AccountService;
-import org.afdemp.uisux.service.UserRoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class AccountServiceImpl implements AccountService {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
 
+	@Autowired
+	private RoleRepository roleRepository;
+	
 	@Autowired
 	private AccountRepository accountRepository;
 
@@ -109,5 +113,16 @@ public class AccountServiceImpl implements AccountService {
 		return amount.compareTo(currentBalance) <= 0;
 	}
 	
+	@Override
+	public Account findAdminAccount()
+	{	
+		Role role=roleRepository.findByName("ROLE_ADMIN");
+		Account account=userRoleRepository.findFirstByRole(role).getAccount();
+		if(account!=null)
+		{
+			System.out.println("\n\n"+account.getId()+"\t"+account.getBalance()+"\n\n");
+		}
+		return account;
+	}
 
 }

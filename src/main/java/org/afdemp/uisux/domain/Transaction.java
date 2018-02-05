@@ -2,6 +2,7 @@ package org.afdemp.uisux.domain;
 
 import java.math.BigDecimal;
 import java.security.Timestamp;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -20,7 +21,8 @@ public class Transaction {
 	private Long id;
 	
 	private BigDecimal amount;
-	private Timestamp dateTime;
+	
+	private Date dateTime;
 	
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private Account depositAccount;
@@ -41,11 +43,11 @@ public class Transaction {
 		this.amount = amount;
 	}
 
-	public Timestamp getDateTime() {
+	public Date getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(Timestamp dateTime) {
+	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
 	}
 	

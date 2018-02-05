@@ -50,8 +50,8 @@ public class CreditCard {
 	@OneToOne(fetch=FetchType.EAGER)
 	private Address billingAddress;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="user_role_id",nullable=false)
+	@ManyToOne(cascade= CascadeType.MERGE, fetch=FetchType.EAGER)
+	@JoinColumn(name="user_role_id")
 	private UserRole userRole;
 
 	public boolean isDefaultCreditCard() {

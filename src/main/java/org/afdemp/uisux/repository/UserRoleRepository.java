@@ -9,9 +9,11 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface UserRoleRepository extends CrudRepository<UserRole, Long> {
 
-	public UserRole findByRoleAndUser(Role role, User user);
+	UserRole findByRoleAndUser(Role role, User user);
     
-    public ArrayList<UserRole> findByRole(Role role);
-   	
-	
+    ArrayList<UserRole> findByRole(Role role);
+    
+    UserRole findFirstByRole(Role role);
+    
+    	
 }
