@@ -8,6 +8,10 @@ import org.afdemp.uisux.domain.ShoppingCart;
 
 public interface MemberCartItemService {
 	
+	boolean emptyMemberCart(Long shoppingCartId);
+	
+	boolean removeMemberCartItem(Long id,Long shoppingCartId);
+	
 	MemberCartItem findById(Long memberCartItemId);
 	
 	boolean putUpForSale(Product product, int qty, ShoppingCart shoppingCart);

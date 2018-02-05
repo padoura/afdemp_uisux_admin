@@ -17,6 +17,10 @@ public interface CartItemRepository extends CrudRepository<CartItem, Long> {
 	
 	HashSet<CartItem> findByShoppingCart(ShoppingCart shoppingCart);
 	
+	int deleteByIdAndShoppingCartId(Long id, Long shoppingCartId);
+	
+	int deleteByShoppingCartId(Long shoppingCartId);
+	
 	@Transactional
 	@Modifying
 	@Query("UPDATE Product p SET p.inStockNumber=p.inStockNumber-:qty WHERE p=:product AND p.inStockNumber>=:qty")
