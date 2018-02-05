@@ -26,10 +26,10 @@ public class UserSecurityService implements UserDetailsService{
 		}
 		
 		for (UserRole ur : user.getUserRoles()) {
-			if (ur.getRole().getName().equals("ROLE_CLIENT"))
+			if (ur.getRole().getName().equals("ROLE_ADMIN"))
 				return user;
 		}
-			throw new UsernameNotFoundException("User " + user.getUsername() + " has no client role.");
+			throw new UsernameNotFoundException("User " + user.getUsername() + " has no admin role.");
 	}
 
 }

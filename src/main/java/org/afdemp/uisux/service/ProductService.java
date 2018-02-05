@@ -12,7 +12,7 @@ public interface ProductService {
 	
 	Product findOne(Long id);
 	
-	ArrayList<Product> search(String name);
+	ArrayList<Product> searchActive(String name);
 	
 	void removeOne(Long id);
 
@@ -27,4 +27,8 @@ public interface ProductService {
 	void activate(Long id);
 
 	List<Product> findByCategory(Category category);
+	
+	List<Product> findAllActive();
+
+	List<Product> findByCategoryAndActiveTrue(Category category);
 }

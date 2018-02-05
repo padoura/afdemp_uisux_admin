@@ -94,10 +94,10 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public ArrayList<Product> search(String name)
+	public ArrayList<Product> searchActive(String name)
 	{
 		ArrayList<Product> searchResult=new ArrayList<Product>();
-		searchResult=productRepository.findByNameContaining(name);
+		searchResult=productRepository.findByNameContainingAndActiveTrue(name);
 		return searchResult;
 		
 	}
@@ -119,6 +119,17 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<Product> findByCategory(Category category) {
 		return productRepository.findByCategory(category);
+	}
+
+	@Override
+	public List<Product> findAllActive() {
+		// TODO Auto-generated method stub
+		return productRepository.findByActiveTrue();
+	}
+
+	@Override
+	public List<Product> findByCategoryAndActiveTrue(Category category) {
+		return productRepository.findByCategoryAndActiveTrue(category);
 	}
 		
 }

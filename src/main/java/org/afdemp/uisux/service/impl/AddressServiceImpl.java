@@ -1,6 +1,10 @@
 package org.afdemp.uisux.service.impl;
 
+import java.util.List;
+
 import org.afdemp.uisux.domain.Address;
+import org.afdemp.uisux.domain.CreditCard;
+import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.AddressRepository;
 import org.afdemp.uisux.service.AddressService;
 import org.slf4j.Logger;
@@ -43,6 +47,28 @@ public class AddressServiceImpl implements AddressService{
 			return tempAddress;
 			
 			
+		}
+		
+	}
+
+	@Override
+	public Address findById(Long shippingAddressId) {
+		return addressRepository.findOne(shippingAddressId);
+	}
+
+	@Override
+	public void setDefaultShippingAddress(Long defaultShippingAddressId, UserRole userRole) {
+		List<Address> shippingAddressList = userRole.getUserShippingAddressList();
+		
+		for (Address sa : shippingAddressList) {
+			if (sa.isUserShippingDefault()) {
+				sa.setUserShippingDefault(false);
+				addressRepository.save(sa);
+			}
+			if (sa.getId() == defaultShippingAddressId) {
+				sa.setUserShippingDefault(true);
+				addressRepository.save(sa);
+			}
 		}
 		
 	}

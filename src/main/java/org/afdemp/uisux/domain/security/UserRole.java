@@ -72,6 +72,8 @@ public class UserRole {
 		this.account = account;
 	}
 	
+	
+	
 	public List<AbstractSale> getAbstractSaleList() {
 		return abstractSaleList;
 	}

@@ -51,7 +51,7 @@ public class CreditCard {
 	private Address billingAddress;
 	
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="user_role_id",nullable=false)
+	@JoinColumn(name="user_role_id",nullable=true)
 	private UserRole userRole;
 
 	public boolean isDefaultCreditCard() {

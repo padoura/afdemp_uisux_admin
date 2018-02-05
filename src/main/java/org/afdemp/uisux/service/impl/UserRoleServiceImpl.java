@@ -8,14 +8,17 @@ import org.afdemp.uisux.domain.CreditCard;
 import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
+import org.afdemp.uisux.repository.CreditCardRepository;
 import org.afdemp.uisux.repository.RoleRepository;
 import org.afdemp.uisux.repository.UserRoleRepository;
 import org.afdemp.uisux.service.AccountService;
+import org.afdemp.uisux.service.CreditCardService;
 import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.UserRoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,6 +37,12 @@ public class UserRoleServiceImpl implements UserRoleService{
 	
 	@Autowired
 	private AccountService accountService;
+
+	@Autowired
+	private CreditCardService creditCardService;
+
+	@Autowired
+	private CreditCardRepository creditCardRepository;
 	
 	@Override
 	public boolean createUserRole(UserRole userRole)
@@ -123,7 +132,7 @@ public class UserRoleServiceImpl implements UserRoleService{
 	public void updateBillingAddress(Address billingAddress, CreditCard creditCard, UserRole userRole) {
 		creditCard.setUserRole(userRole);
 		creditCard.setBillingAddress(billingAddress);
-		creditCard.setDefaultCreditCard(true);
+		creditCard.setDefaultCreditCard(false);
 		billingAddress.setCreditCard(creditCard);
 		userRole.getCreditCardList().add(creditCard);
 		userRoleRepository.save(userRole);
@@ -133,7 +142,7 @@ public class UserRoleServiceImpl implements UserRoleService{
 	@Override
 	public void updateShippingAddress(Address shippingAddress, UserRole userRole) {
 		shippingAddress.setUserRole(userRole);
-		shippingAddress.setUserShippingDefault(true);
+		shippingAddress.setUserShippingDefault(false);
 		userRole.getUserShippingAddressList().add(shippingAddress);
 		userRoleRepository.save(userRole);
 	}
