@@ -11,18 +11,20 @@
 				<thead>
 					<tr>
 					
-						<th>id</th>
-						<th>withdrawList</th>
-						<th>depositList</th>
+						<th>accountId</th>
+						<th>username</th>
+						<th>Firstname</th>
+						<th>Lastname</th>
 						<th>balance</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr data-th-each="product : ${accountList}">
-						<td th:text="${product.id}"></td>
-						<td th:text="${product.withdrawList}"></td>
-						<td th:text="${product.depositList}"></td>
-						<td th:text="${product.balance}"></td>
+					<tr data-th-each="account : ${userAccountWrapperList}">
+						<td><a th:href="@{/member/memberInfo(id=${account.accountId})}"><span th:text="${account.accountId}"></span></a></td>
+						<td th:text="${account.username}"></td>
+						<td th:text="${account.firstName}"></td>
+						<td th:text="${account.lastName}"></td>
+						<td th:text="${account.balance}"></td>
 						
 						
 					</tr>
