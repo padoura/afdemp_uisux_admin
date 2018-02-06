@@ -160,6 +160,59 @@ $(document).ready(function() {
 
 
 
+
+	$('#shareSel').click(function() {
+		var idList= $('.checkboxproduct');
+		var transactionIdList=[];
+		for (var i = 0; i < idList.length; i++) {
+			if(idList[i].checked==true) {
+				transactionIdList.push(idList[i]['id'])
+			}
+		}
+		
+		console.log(transactionIdList);
+		
+		/*<![CDATA[*/
+	    var path = /*[[@{/}]]*/'sendEarnings';
+	    /*]]>*/
+	    
+	    bootbox.confirm({
+			message: "Are you sure to share this earnings?",
+			buttons: {
+				cancel: {
+					label:'<i class="fa fa-times"></i> Cancel'
+				},
+				confirm: {
+					label:'<i class="fa fa-check"></i> Confirm'
+				}
+			},
+			callback: function(confirmed) {
+				if(confirmed) {
+					$.ajax({
+						type: 'POST',
+						url: path,
+						data: JSON.stringify(transactionIdList),
+						contentType: "application/json",
+						success: function(res) {
+							console.log(res); 
+							location.reload()
+							},
+						error: function(res){
+							console.log(res); 
+							location.reload();
+							}
+					});
+				}
+			}
+		});
+	});
+
+	
+	
+	
+	
+	
+
 	$('#enSel').click(function() {
 		var idList= $('.checkboxproduct');
 		var productIdList=[];
