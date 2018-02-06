@@ -49,7 +49,6 @@ public class MemberController {
 		return "addMember";
 	}
 	
-	//TODO Use services instead
 	@RequestMapping(value="/add", method = RequestMethod.POST)
 	public String newMemberPost(
 			HttpServletRequest request,
@@ -69,12 +68,7 @@ public class MemberController {
 		User member = userService.findByUsername(user.getUsername());
 		if (member != null) {
 			if (!userRoleService.hasThisRole("ROLE_MEMBER", member)) {
-				Role role = new Role();
-				role.setRoleId(1);
-				role.setName("ROLE_MEMBER");
-				UserRole memberRole = new UserRole(member, role);
-				member.getUserRoles().add(memberRole);
-				userService.save(member);
+				userService.addRoleToExistingUser(member, "ROLE_MEMBER");
 				model.addAttribute("addedRoleToExistingUser", true); //no other changes to existing user takes place
 			}else {
 				model.addAttribute("memberAlreadyExistsFailure", true);
