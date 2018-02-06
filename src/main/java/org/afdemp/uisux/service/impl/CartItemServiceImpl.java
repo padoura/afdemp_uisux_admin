@@ -11,10 +11,8 @@ import org.afdemp.uisux.domain.CreditCard;
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.repository.CartItemRepository;
-import org.afdemp.uisux.service.AccountService;
 import org.afdemp.uisux.service.CartItemService;
 import org.afdemp.uisux.service.ClientOrderService;
-import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,17 +28,12 @@ public class CartItemServiceImpl implements CartItemService{
 	private CartItemRepository cartItemRepository;
 	
 	@Autowired
-	private ShoppingCartService shoppingCartService;
-	
-	@Autowired
 	private ClientOrderService clientOrderService;
 	
 	@Autowired
 	private TransactionService transactionService;
 	
-	@Autowired
-	private AccountService accountService;
-	
+		
 	
 	//ShoppingCart,Product CANNOT be null AND qty CANNOT be any value less than 1 (Controller has to check)
 	@Override

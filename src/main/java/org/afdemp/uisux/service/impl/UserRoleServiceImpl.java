@@ -8,17 +8,15 @@ import org.afdemp.uisux.domain.CreditCard;
 import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
-import org.afdemp.uisux.repository.CreditCardRepository;
 import org.afdemp.uisux.repository.RoleRepository;
 import org.afdemp.uisux.repository.UserRoleRepository;
 import org.afdemp.uisux.service.AccountService;
-import org.afdemp.uisux.service.CreditCardService;
 import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.UserRoleService;
+import org.afdemp.uisux.service.WishlistService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,10 +37,7 @@ public class UserRoleServiceImpl implements UserRoleService{
 	private AccountService accountService;
 
 	@Autowired
-	private CreditCardService creditCardService;
-
-	@Autowired
-	private CreditCardRepository creditCardRepository;
+	private WishlistService wishlistService;
 	
 	@Override
 	public boolean createUserRole(UserRole userRole)
@@ -53,6 +48,11 @@ public class UserRoleServiceImpl implements UserRoleService{
 		{	
 			userRole=userRoleRepository.save(userRole);
 			shoppingCartService.createShoppingCart(userRole);
+			
+			if(userRole.getRole().getName()=="ROLE_CLIENT")
+			{
+				wishlistService.createWishlist(userRole);
+			}
 			
 			if(userRole.getRole().getRoleId()==1L)
 			{

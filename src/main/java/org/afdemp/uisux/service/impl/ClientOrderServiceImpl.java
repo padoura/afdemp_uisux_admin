@@ -161,5 +161,5 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 	public ClientOrder findOne(Long id) {
 		return clientOrderRepository.findOne(id);
 	}
-
+	
 }
