@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header2 :: common-header" />
+
+<body>
+	<div th:replace="common/header2 :: navbar" ></div>
+
+	<div class="container">
+	<div class="col-xs-9">
+				<div class="row">
+					<div class="col-xs-6 well">
+						<p><strong>USER INFO </strong></p>
+						
+						<p><strong>id: </strong><span th:text="${user.id}"></span></p>
+						<p><strong>username: </strong><span th:text="${user.username}"></span></p>
+						<p><strong>email: </strong><span th:text="${user.email}"></span></p>
+						<p><strong>phone: </strong><span th:text="${user.phone}"></span></p>
+							
+						</div>
+					<div class="col-xs-6 well">
+						<p><strong>ACCOUNT INFO </strong></p>
+						
+						<p><strong> account id: </strong><span th:text="${account.id}"></span></p>
+						<p><strong>balance: </strong><span th:text="${account.balance}"></span></p>
+					
+					</div>
+				</div>
+				
+				</div>
+			
+		</div>
+
+
+		<div class="row  well">
+			<form class="form-horizontal" th:action="@{/transaction/accountInfo}" method="post"
+				enctype="multipart/form-data">
+				<fieldset>					<!-- title -->
+					<div class="form-group col-md-6">
+						<label class="col-md-1 control-label" for="title">start date</label>
+
+						<div class="col-md-8">
+							<input type="date" name="fromDate" class="form-control" id="fromDate"
+								th:value="${fromDate}"  placeholder="fromDate" required="required" />
+							<span class="help-block">when to start searching</span>
+						</div>
+					</div>
+
+					<div class="form-group col-md-6">
+						<label class="col-md-1 control-label" for="title">end date</label>
+
+						<div class="col-md-8">
+							<input type="date" name="toDate" class="form-control" id="toDate"
+								th:value="${toDate}"  placeholder="toDate" required="required"/>
+							<span class="help-block">end of search</span>
+						</div>
+					</div>
+
+ <!-- <input id="id" name ="id" th:field="*{account.id}"  type="hidden"/>
+ -->
+ <input  name="id" class="form-control" id="id" type="hidden"
+								th:value="${account.id}"   required="required"/>
+
+					<div class="form-group">
+						<div class="col-md-2"></div>
+						<div class="col-md-8">
+							<button type="submit" class="btn btn-success">search</button>
+							<a class="btn btn-danger" th:href="@{/member/memberList}">Cancel</a>
+						</div>
+						
+					</div>
+				</fieldset>
+			</form>
+</div>
+
+	
+		<div class="table-responsive col-md-6">
+			<table id="clientListTable2" class="table table-bordered table-hover table-striped">
+			 <caption>List of withdraws</caption>
+				<thead>
+					<tr>
+						<th>id</th>
+						<th>amount</th>
+						<th>dateTime</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-th-each="client : ${withdrawList}">
+						<td th:text="${client.id}"></td>
+						<td th:text="${client.amount}"></td>
+						<td th:text="${client.dateTime}"></td>
+						
+						
+						
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="table-responsive col-md-6">
+			<table id="clientListTable" class="table table-bordered table-hover table-striped">
+			 <caption>List of deposits</caption>
+			
+				<thead>
+					<tr>
+						<th>id</th>
+						<th>amount</th>
+						<th>dateTime</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-th-each="client : ${depositList}">
+						<td th:text="${client.id}"></td>
+						<td th:text="${client.amount}"></td>
+						<td th:text="${client.dateTime}"></td>
+						
+						
+						
+					</tr>
+				</tbody>
+			</table>
+		
+	
+	</div>
+
+
+
+<!-- 	<button type="button" id="bt1" class="btn btn-info">next</button>
+ -->
+ 
+ 			<div class="row">
+						
+					</div>
+	
+<!--  <button id="btn1">Append text</button><button id="btn2">Previous text</button> -->
+
+<div id="div1">
+</div>
+
+<div class="col-md-8">
+							
+						</div>
+
+	
+	
+	<div th:replace="common/header2 :: body-bottom-scripts" ></div>
+	
+	<script th:inline="javascript">
+	 /*<![CDATA[*/
+
+	 $(document).ready(function(){    
+		 var table= $('#clientListTable').DataTable({
+			   "lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
+				"ordering": false,
+				stateSave: true
+		       
+		    });
+		 var table= $('#clientListTable2').DataTable({
+				   "lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
+					"ordering": false,
+					stateSave: true
+				       
+		    });
+		 
+	    });
+			
+
+	 /*]]>*/   
+	</script>
+	
+	
+</body>
+</html>
