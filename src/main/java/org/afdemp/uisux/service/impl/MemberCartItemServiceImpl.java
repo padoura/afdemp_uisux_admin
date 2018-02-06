@@ -1,5 +1,6 @@
 package org.afdemp.uisux.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -9,10 +10,12 @@ import org.afdemp.uisux.domain.MemberSale;
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.repository.MemberCartItemRepository;
+import org.afdemp.uisux.service.AccountService;
 import org.afdemp.uisux.service.ClientOrderService;
 import org.afdemp.uisux.service.MemberCartItemService;
 import org.afdemp.uisux.service.MemberSaleService;
 import org.afdemp.uisux.service.ProductService;
+import org.afdemp.uisux.service.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,12 @@ public class MemberCartItemServiceImpl implements MemberCartItemService{
 	
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private TransactionService transactionService;
+	
+	@Autowired
+	private AccountService accountService;
 	
 	@Override
 	public MemberCartItem findById(Long memberCartItemId) {
@@ -60,7 +69,7 @@ public class MemberCartItemServiceImpl implements MemberCartItemService{
 		{
 			memberCartItem.setQty(memberCartItem.getQty()+qty);
 			memberCartItem.setCurrentPurchasePrice(memberCartItem.getProduct().getPriceBought());
-			memberCartItemRepository.save(memberCartItem);
+			memberCartItem=memberCartItemRepository.save(memberCartItem);
 			
 			
 			System.out.println("\n\nMemberCartItem modified");
@@ -76,11 +85,15 @@ public class MemberCartItemServiceImpl implements MemberCartItemService{
 		MemberSale memberSale=new MemberSale();
 		memberSale.setUserRole(memberCartItem.getShoppingCart().getUserRole());
 		memberSale.setSubmittedDate(new Date());
+		BigDecimal total=memberCartItem.getCurrentPurchasePrice().multiply(BigDecimal.valueOf(memberCartItem.getQty()));
+		memberSale.setTotal(total);
 		AbstractSale abstractSale=memberSaleService.createMemberSale(memberSale);
 		
 		if(memberCartItemRepository.fullPurchase(memberCartItem.getProduct(),memberCartItem.getShoppingCart(),abstractSale)>0)
 		{
 			productService.restock(memberCartItem.getProduct().getId(), memberCartItem.getQty());
+			
+			transactionService.twoWayTransaction(total, accountService.findAdminAccount(), memberCartItem.getShoppingCart().getUserRole().getAccount(), abstractSale);
 			LOG.info("\n\n\nSUCCESS: Purchase successful\n\n");
 			return true;
 		}
@@ -96,6 +109,9 @@ public class MemberCartItemServiceImpl implements MemberCartItemService{
 			MemberSale memberSale=new MemberSale();
 			memberSale.setUserRole(memberCartItem.getShoppingCart().getUserRole());
 			memberSale.setSubmittedDate(new Date());
+			memberSale.setShippingMethod("Standard Mail");
+			BigDecimal total=memberCartItem.getCurrentPurchasePrice().multiply(BigDecimal.valueOf(qty));
+			memberSale.setTotal(total);
 			AbstractSale abstractSale=memberSaleService.createMemberSale(memberSale);
 			
 			MemberCartItem soldCartItem=new MemberCartItem();
@@ -108,8 +124,9 @@ public class MemberCartItemServiceImpl implements MemberCartItemService{
 			
 			if(soldCartItem!=null)
 			{
+				transactionService.twoWayTransaction(total, accountService.findAdminAccount(), memberCartItem.getShoppingCart().getUserRole().getAccount(), abstractSale);
 				productService.restock(soldCartItem.getProduct().getId(), soldCartItem.getQty());
-				LOG.info("\n\n\nSUCCESS: Purchase of {} successful\n\n",qty);
+				LOG.info("\n\n\nSUCCESS: Purchase of {} units of {} successful\n\n",qty,soldCartItem.getProduct());
 				return true;
 			}
 			

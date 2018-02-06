@@ -18,10 +18,19 @@ public class CreditCardServiceImpl implements CreditCardService {
 	@Override
 	public CreditCard createCreditCard(CreditCard creditCard) {
 		
-		CreditCard tempCard=creditCardRepository.findOne(creditCard.getId());
+		CreditCard tempCard=creditCardRepository.findByCardNumberAndUserRole(creditCard.getCardNumber(),creditCard.getUserRole());
 		if(tempCard==null)
 		{
-			tempCard=creditCard;
+			
+			tempCard=new CreditCard();
+			tempCard.setUserRole(creditCard.getUserRole());
+			tempCard.setBillingAddress(creditCard.getBillingAddress());
+			tempCard.setCardNumber(creditCard.getCardNumber());
+			tempCard.setCvc(creditCard.getCvc());
+			tempCard.setExpiryMonth(creditCard.getExpiryMonth());
+			tempCard.setExpiryYear(creditCard.getExpiryYear());
+			tempCard.setHolderName(creditCard.getHolderName());
+			tempCard.setType(creditCard.getType());
 			tempCard=creditCardRepository.save(creditCard);
 		}
 		

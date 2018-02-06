@@ -16,8 +16,7 @@ public interface ClientOrderRepository extends CrudRepository<ClientOrder, Long>
 	@Query("SELECT c FROM ClientOrder c WHERE c.submittedDate BETWEEN :from AND :to")
     List<ClientOrder> findOrdersFromTo(@Param("from") Timestamp from, @Param("to") Timestamp to);
 	
-	//@Query("SELECT a from SELECT co FROM ClientOrder co INNER JOIN CartItem ci ON co=ci.abstractSale WHERE co.submittedDate BETWEEN :from AND :to AND ci.product=item") 
-	//List<ClientOrder> findOrdersOfProductXFromTo(@Param("from") Timestamp from, @Param("to") Timestamp to,@Param("item") Product product);
+	List<ClientOrder> findByDistributedFalse();
 	
 	
 }

@@ -9,6 +9,6 @@ public interface ShoppingCartService {
 
 	boolean createShoppingCart(UserRole userRole);
 	
-	BigDecimal CalculateGrandTotal(ShoppingCart shoppingCart);
+	
 	
 }

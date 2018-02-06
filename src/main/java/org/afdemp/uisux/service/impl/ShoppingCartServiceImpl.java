@@ -54,18 +54,5 @@ public class ShoppingCartServiceImpl implements ShoppingCartService{
 
 	}
 	
-	@Override
-	public BigDecimal CalculateGrandTotal(ShoppingCart shoppingCart)
-	{
-		BigDecimal grandTotal=BigDecimal.valueOf(0);
-		HashSet<CartItem> itemsInCart=cartItemRepository.findByShoppingCart(shoppingCart);
-		
-		for(CartItem ci: itemsInCart)
-		{
-			grandTotal=grandTotal.add(ci.getProduct().getOurPrice().multiply(BigDecimal.valueOf(ci.getQty())));
-		}
-		
-		return grandTotal;
-	}
-
+	
 }

@@ -1,7 +1,7 @@
 package org.afdemp.uisux.domain;
 
 import java.math.BigDecimal;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -22,10 +22,10 @@ public class Transaction {
 	private BigDecimal amount;
 	private Timestamp dateTime;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@ManyToOne( fetch=FetchType.LAZY)
 	private Account depositAccount;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@ManyToOne( fetch=FetchType.LAZY)
 	private Account withdrawAccount;
 	
 	@ManyToOne

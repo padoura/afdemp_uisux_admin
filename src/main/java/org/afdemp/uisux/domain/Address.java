@@ -26,31 +26,41 @@ public class Address {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	@Column(nullable=false)
+	
 	private String receiverName;
 	
-	@Column(nullable=false)
+	
 	private String street1;
 	private String street2;
 	
-	@Column(nullable=false)
+	
 	private String city;
 	
-	@Column(nullable=false)
 	private String state;
 	
-	@Column(nullable=false)
+	
 	private String country="Greece";
 	
-	@Column(nullable=false)
+	
 	private String zipcode;
 	
 	
 	private boolean userShippingDefault=false;
 	
+	@OneToMany(mappedBy="billingAddress", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	private List<AbstractSale> billingSaleList;
+	
+	@OneToMany(mappedBy="shippingAddress", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	private List<AbstractSale> shippingSaleList;
+	
+	@OneToOne(mappedBy="billingAddress", fetch=FetchType.LAZY)
+	private CreditCard creditCard;
+	
 	@ManyToOne
-	@JoinColumn(name="user_role_id",nullable=false)
+	@JoinColumn(name="user_role_id")
 	private UserRole userRole;
+	
+	
 	
 	public boolean isUserShippingDefault() {
 		return userShippingDefault;
@@ -64,15 +74,7 @@ public class Address {
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
 	}
-	@OneToMany(mappedBy="billingAddress", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	private List<AbstractSale> billingSaleList;
 	
-	@OneToMany(mappedBy="shippingAddress", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	private List<AbstractSale> shippingSaleList;
-	
-	@OneToOne
-	private CreditCard creditCard;
-
 	public CreditCard getCreditCard() {
 		return creditCard;
 	}
@@ -85,16 +87,13 @@ public class Address {
 	public List<AbstractSale> getShippingSaleList() {
 		return shippingSaleList;
 	}
+	
+	public Long getId() {
+		return id;
+	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	
 	public String getReceiverName() {
 		return receiverName;
 	}

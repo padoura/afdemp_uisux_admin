@@ -22,25 +22,25 @@ public class AddressServiceImpl implements AddressService{
 	
 	public Address createAddress(Address address)
 	{
-		if (address.getReceiverName()==null || address.getStreet1()==null || address.getCity()==null || address.getZipcode()==null)
+		if (address.getUserRole()==null || address.getReceiverName()==null || address.getStreet1()==null || address.getCity()==null || address.getZipcode()==null)
 		{
 			LOG.info("\n\n\nFAILURE: Insufficient information passed. Unable to create a valid address.\n\n");
 			return null;
 		}
 		else
 		{
-			Address tempAddress=addressRepository.findByReceiverNameAndStreet1AndCityAndZipcode(address.getReceiverName(), address.getStreet1(), address.getCity(), address.getZipcode());
+			Address tempAddress=addressRepository.findByReceiverNameAndStreet1AndCityAndZipcodeAndUserRole(address.getReceiverName(), address.getStreet1(), address.getCity(), address.getZipcode(),address.getUserRole());
 			if(tempAddress==null) 
 			{
 				tempAddress = new Address();
-				tempAddress.setReceiverName(tempAddress.getReceiverName());
-				tempAddress.setStreet1(tempAddress.getStreet1());
-				tempAddress.setStreet2(tempAddress.getStreet2());
-				tempAddress.setCity(tempAddress.getCity());
-				tempAddress.setState(tempAddress.getState());
-				tempAddress.setCountry(tempAddress.getCountry());
-				tempAddress.setZipcode(tempAddress.getZipcode());
-				addressRepository.save(tempAddress);
+				tempAddress.setReceiverName(address.getReceiverName());
+				tempAddress.setStreet1(address.getStreet1());
+				tempAddress.setStreet2(address.getStreet2());
+				tempAddress.setCity(address.getCity());
+				tempAddress.setState(address.getState());
+				tempAddress.setCountry(address.getCountry());
+				tempAddress.setZipcode(address.getZipcode());
+				tempAddress=addressRepository.save(tempAddress);
 				LOG.info("SUCCESS: Address Succesfully Added!!");
 			}
 			

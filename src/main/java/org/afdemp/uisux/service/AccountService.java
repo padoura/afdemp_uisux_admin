@@ -8,6 +8,8 @@ import org.afdemp.uisux.domain.security.UserRole;
 
 public interface AccountService {
 	
+	Account findAdminAccount();
+	
 	Account createAccount(UserRole userRole, double initialBalance);
 
 	List<Account> findAll();

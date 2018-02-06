@@ -9,8 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.afdemp.uisux.domain.Address;
 import org.afdemp.uisux.domain.Category;
 import org.afdemp.uisux.domain.ClientOrder;
+import org.afdemp.uisux.domain.CreditCard;
 import org.afdemp.uisux.domain.MemberCartItem;
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.domain.ShoppingCart;
@@ -23,9 +25,11 @@ import org.afdemp.uisux.repository.RoleRepository;
 import org.afdemp.uisux.repository.UserRepository;
 import org.afdemp.uisux.repository.UserRoleRepository;
 import org.afdemp.uisux.service.AccountService;
+import org.afdemp.uisux.service.AddressService;
 import org.afdemp.uisux.service.CartItemService;
 import org.afdemp.uisux.service.CategoryService;
 import org.afdemp.uisux.service.ClientOrderService;
+import org.afdemp.uisux.service.CreditCardService;
 import org.afdemp.uisux.service.MemberCartItemService;
 import org.afdemp.uisux.service.ProductService;
 import org.afdemp.uisux.service.ShoppingCartService;
@@ -39,6 +43,9 @@ public class DataGenerator {
 	
 	
 	//===============================Autowire Section=================================
+	
+	@Autowired
+	private AddressService addressService;
 	
 	@Autowired 
 	private ClientOrderService clientOrderService;
@@ -78,6 +85,9 @@ public class DataGenerator {
 
 	@Autowired
 	private MemberCartItemService memberCartItemService;
+	
+	@Autowired
+	private CreditCardService creditCardService;
 	
 	//===============================Function Definitions=================================
 	
@@ -225,7 +235,33 @@ public class DataGenerator {
 	private boolean concludeSale(ShoppingCart shoppingCart)
 	{
 		HashSet<Product> itemsReturned=new HashSet<Product>();
-		itemsReturned=cartItemService.commitSale(shoppingCart);
+		
+		System.out.println("\n\n\n"+shoppingCart.getId()+"\t"+shoppingCart.getUserRole().getUserRoleId()+"\n\n\n");
+		
+		Address address=new Address();
+		address.setCity("Athens");
+		address.setCountry("Greece");
+		address.setReceiverName("George Athanasopoulos");
+		address.setState("None");
+		address.setStreet1("Lysiou 10");
+		address.setStreet2("Nea Smyrni");
+		address.setUserRole(shoppingCart.getUserRole());
+		address.setZipcode("17124");
+		address=addressService.createAddress(address);
+		
+		CreditCard creditCard=new CreditCard();
+		creditCard.setBillingAddress(address);
+		creditCard.setCardNumber("1234-5678-9012-3456");
+		creditCard.setCvc(789);
+		creditCard.setExpiryMonth(3);
+		creditCard.setExpiryYear(2029);
+		creditCard.setType("Mastercard");
+		creditCard.setHolderName("George Athanasopoulos");
+		creditCard.setUserRole(shoppingCart.getUserRole());
+		creditCard=creditCardService.createCreditCard(creditCard);
+		
+		
+		itemsReturned=cartItemService.commitSale(shoppingCart,creditCard,address,address,"UPS Expedited Air Mail");
 		System.out.println("\n\n");
 		for(Product p:itemsReturned)
 		{
@@ -247,6 +283,8 @@ public class DataGenerator {
 		cartItemService.addToCart(shoppingCart,product,qty);
 	}
 
+	
+	
 	
 	private void insertProductAndRemoveCategory() throws Exception {
 		insertExampleProduct();
@@ -364,12 +402,12 @@ public class DataGenerator {
 	insertExampleProduct();
 	updateExampleProduct();
 	insertExampleMember();
-	withdrawFromAdminDepositToMadryoch(BigDecimal.valueOf(10000));
 	insertProductAndAddToCartExample();
 	createMemberCartItemForTesting(300, "Madryoch");
 	createMemberCartItemForTesting(300, "member");
 	makeAllMemberCartItemsVisible();
 	
+	accountService.findAdminAccount();
 	}
 
 }

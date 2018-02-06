@@ -1,20 +1,21 @@
 package org.afdemp.uisux.service.impl;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 
 import org.afdemp.uisux.domain.AbstractSale;
-import org.afdemp.uisux.domain.Address;
 import org.afdemp.uisux.domain.ClientOrder;
-import org.afdemp.uisux.domain.CreditCard;
 import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.ClientOrderRepository;
-import org.afdemp.uisux.service.AddressService;
+import org.afdemp.uisux.repository.RoleRepository;
+import org.afdemp.uisux.repository.UserRoleRepository;
+import org.afdemp.uisux.service.AccountService;
 import org.afdemp.uisux.service.ClientOrderService;
+import org.afdemp.uisux.service.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,18 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 	
 	@Autowired
 	private ClientOrderRepository clientOrderRepository;
+	
+	@Autowired
+	private UserRoleRepository userRoleRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
+	private TransactionService transactionService;
+	
+	@Autowired
+	private AccountService accountService;
 	
 	@Override
 	public AbstractSale createClientOrder(ClientOrder clientOrder)
@@ -120,15 +133,25 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 	}
 
 	@Override
-	public List<ClientOrder> findAllUndistributedEarnings() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ClientOrder> findAllUndistributedEarnings()
+	{
+		return clientOrderRepository.findByDistributedFalse();	
 	}
-
+	
 	@Override
 	public void distributeEarningsToAllMembers(Long clientOrderId) {
-		// TODO Auto-generated method stub
-		
+
+		ArrayList<UserRole> members=userRoleRepository.findByRole(roleRepository.findByName("ROLE_MEMBER"));
+		int divisor=members.size();
+		ClientOrder clientOrder=clientOrderRepository.findOne(clientOrderId);
+		if (divisor!=0)
+		{
+			BigDecimal amount=clientOrder.getTotal().divide(BigDecimal.valueOf(2)).divide(BigDecimal.valueOf(divisor));
+			for(UserRole usr:members)
+			{
+				transactionService.twoWayTransaction(amount, accountService.findAdminAccount(), usr.getAccount(), clientOrder);
+			}
+		}
 	}
 
 	@Override
