@@ -2,6 +2,7 @@ package org.afdemp.uisux.service.impl;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
@@ -22,8 +23,8 @@ public class MemberSaleServiceImpl implements MemberSaleService{
 	@Override
 	public AbstractSale createMemberSale(MemberSale memberSale)
 	{
-		Date submittedDate=Date.valueOf(LocalDate.now());
-		memberSale.setSubmittedDate(submittedDate);
+		
+		memberSale.setSubmittedDate(Timestamp.valueOf(LocalDateTime.now()));
 		memberSale.setSaleStatus("Pending");
 		
 		memberSaleRepository.save(memberSale);

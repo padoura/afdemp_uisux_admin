@@ -144,7 +144,7 @@ public class DataGenerator {
 		
 		Product product = new Product();
 		product.setDescription("Awesome Choco Milk!");
-		product.setInStockNumber(10L);
+		product.setInStockNumber(152L);
 		product.setListPrice(BigDecimal.valueOf(1.50));
 		product.setMadeIn("Keramia Crete");
 		product.setName("Choco Milk 1L");
@@ -161,7 +161,7 @@ public class DataGenerator {
 		UserRole userRole=userRoleRepository.findByRoleAndUser(role, user);
 				
 		
-		insertCartItem(userRole.getShoppingCart(), product, 5);
+		insertCartItem(userRole.getShoppingCart(), product, 50);
 		
 		concludeSale(userRole.getShoppingCart());
 		

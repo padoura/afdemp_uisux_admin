@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +46,8 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 	public AbstractSale createClientOrder(ClientOrder clientOrder)
 	{
 		
-		Date submittedDate=Date.valueOf(LocalDate.now());
-		clientOrder.setSubmittedDate(submittedDate);
+		
+		clientOrder.setSubmittedDate(Timestamp.valueOf(LocalDateTime.now()));
 		clientOrder.setOrderStatus("Processing");
 		
 		clientOrderRepository.save(clientOrder);
@@ -161,5 +162,5 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 	public ClientOrder findOne(Long id) {
 		return clientOrderRepository.findOne(id);
 	}
-
+	
 }
