@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/transaction")
@@ -52,39 +53,36 @@ public class TransactionController {
 	
 	
 	@RequestMapping(value = "/accountInfo", method = RequestMethod.GET)
-	public String accountInfo(@RequestParam("id") Long id, Model model) {
+	public String accountInfo(@RequestParam("id") Long id,
+			@RequestParam("fromDate") String fromDate,
+			@RequestParam("toDate") String toDate,
+			Model model) {
+		
 		Account account = accountService.findOne(id);
 		
-		
 		List<Transaction> withdrawList = transactionService.fetchAccountWithdrawsByPeriod(account, Timestamp.valueOf(
-		LocalDate.now().minusDays(6).atStartOfDay()), Timestamp.valueOf(LocalDate.now().atTime(23, 59, 59)));
+				LocalDate.parse(fromDate).atStartOfDay()), Timestamp.valueOf(LocalDate.parse(toDate).atTime(23, 59, 59)));
 		
 		List<Transaction> depositList = transactionService.fetchAccountDepositsByPeriod(account, Timestamp.valueOf(
-		LocalDate.now().minusDays(6).atStartOfDay()), Timestamp.valueOf(LocalDate.now().atTime(23, 59, 59)));
+				LocalDate.parse(fromDate).atStartOfDay()), Timestamp.valueOf(LocalDate.parse(toDate).atTime(23, 59, 59)));
 		
-		model.addAttribute("user", account.getUserRole().getUser());
-		model.addAttribute("account", account);
 		model.addAttribute("withdrawList", withdrawList);
 		model.addAttribute("depositList", depositList);
+		model.addAttribute("user", account.getUserRole().getUser());
+		model.addAttribute("account", account);
 		return "accountInfo";
 	}
 	
 	@RequestMapping(value = "/accountInfo", method = RequestMethod.POST)
 	public String searchAccountInfoByPeriod(@ModelAttribute("id") Long id,
 			@ModelAttribute("fromDate") String fromDate,
-			@ModelAttribute("toDate") String toDate, Model model) {
-		Account account = accountService.findOne(id);
+			@ModelAttribute("toDate") String toDate,
+			RedirectAttributes redirect) {
 		
-		List<Transaction> withdrawList = transactionService.fetchAccountWithdrawsByPeriod(account, Timestamp.valueOf(
-				LocalDate.parse(fromDate).atStartOfDay()), Timestamp.valueOf(LocalDate.parse(toDate).atTime(23, 59, 59)));
-		
-		List<Transaction> depositList = transactionService.fetchAccountDepositsByPeriod(account, Timestamp.valueOf(
-				LocalDate.parse(fromDate).atStartOfDay()), Timestamp.valueOf(LocalDate.parse(toDate).atTime(23, 59, 59)));
-		
-		model.addAttribute("account", account);
-		model.addAttribute("withdrawList", withdrawList);
-		model.addAttribute("depositList", depositList);
-		return "redirect:/transaction/accountInfo?id="+account.getId();
+		redirect.addAttribute("id", id);
+		redirect.addAttribute("fromDate", fromDate);
+		redirect.addAttribute("toDate", toDate);
+		return "redirect:/transaction/accountInfo";
 	}
 	
 	@RequestMapping(value = "/sendEarnings", method = RequestMethod.GET)
