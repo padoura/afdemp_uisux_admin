@@ -31,7 +31,7 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public List<Transaction> fetchAccountWithdrawsByPeriod(Account withdrawAccount, Timestamp from, Timestamp to) {
 		List<Transaction> transactionList=transactionRepository.findByWithdrawAccountAndDateTimeBetween(withdrawAccount, from, to);
-		return null;
+		return transactionList;
 	}
 
 	@Override
