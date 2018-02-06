@@ -22,7 +22,7 @@
 				<tbody>
 					<tr data-th-each="account : ${userAccountWrapperList}">
 						
-						<td><a th:href="@{/transaction/accountInfo(id=${account.accountId},id=${account.userId}, fromDate=${#dates.format(#dates.createNow(), 'mm-dd-yyyy')}, toDate=${#dates.format(#dates.createNow(), 'mm-dd-yyyy')})}"><span th:text="${account.accountId}"></span></a></td>
+						<td><a th:href="@{/transaction/accountInfo(id=${account.accountId}, fromDate=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, toDate=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')})}"><span th:text="${account.accountId}"></span></a></td>
 						<td><a th:href="@{/member/memberInfo(id=${account.userId})}"><span th:text="${account.userId}"></span></a></td>
 						<td th:text="${account.username}"></td>
 						<td th:text="${account.firstName}"></td>
