@@ -13,6 +13,8 @@ public class UserAccountWrapper {
 	private String lastName;
 	
 	private Long accountId;
+	
+	private Long userId;
 
 	private BigDecimal balance;
 
@@ -22,6 +24,7 @@ public class UserAccountWrapper {
 		this.lastName = user.getLastName();
 		this.accountId = account.getId();
 		this.balance = account.getBalance();
+		this.userId = user.getId();
 	}
 
 	public String getUsername() {
@@ -30,6 +33,14 @@ public class UserAccountWrapper {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public String getFirstName() {

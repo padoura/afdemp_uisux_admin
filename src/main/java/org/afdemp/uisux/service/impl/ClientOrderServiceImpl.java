@@ -151,6 +151,9 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 			{
 				transactionService.twoWayTransaction(amount, accountService.findAdminAccount(), usr.getAccount(), clientOrder);
 			}
+			
+			clientOrder.setDistributed(true);
+			clientOrderRepository.save(clientOrder);
 		}
 	}
 
