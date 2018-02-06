@@ -28,15 +28,15 @@ public class TransactionServiceImpl implements TransactionService {
 	private TransactionRepository transactionRepository;
 
 	@Override
-	public List<Transaction> fetchAccountWithdrawsByPeriod(Account account, Timestamp from, Timestamp to) {
-		// TODO Auto-generated method stub
+	public List<Transaction> fetchAccountWithdrawsByPeriod(Account withdrawAccount, Timestamp from, Timestamp to) {
+		List<Transaction> transactionList=transactionRepository.findByWithdrawAccountAndDateTimeBetween(withdrawAccount, from, to);
 		return null;
 	}
 
 	@Override
-	public List<Transaction> fetchAccountDepositsByPeriod(Account account, Timestamp from, Timestamp to) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Transaction> fetchAccountDepositsByPeriod(Account depositAccount, Timestamp from, Timestamp to) {
+		List<Transaction> transactionList=transactionRepository.findByDepositAccountAndDateTimeBetween(depositAccount, from, to);
+		return transactionList;
 	}
 
 	@Override

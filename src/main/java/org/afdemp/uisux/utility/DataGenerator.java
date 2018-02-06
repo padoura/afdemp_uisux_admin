@@ -249,8 +249,6 @@ public class DataGenerator {
 		address.setZipcode("17124");
 		address=addressService.createAddress(address);
 		
-		System.out.println("\n\n\n"+shoppingCart.getUserRole()+"\t"+address+"\n\n\n");
-		
 		CreditCard creditCard=new CreditCard();
 		creditCard.setBillingAddress(address);
 		creditCard.setCardNumber("1234-5678-9012-3456");
@@ -263,7 +261,7 @@ public class DataGenerator {
 		creditCard=creditCardService.createCreditCard(creditCard);
 		
 		
-		itemsReturned=cartItemService.commitSale(shoppingCart, creditCard, address, address, "UPS Expedited Air Mail");
+		itemsReturned=cartItemService.commitSale(shoppingCart,creditCard,address,address,"UPS Expedited Air Mail");
 		System.out.println("\n\n");
 		for(Product p:itemsReturned)
 		{

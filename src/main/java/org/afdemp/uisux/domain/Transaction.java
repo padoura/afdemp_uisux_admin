@@ -24,10 +24,10 @@ public class Transaction {
 	
 	private Date dateTime;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@ManyToOne( fetch=FetchType.LAZY)
 	private Account depositAccount;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@ManyToOne( fetch=FetchType.LAZY)
 	private Account withdrawAccount;
 	
 	@ManyToOne

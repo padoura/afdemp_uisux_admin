@@ -15,6 +15,6 @@ public interface CartItemService {
 	
 	boolean emptyCart(Long shoppingCartId);
 	
-	HashSet<Product> commitSale(ShoppingCart shoppingCart,CreditCard creditCard,Address billingAddress,Address shippingAddress, String shippingMethod);
+	HashSet<Product> commitSale(ShoppingCart shoppingCart,CreditCard creditCard,Address billingAddress,Address shippingAddress,String shippingMethod);
 	
 }

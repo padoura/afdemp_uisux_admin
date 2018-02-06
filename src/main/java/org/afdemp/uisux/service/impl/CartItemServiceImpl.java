@@ -11,6 +11,7 @@ import org.afdemp.uisux.domain.CreditCard;
 import org.afdemp.uisux.domain.Product;
 import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.repository.CartItemRepository;
+import org.afdemp.uisux.service.AccountService;
 import org.afdemp.uisux.service.CartItemService;
 import org.afdemp.uisux.service.ClientOrderService;
 import org.afdemp.uisux.service.ShoppingCartService;
@@ -36,6 +37,9 @@ public class CartItemServiceImpl implements CartItemService{
 	
 	@Autowired
 	private TransactionService transactionService;
+	
+	@Autowired
+	private AccountService accountService;
 	
 	
 	//ShoppingCart,Product CANNOT be null AND qty CANNOT be any value less than 1 (Controller has to check)
@@ -68,7 +72,7 @@ public class CartItemServiceImpl implements CartItemService{
 	}
 	
 	@Override
-	public HashSet<Product> commitSale(ShoppingCart shoppingCart,CreditCard creditCard,Address billingAddress,Address shippingAddress, String shippingMethod)
+	public HashSet<Product> commitSale(ShoppingCart shoppingCart,CreditCard creditCard, Address billingAddress,Address shippingAddress,String shippingMethod)
 	{
 		AbstractSale abstractSale=new ClientOrder();
 		HashSet<Product> itemsUnavailable=new HashSet<Product>();
@@ -92,13 +96,14 @@ public class CartItemServiceImpl implements CartItemService{
 		}
 		else
 		{
+			BigDecimal total=CalculateGrandTotal(itemsInCart);
 			ClientOrder clientOrder=new ClientOrder();
 			clientOrder.setUserRole(shoppingCart.getUserRole());
-			clientOrder.setTotal(CalculateGrandTotal(itemsInCart));
+			clientOrder.setTotal(total);
 			clientOrder.setBillingAddress(billingAddress);
 			clientOrder.setShippingAddress(shippingAddress);
-			clientOrder.setCreditCard(creditCard);
 			clientOrder.setShippingMethod(shippingMethod);
+			clientOrder.setCreditCard(creditCard);
 			abstractSale=clientOrderService.createClientOrder(clientOrder);
 			for(CartItem ci: itemsInCart)
 			{
@@ -107,7 +112,8 @@ public class CartItemServiceImpl implements CartItemService{
 				ci.setAbstractSale(abstractSale);
 				cartItemRepository.save(ci);
 			}
-			transactionService.oneWayTransaction(clientOrder.getTotal(), abstractSale);
+			transactionService.oneWayTransaction(total, abstractSale);
+			
 			
 			return itemsUnavailable;
 		}
@@ -121,7 +127,7 @@ public class CartItemServiceImpl implements CartItemService{
 			LOG.info("\n\nSUCCESS: Removed cartItem {} from shoppingCart\n",id);
 			return true;
 		}
-		LOG.info("\n\nFAILURE: Removing cartItem {} failed miserably.",id);
+		LOG.info("\n\nFAILURE: Removing cartItem {} failed miserably.\n",id);
 		return false;
 	}
 	
