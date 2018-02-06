@@ -12,6 +12,7 @@
 					<tr>
 					
 						<th>accountId</th>
+						<th>memberId</th>
 						<th>username</th>
 						<th>Firstname</th>
 						<th>Lastname</th>
@@ -20,7 +21,9 @@
 				</thead>
 				<tbody>
 					<tr data-th-each="account : ${userAccountWrapperList}">
-						<td><a th:href="@{/member/memberInfo(id=${account.accountId})}"><span th:text="${account.accountId}"></span></a></td>
+						
+						<td><a th:href="@{/transaction/accountInfo(id=${account.accountId})}"><span th:text="${account.accountId}"></span></a></td>
+						<td><a th:href="@{/member/memberInfo(id=${account.userId})}"><span th:text="${account.userId}"></span></a></td>
 						<td th:text="${account.username}"></td>
 						<td th:text="${account.firstName}"></td>
 						<td th:text="${account.lastName}"></td>
@@ -30,12 +33,17 @@
 					</tr>
 				</tbody>
 			</table>
-	</div> <div class="jumbotron">
-        <form method="POST" th:action="@{/}">
+	</div> <!-- <div class="jumbotron">
+        <form method="POST" th:action="@{/accountInfo"}">
         
 	<button type="submit" class="btn btn-primary btn-lg">Click to share the money(earnings)</button>
 	</form>
-	</div>
+	<a th:href="@{/transaction/accountInfo(id=${account.userId})}"><span >click here to share the profits</span></a>
+	</div> -->
+	<div class="jumbotron">
+        
+	<a th:href="@{/transaction/sendEarnings}"><span >click here to share the profits</span></a>
+	</div> 
 	
 	</div>
 	<div th:replace="common/header2 :: body-bottom-scripts"></div> 
