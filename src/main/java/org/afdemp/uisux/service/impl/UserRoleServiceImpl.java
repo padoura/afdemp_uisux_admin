@@ -52,9 +52,7 @@ public class UserRoleServiceImpl implements UserRoleService{
 			if(userRole.getRole().getName()=="ROLE_CLIENT")
 			{
 				wishlistService.createWishlist(userRole);
-			}
-			
-			if(userRole.getRole().getRoleId()==1L)
+			}else if(userRole.getRole().getRoleId()==1L)
 			{
 				accountService.createAccount(userRole, 0.00);
 			}
