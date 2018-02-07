@@ -1,10 +1,9 @@
 package org.afdemp.uisux.service.impl;
 
-import java.util.HashSet;
+
 import java.util.Set;
 
-import org.afdemp.uisux.domain.Address;
-import org.afdemp.uisux.domain.CreditCard;
+
 import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.security.PasswordResetToken;
 import org.afdemp.uisux.domain.security.Role;
@@ -13,7 +12,6 @@ import org.afdemp.uisux.repository.PasswordResetTokenRepository;
 import org.afdemp.uisux.repository.RoleRepository;
 import org.afdemp.uisux.repository.UserRepository;
 import org.afdemp.uisux.service.RoleService;
-import org.afdemp.uisux.service.ShoppingCartService;
 import org.afdemp.uisux.service.UserRoleService;
 import org.afdemp.uisux.service.UserService;
 import org.slf4j.Logger;
@@ -26,8 +24,7 @@ public class UserServiceImpl implements UserService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 	
-	@Autowired
-	private ShoppingCartService shoppingCartService;
+	
 	@Autowired
 	private UserRepository userRepository;
 	
