@@ -22,9 +22,9 @@
 					<tr>
 						<th>Status</th>
 						<th>Id</th>
-						<th>submittedDate</th>
-						<th>shippingDate</th>
-						<th>shippingMethod</th>
+						<th>Submitted Date</th>
+						<th>Shipping Date</th>
+						<th>Shipping Method</th>
 						<th>Total</th>
 					</tr>
 				</thead>
@@ -53,7 +53,7 @@
 				enctype="multipart/form-data">
 				<fieldset>					<!-- title -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="title">start date</label>
+						<label class="col-md-2 control-label" for="title">Start Date</label>
 
 						<div class="col-md-8">
 							<input type="date" name="fromDate" class="form-control" id="fromDate"
@@ -63,7 +63,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="title">end date</label>
+						<label class="col-md-2 control-label" for="title">End Date</label>
 
 						<div class="col-md-8">
 							<input type="date" name="toDate" class="form-control" id="toDate"
@@ -78,7 +78,7 @@
 					<div class="form-group">
 						<div class="col-md-2"></div>
 						<div class="col-md-8">
-							<button type="submit" class="btn btn-success">search</button>
+							<button type="submit" class="btn btn-success">Search</button>
 							<a class="btn btn-danger" th:href="@{/member/memberList}">Cancel</a>
 						</div>
 						
@@ -91,13 +91,13 @@
  		<div class="container" id="seeDiagramms">
   <div class="jumbotron">
         
-    <p>if you want to see the results in diagramms navigate with the buttons bellow the diagramms will dipslay next/previous 20 results</p>
+    <p>If you want to see the results in diagrams, navigate with the buttons below. The diagrams will display the next/previous 20 results.</p>
   			<div class="col-md-2"></div>
 						<div class="col-md-2">
-							<button type="button" id="btn2" class="btn btn-danger">previous diagramm</button>
+							<button type="button" id="btn2" class="btn btn-danger">Previous Diagram</button>
 						</div>
 						<div class="col-md-2">
-							<button type="button" id="btn1" class="btn btn-success">next diagramm</button>
+							<button type="button" id="btn1" class="btn btn-success">Next Diagram</button>
 						</div>
 			
   </div>

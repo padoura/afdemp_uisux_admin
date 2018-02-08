@@ -11,12 +11,12 @@
 				<thead>
 					<tr>
 					
-						<th>accountId</th>
-						<th>memberId</th>
-						<th>username</th>
-						<th>Firstname</th>
-						<th>Lastname</th>
-						<th>balance</th>
+						<th>Account ID</th>
+						<th>Member ID</th>
+						<th>Username</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Balance</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -28,7 +28,6 @@
 						<td th:text="${account.firstName}"></td>
 						<td th:text="${account.lastName}"></td>
 						<td th:text="${account.balance}"></td>
-						
 						
 					</tr>
 				</tbody>
@@ -42,7 +41,7 @@
 	</div> -->
 	<div class="jumbotron">
         
-	<a th:href="@{/transaction/sendEarnings}"><span >click here to share the profits</span></a>
+	<a th:href="@{/transaction/sendEarnings}"><span >Click here to share the profits</span></a>
 	</div> 
 	
 	</div>
