@@ -148,7 +148,7 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 		ClientOrder clientOrder=clientOrderRepository.findOne(clientOrderId);
 		if (divisor!=0)
 		{
-			BigDecimal amount=clientOrder.getTotal().divide(BigDecimal.valueOf(2)).divide(BigDecimal.valueOf(divisor));
+			BigDecimal amount=clientOrder.getTotal().divide(BigDecimal.valueOf(divisor*2), 2,  BigDecimal.ROUND_HALF_UP);
 			for(UserRole usr:members)
 			{
 				transactionService.twoWayTransaction(amount, accountService.findAdminAccount(), usr.getAccount(), clientOrder);
