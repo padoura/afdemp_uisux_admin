@@ -49,7 +49,7 @@ public class UserRoleServiceImpl implements UserRoleService{
 			userRole=userRoleRepository.save(userRole);
 			shoppingCartService.createShoppingCart(userRole);
 			
-			if(userRole.getRole().getName()=="ROLE_CLIENT")
+			if(userRole.getRole().getRoleId()==2L)
 			{
 				wishlistService.createWishlist(userRole);
 			}else if(userRole.getRole().getRoleId()==1L)

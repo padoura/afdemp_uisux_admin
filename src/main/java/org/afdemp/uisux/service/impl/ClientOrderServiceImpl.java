@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.afdemp.uisux.domain.AbstractSale;
+import org.afdemp.uisux.domain.CartItem;
 import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.ClientOrderRepository;

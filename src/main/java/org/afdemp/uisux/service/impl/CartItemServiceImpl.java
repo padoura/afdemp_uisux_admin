@@ -2,6 +2,7 @@ package org.afdemp.uisux.service.impl;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 
 import org.afdemp.uisux.domain.AbstractSale;
 import org.afdemp.uisux.domain.Address;
@@ -195,6 +196,11 @@ public class CartItemServiceImpl implements CartItemService{
 		}
 		
 		return grandTotal;
+	}
+	
+	@Override
+	public List<CartItem> findByAbstractSale(AbstractSale abstractSale) {
+		return cartItemRepository.findByAbstractSale(abstractSale);
 	}
 	
 }
