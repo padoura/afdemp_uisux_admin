@@ -8,7 +8,7 @@
 <div id="success" >
 
 </div>
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<form class="form-horizontal" th:action="@{/member/add}" method="post"
 				enctype="multipart/form-data">
@@ -24,7 +24,7 @@
 
 					<!-- title -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="title">*UserName</label>
+						<label class="col-md-2 control-label" for="title">*Username</label>
 
 						<div class="col-md-8">
 							<input type="text" name="username" class="form-control" id="username"
@@ -33,7 +33,7 @@
 						</div>
 					</div>
 					<!-- title -->
-					<div class="form-group">
+					<!-- <div class="form-group">
 						<label class="col-md-2 control-label" for="title">*password</label>
 
 						<div class="col-md-8">
@@ -41,10 +41,10 @@
 								th:value="${user.password}" required="required" placeholder="password" />
 							<span class="help-block">pass</span>
 						</div>
-					</div>
+					</div> -->
 					<!-- title -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="title">*firstName</label>
+						<label class="col-md-2 control-label" for="title">*First Name</label>
 
 						<div class="col-md-8">
 							<input type="text" name="firstName" class="form-control" id="firstName"
@@ -54,7 +54,7 @@
 					</div>
 					<!-- title -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="title">*lastName</label>
+						<label class="col-md-2 control-label" for="title">*Last Name</label>
 
 						<div class="col-md-8">
 							<input type="text" name="lastName" class="form-control" id="lastName"
@@ -64,17 +64,17 @@
 					</div>
 					<!-- title -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="title">*email</label>
+						<label class="col-md-2 control-label" for="title">*Email</label>
 
 						<div class="col-md-8">
-							<input type="text" name="email" class="form-control" id="email"
+							<input type="email" name="email" class="form-control" id="email"
 								th:value="${user.email}" required="required" placeholder="email" />
 							<span class="help-block">email</span>
 						</div>
 					</div>
 					<!-- title -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="title">phone</label>
+						<label class="col-md-2 control-label" for="title">Phone</label>
 
 						<div class="col-md-8">
 							<input type="text" name="phone" class="form-control" id="phone"
@@ -105,14 +105,33 @@
 
 <script th:inline="javascript" >
 var message = [[${classActiveNewAccount}]];
+var message1 = [[${memberAlreadyExistsFailure}]];
+var message2 = [[${emailAlreadyExistsFailure}]];
+
 $(document).ready(function(){
+if(message1!=null||message2!=null){
 	
-	if(message==null ||message==false){
-		
+	if(message1==true){
+		$("#success").append("<h1>member already exist</h1>");
+		}
+	if(message2==true){
+		$("#success").append("<h1>mail already exist</h1>");
+		}
+}
+else{
+if( message!=null ){
+	if(message==true){
+	$("#success").append("<h1>User added!</h1>");
 	}
-	else{
-		$("#success").append("<h1>user added </h1>");
-	}
+}
+}
+	
+var delayInMilliseconds = 6000; //1 second
+
+setTimeout(function() {
+	$("#success").remove();
+  //your code to be executed after 1 second
+}, delayInMilliseconds);
 });
 
 </script>

@@ -1,413 +1,229 @@
 package org.afdemp.uisux.utility;
 
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.afdemp.uisux.domain.Address;
 import org.afdemp.uisux.domain.Category;
-import org.afdemp.uisux.domain.ClientOrder;
-import org.afdemp.uisux.domain.CreditCard;
-import org.afdemp.uisux.domain.MemberCartItem;
 import org.afdemp.uisux.domain.Product;
-import org.afdemp.uisux.domain.ShoppingCart;
 import org.afdemp.uisux.domain.User;
 import org.afdemp.uisux.domain.security.Role;
 import org.afdemp.uisux.domain.security.UserRole;
-import org.afdemp.uisux.repository.ClientOrderRepository;
-import org.afdemp.uisux.repository.ProductRepository;
+import org.afdemp.uisux.repository.CategoryRepository;
 import org.afdemp.uisux.repository.RoleRepository;
-import org.afdemp.uisux.repository.UserRepository;
-import org.afdemp.uisux.repository.UserRoleRepository;
-import org.afdemp.uisux.service.AccountService;
-import org.afdemp.uisux.service.AddressService;
-import org.afdemp.uisux.service.CartItemService;
 import org.afdemp.uisux.service.CategoryService;
-import org.afdemp.uisux.service.ClientOrderService;
-import org.afdemp.uisux.service.CreditCardService;
-import org.afdemp.uisux.service.MemberCartItemService;
 import org.afdemp.uisux.service.ProductService;
-import org.afdemp.uisux.service.ShoppingCartService;
+import org.afdemp.uisux.service.RoleService;
 import org.afdemp.uisux.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class DataGenerator {
+public class DataGenerator 
+{
 	
 	
-	//===============================Autowire Section=================================
+	//================================ Autowired Repositories ================================
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	@Autowired
-	private AddressService addressService;
+	private CategoryRepository categoryRepository;
 	
-	@Autowired 
-	private ClientOrderService clientOrderService;
+	//=================================  Autowired Services  =================================
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
-	private AccountService accountService;
-	
-	@Autowired
-	private ProductService productService;
+	private RoleService roleService;
 	
 	@Autowired
 	private CategoryService categoryService;
 	
 	@Autowired
-	private CartItemService cartItemService;
+	private ProductService productService;
 	
-	@Autowired
-	private UserService userService;
+	//=========================== Functions Declarations ============================
 	
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private UserRoleRepository userRoleRepository;
-	
-	@Autowired
-	private ShoppingCartService shoppingCartService;
-	
-	@Autowired
-	private RoleRepository roleRepository;
-	
-	@Autowired
-	private ProductRepository productRepository;
-
-	@Autowired
-	private ClientOrderRepository clientOrderRepository;
-
-	@Autowired
-	private MemberCartItemService memberCartItemService;
-	
-	@Autowired
-	private CreditCardService creditCardService;
-	
-	//===============================Function Definitions=================================
-	
-	
-	private void insertSomeCategories() {
-		Category fruits = new Category("Fruits");
-		categoryService.createCategory(fruits);
-		Category vegetables = new Category("Vegetables");
-		categoryService.createCategory(vegetables);
-		Category vegetable = new Category("Vegetables");
-		categoryService.createCategory(vegetable);
+	private void createRoles()
+	{
+		Role roleAdmin= new Role();
+		roleAdmin.setRoleId(0);
+		roleAdmin.setName("ROLE_ADMIN");
+		roleService.createRole(roleAdmin);
+		
+		Role roleMember= new Role();
+		roleMember.setRoleId(1);
+		roleMember.setName("ROLE_MEMBER");
+		roleService.createRole(roleMember);
+		
+		Role roleClient= new Role();
+		roleClient.setRoleId(2);
+		roleClient.setName("ROLE_CLIENT");
+		roleService.createRole(roleClient);
 	}
-
-	private void insertFirstAdmin() throws Exception {
-		User user1 = new User();
-		user1.setUsername("admin");
-		user1.setPassword(SecurityUtility.passwordEncoder().encode("admin"));
-		user1.setEmail("whatever@xxx.tv");
+	
+	private void createAdmin() throws Exception
+	{
+		User admin = new User();
+		admin.setUsername("admin");
+		admin.setPassword(SecurityUtility.passwordEncoder().encode("admin"));
+		admin.setEmail("whatever@xxx.tv");
 		Set<UserRole> userRoles = new HashSet<>();
-		Role role1= new Role();
-		role1.setRoleId(0);
-		role1.setName("ROLE_ADMIN");
-		userRoles.add(new UserRole(user1, role1));
+		Role adminRole=roleRepository.findByName("ROLE_ADMIN");
+		userRoles.add(new UserRole(admin, adminRole));
 		
-		userService.createUser(user1, userRoles);
-				
-		}
-	
-	private void insertExampleProduct() throws Exception {
-		Product product = new Product();
-		product.setDescription("Awesome Choco Milk!");
-		product.setInStockNumber(10L);
-		product.setListPrice(BigDecimal.valueOf(1.50));
-		product.setMadeIn("Keramia Crete");
-		product.setName("Choco Milk 0.5L");
-		product.setOurPrice(BigDecimal.valueOf(0.90));
-		product.setPriceBought(BigDecimal.valueOf(0.30));
-		product.setActive(true);
-		
-		String type = "Milk";
-		productService.createProduct(product, type);
+		userService.createUser(admin, userRoles);
 	}
 	
-	private void updateExampleProduct() throws Exception {
-		Product product = productService.findOne(1L);
-		product.setMadeIn("China");
-		String type = "GTP Milk";
-		productService.createProduct(product, type);
-	}
-	
-	private Product insertProductAndAddToCartExample() throws Exception {
-		
-		
-		
-		Product product = new Product();
-		product.setDescription("Awesome Choco Milk!");
-		product.setInStockNumber(152L);
-		product.setListPrice(BigDecimal.valueOf(1.50));
-		product.setMadeIn("Keramia Crete");
-		product.setName("Choco Milk 1L");
-		product.setOurPrice(BigDecimal.valueOf(0.90));
-		product.setPriceBought(BigDecimal.valueOf(0.30));
-		product.setActive(true);
-		
-		String type = "GTP Milk";
-		product=productService.createProduct(product, type);
-		
-		User user=userRepository.findByUsername("Madryoch");
-		Role role=roleRepository.findByName("ROLE_CLIENT");
-		
-		UserRole userRole=userRoleRepository.findByRoleAndUser(role, user);
-				
-		
-		insertCartItem(userRole.getShoppingCart(), product, 50);
-		
-		concludeSale(userRole.getShoppingCart());
-		
-		ClientOrder clientOrder=new ClientOrder();
-		clientOrder.setId(1L);
-		clientOrderService.updateOrderStatusToShipped(clientOrder);
-		
-		clientOrderService.updateOrderStatusToDelivered(clientOrder);
-		
-		clientOrderService.updateShippingMethod(clientOrder, "Courier");
-		clientOrderService.updateShippingDate(clientOrder, Date.valueOf(LocalDate.now().plusDays(5)));
-		
-		
-		
-		
-		
-		
-		Timestamp from=Timestamp.valueOf(
-				LocalDate.now().minusWeeks(1).atStartOfDay());
-		Timestamp to=Timestamp.valueOf(
-				LocalDate.now().atTime(23, 59, 59));
-		
-		List<ClientOrder> orders=clientOrderService.fetchOrdersByPeriod(from, to);
-		
-		System.out.println("\n\n\n");
-		
-		for (ClientOrder co: orders)
-		{
-			
-			System.out.println(co.getId()+"\t"+co.getTotal());
-			
-		}
-		
-		
-		
-		System.out.println("\n\n\n");
-		
-		return product;
-	}
-	
-	
-	
-	private boolean createMemberCartItemForTesting(int qty, String username)
+	private void createMember(String username, String firstName, String lastName, String phone, String email) throws Exception
 	{
-		Product product=productRepository.findByName("Choco Milk 1L");
-		Role role=roleRepository.findByName("ROLE_MEMBER");
-		User user=userRepository.findByUsername(username);
-		UserRole userRole=userRoleRepository.findByRoleAndUser(role, user);
-		if(memberCartItemService.putUpForSale(product, qty, userRole.getShoppingCart()))
-		{
-//			memberCartItemService.activate(1L);
-			List<MemberCartItem> tempList=memberCartItemService.findAllAvailableItems(2L);
-			for(MemberCartItem mci:tempList)
-			{
-				System.out.println("\n\n\n\n\n"+mci.getProduct().getName()+"\t"+mci.getProduct().getCategory().getType()+"\n\n\n\n\n");
-			}
-			
-			return true;
-		}
-		return false;
-	}
-	
-	private void makeAllMemberCartItemsVisible() {
-		List<MemberCartItem> cartItemList = memberCartItemService.findAll();
+		Role memberRole=roleRepository.findByName("ROLE_MEMBER");
 		
-		for (MemberCartItem ci : cartItemList) {
-			memberCartItemService.activate(ci.getId());
-		}
-	}
-	
-	private boolean concludeSale(ShoppingCart shoppingCart)
-	{
-		HashSet<Product> itemsReturned=new HashSet<Product>();
-		
-		System.out.println("\n\n\n"+shoppingCart.getId()+"\t"+shoppingCart.getUserRole().getUserRoleId()+"\n\n\n");
-		
-		Address address=new Address();
-		address.setCity("Athens");
-		address.setCountry("Greece");
-		address.setReceiverName("George Athanasopoulos");
-		address.setState("None");
-		address.setStreet1("Lysiou 10");
-		address.setStreet2("Nea Smyrni");
-		address.setUserRole(shoppingCart.getUserRole());
-		address.setZipcode("17124");
-		address=addressService.createAddress(address);
-		
-		CreditCard creditCard=new CreditCard();
-		creditCard.setBillingAddress(address);
-		creditCard.setCardNumber("1234-5678-9012-3456");
-		creditCard.setCvc(789);
-		creditCard.setExpiryMonth(3);
-		creditCard.setExpiryYear(2029);
-		creditCard.setType("Mastercard");
-		creditCard.setHolderName("George Athanasopoulos");
-		creditCard.setUserRole(shoppingCart.getUserRole());
-		creditCard=creditCardService.createCreditCard(creditCard);
-		
-		
-		itemsReturned=cartItemService.commitSale(shoppingCart,creditCard,address,address,"UPS Expedited Air Mail");
-		System.out.println("\n\n");
-		for(Product p:itemsReturned)
-		{
-			System.out.println(p.getName());
-		}
-		System.out.println("\n\n");
-		
-		
-		if(itemsReturned.isEmpty())
-		{
-			System.out.println("\n\nClient Order successfully placed!\n\n");
-			return true;
-		}
-		return false;
-	}
-	
-	private void insertCartItem(ShoppingCart shoppingCart,Product product,int qty)
-	{
-		cartItemService.addToCart(shoppingCart,product,qty);
-	}
-
-	
-	
-	
-	private void insertProductAndRemoveCategory() throws Exception {
-		insertExampleProduct();
-		categoryService.removeOne(1L);
-	}
-	
-	private void duplicateCategoryViaProduct() {
-		Product product = new Product();
-		product.setDescription("Awesome Choco Milk!");
-		product.setInStockNumber(10L);
-		product.setListPrice(BigDecimal.valueOf(3));
-		product.setMadeIn("Keramia Crete");
-		product.setName("Choco Milk 1L");
-		product.setOurPrice(BigDecimal.valueOf(1.80));
-		product.setPriceBought(BigDecimal.valueOf(0.60));
-		
-		String type = "Milk";
-		productService.createProduct(product, type);
-		
-		
-	}
-	
-	private void insertExampleMember() throws Exception{
-		Role role1= new Role();
-		role1.setRoleId(1);
-		role1.setName("ROLE_MEMBER");
-		
-		Role role2=new Role();
-		role2.setRoleId(2);
-		role2.setName("ROLE_CLIENT");
-		
-		// Member "member"
-		User user1 = new User();
-		user1.setUsername("member");
-		user1.setPassword(SecurityUtility.passwordEncoder().encode("member"));
-		user1.setEmail("member@fruitsynd.tk");
+		User member = new User();
+		member.setUsername(username);
+		member.setFirstName(firstName);
+		member.setLastName(lastName);
+		member.setPhone(phone);
+		member.setPassword(SecurityUtility.passwordEncoder().encode("member"));
+		member.setEmail(email);
 		Set<UserRole> userRoles = new HashSet<>();
-		userRoles.add(new UserRole(user1, role1));
+		userRoles.add(new UserRole(member, memberRole));
 		
-		userService.createUser(user1, userRoles);
-		
-		
-		// Member-Client "madryoch"
-		User user2=new User();
-        user2.setUsername("madryoch");
-        user2.setPassword(SecurityUtility.passwordEncoder().encode("madryoch"));
-        user2.setEmail("madryoch@gmail.com");
-        userRoles = new HashSet<>();
-        userRoles.add(new UserRole(user2, role2));
-        
-        
-        userService.createUser(user2, userRoles);
-        userService.addRoleToExistingUser(user2,"ROLE_MEMBER");
-        
-        // Client "padoura"
-        User user3=new User();
-        user3.setUsername("padoura");
-        user3.setPassword(SecurityUtility.passwordEncoder().encode("client"));
-        user3.setEmail("padoura21@hotmail.com");
-        userRoles = new HashSet<>();
-        userRoles.add(new UserRole(user3, role2));
-        
-        
-        userService.createUser(user3, userRoles);
-        
+		userService.createUser(member, userRoles);
+		userService.addRoleToExistingUser(member, "ROLE_CLIENT");
 	}
 	
-	@Transactional
-	private boolean withdrawFromAdminDepositToMadryoch(BigDecimal amount)
+	private void createClient(String username, String firstName, String lastName, String phone, String email) throws Exception
 	{
-		UserRole userRole=userRoleRepository.findByRoleAndUser(roleRepository.findByName("ROLE_ADMIN"),userRepository.findByUsername("admin"));
-		if(accountService.withdraw(userRole.getAccount(), amount))
-		{
-			UserRole tempUserRole=userRoleRepository.findByRoleAndUser(roleRepository.findByName("ROLE_MEMBER"),userRepository.findByUsername("madryoch"));
-			accountService.deposit(tempUserRole.getAccount(), amount);
-			return true;
-		}
-		return false;
-	}
-	
-	//TODO use this example to insert sale data in DB when it's ready and make it private
-	public static  List<ClientOrder> getFakeOrderList() 
-	{
-		List<ClientOrder> clientOrderList = new ArrayList<>();
-		for (int i=0; i<35; i++) 
-		{
-				ClientOrder order = new ClientOrder();
-				LocalDate localDate = LocalDate.now().minusDays(120-i);
-				order.setId(Long.valueOf(i));
-				order.setOrderStatus("delivered");
-				order.setSubmittedDate(Date.valueOf(localDate));
-				order.setTotal(randomBigDecimal());
-				order.setShippingDate(Date.valueOf(localDate.plusDays(5)));
-				order.setShippingMethod("Courier");
-				clientOrderList.add(order);
-			
-		}
+		Role clientRole=roleRepository.findByName("ROLE_CLIENT");
 		
-		return clientOrderList;
+		User client = new User();
+		client.setUsername(username);
+		client.setFirstName(firstName);
+		client.setLastName(lastName);
+		client.setPhone(phone);
+		client.setPassword(SecurityUtility.passwordEncoder().encode("client"));
+		client.setEmail(email);
+		Set<UserRole> userRoles = new HashSet<>();
+		userRoles.add(new UserRole(client, clientRole));
+		
+		userService.createUser(client, userRoles);
 	}
 	
-	private static BigDecimal randomBigDecimal() {
-		return BigDecimal.valueOf(Math.random()*10 + Math.random());
+	private void createProductCategory(String type)
+	{
+		Category category=new Category();
+		category.setType(type);
+		categoryService.createCategory(category);
+	}
+	
+	private void createXProduct(String name,String categoryType,String madeIn,String description,BigDecimal listPrice,BigDecimal ourPrice,BigDecimal priceBought)
+	{
+		Product product=new Product();
+		product.setName(name);		
+		product.setMadeIn(madeIn);
+		product.setInStockNumber(1000L);
+		product.setListPrice(listPrice);
+		product.setOurPrice(ourPrice);
+		product.setActive(true);
+		product.setPriceBought(priceBought);
+		product.setDescription(description);
+		productService.createProduct(product, categoryType);
+		
+	}
+	
+	private void createInitialUsers() throws Exception
+	{
+		//----Admin----
+		createAdmin();
+		
+		//----Members----
+		createMember("padoura","Μιχάλης","Παντουράκης","2119122391","padoura@coopmail.gr");
+		createMember("lefteris","Λευτέρης","Μαλινδρέτος","2107348421","emalindretos@coopmail.gr");
+		createMember("madryoch","Γιώργος","Αθανασόπουλος","2109246187","madryoch@coopmail.gr");
+		createMember("panos123","Παναγιώτης","Οικονόμου","2108761121","panos123@coopmail.gr");
+		createMember("kirmanolisopsaras","Δημήτρης","Τσιγουρής","2109361725","kirmanolisopsaras@coopmail.gr");
+		createMember("litsa87","Ευαγγελία","Ραντή","2108416912","litsara@coopmail.gr");
+		createMember("maria","Μαρία","Τσολακίδη","2105521791","maria@coopmail.gr");
+		
+		//----Clients----
+		createClient("alexandros","Αλέξανδρος","Κούρτης","2108733490","akourtis@riggedmail.gr");
+		createClient("alekarios","Αλέξανδρος","Θεοφίλης","2107543281","alekarios@riggedmail.gr");
+		createClient("theofylaktos","Γιώργος","Θεοφύλακτος","2139522735","theofylaktos@riggedmail.gr");
+		createClient("kostas13","Κωνσταντίνος","Σταθόπουλος","2109822761","telemax@riggedmail.gr");
+		createClient("agios90","Άγγελος","Αγιωργήτης","2105765665","agios90@riggedmail.gr");
+		createClient("chrisdal","Χρήστος","Δαλαμήτρας","2119311479","chrisdal@riggedmail.gr");
+		createClient("dimko","Δημήτρης","Κορμαζόγλου","2109717662","dimko@riggedmail.gr");
+		createClient("rozisvasilis","Βασίλης","Ροζής","2103436772","rozisv@riggedmail.gr");
+		createClient("tsaki67","Γιώργος","Τσακίρης","2104241499","tsakichan@riggedmail.gr");
+		createClient("vaso_ll","Βάσω","Λιλιτάκη","2108623482","vaso_ll@riggedmail.gr");
+		createClient("aspmin","Άσπα","Μιναϊδου","2108523541","aspmin@riggedmail.gr");
+		createClient("fountoukidou","Ιωάννα","Φουντουκίδου","","foudoukidou@riggedmail.gr");
+		createClient("AlxT","Αλέξανδρος","Τσότος","2107211987","alxt@riggedmail.gr");
+		createClient("agisilaos90","Αγησίλαος","Γεωργούλιας","2133221957","agisilaos90@riggedmail.gr");
+		createClient("kon.prodromou","Κωνσταντίνος","Προδρόμου","2139982770","kon.prodromou@riggedmail.gr");
+		createClient("dim.orest04","Ορέστης","Δημητριάδης","2108761231","dim.orest04@riggedmail.gr");
+		createClient("gregoryP","Γρηγόρης","Παρασκευάκος","2108123115","paraskevakos@riggedmail.gr");
+		createClient("phaedonkouts","Φαίδων","Κουτσογιαννόπουλος","2108781231","phaedonkouts@riggedmail.gr");
 	}
 	
 	
-
-	
-	//===============================Generate Method=================================
+	private void createInitialProducts()
+	{
+		createXProduct("Αγελαδινό Γάλα 1L","Γάλα","Κρήτη","Πλήρες φρέσκο αγελαδινό γάλα, παστεριωμένο και επιμελώς συσκευασμένο σε συσκευασία του 1L για να διατηρεί την φρεσκάδα του και τα θρεπτικά συστατικά που χρειάζεται καθένας μας για ενα πλήρες πρωινό. Από αγελάδες που τρέφονται με τριφύλλι,καλαμπόκι,κριθάρι και άλλες φυτικές ίνες. Διάρκεια Ζωής 7 ημέρες.",BigDecimal.valueOf(1.98),BigDecimal.valueOf(1.83),BigDecimal.valueOf(0.61));
+		createXProduct("Άπαχο Αγελαδινό Γάλα 1L","Γάλα","Κρήτη","Φρέσκο άπαχο αγελαδινό γάλα, παστεριωμένο ιδανικό για αυτούς και αυτές που προσέχουν την σιλουέτα τους. Διάρκεια Ζωής 7 ημέρες.",BigDecimal.valueOf(2.07),BigDecimal.valueOf(1.89),BigDecimal.valueOf(0.63));
+		createXProduct("Σοκολατούχο Αγελαδινό Γάλα 0.5L","Γάλα","Κρήτη","Πλήρες σοκολατούχο αγελαδινό γάλα, υψηλής παστερίωσης με χρήση εκχυλισμάτων από το φυτό στέβια για γευστική απόλαυση χωρίς ενοχές.",BigDecimal.valueOf(1.25),BigDecimal.valueOf(1.14),BigDecimal.valueOf(0.38));
+		createXProduct("Κατσικίσιο Γάλα 1L","Γάλα","Κρήτη","Αγνό πλήρες κατσικίσιο γάλα, παστεριωμένο και συσκευασμένο σε συσκευασία του 1L. Απευθείας από τους παραγωγούς μας με στόχο πάντα την ποιότητα. Διάρκεια Ζωής 14 ημέρες.",BigDecimal.valueOf(2.35),BigDecimal.valueOf(2.19),BigDecimal.valueOf(0.73));
+		
+		createXProduct("Φέτα ΠΟΠ 1kg","Τυρί","Κρήτη","Τυρί φέτα απευθείας από τους παραγωγούς της περιοχής μας. Εξαιρετική γεύση και ποιότητα.",BigDecimal.valueOf(10.50),BigDecimal.valueOf(8.97),BigDecimal.valueOf(2.72));
+		createXProduct("Κατσικίσια Φέτα ΠΟΠ 0.5kg","Τυρί","Κρήτη","Τυρί φέτα από 100% αγνό κατσικίσιο γάλα που μόνο οι παραγωγοί της περιοχής μας ξέρουν να φτιάχνουν με μεράκι περισσό.",BigDecimal.valueOf(11.47),BigDecimal.valueOf(9.21),BigDecimal.valueOf(3.05));
+		createXProduct("Ανθότυρο 0.5kg","Τυρί","Κρήτη","Ανθοτυρό που λιώνει στο στόμα κατάλληλο να συνοδέψει πολλά φαγητά ή να δώσει έξτρα γεύση στις σπιτικές σας σπανακό/τυρόπιτες ",BigDecimal.valueOf(1.94),BigDecimal.valueOf(1.53),BigDecimal.valueOf(0.51));
+		createXProduct("Γλυκιά Γραβιέρα Κρήτης ΠΟΠ 1kg","Τυρί","Κρήτη","Η γλυκιά γραβιέρα μας που έχει γνωρίσει επιτυχία και εκτός συνόρων τώρα στο πιάτο σας σε τιμή πειρασμό.",BigDecimal.valueOf(9.64),BigDecimal.valueOf(9.01),BigDecimal.valueOf(2.95));
+		
+		createXProduct("Ελαιόλαδο ΑΑΑ 5L","Λάδι","Κρήτη","Αγνό παρθένο ελαιόλαδο που προέρχεται από την ποικιλία Κορωνείκη. Χαμηλότατη οξύτητα που καθιστά το λάδι μας την πρώτη επιλογή των περισσότερων νοικοκυριών τόσο και για την υγεία όσο και για την απαλή γεύση του.",BigDecimal.valueOf(41.22),BigDecimal.valueOf(37.66),BigDecimal.valueOf(11.5));
+		createXProduct("Ελαιόλαδο 5L","Λάδι","Κρήτη"," Ελαιόλαδο θερμής επεξεργασίας με απολαυστική γεύση κατάλληλο για όλα τα γευματα και τις σαλάτεσ σας.",BigDecimal.valueOf(36.11),BigDecimal.valueOf(31.17),BigDecimal.valueOf(10.03));
+		createXProduct("Πυρηνέλαιο 750ml","Λάδι","Κρήτη","Πυρήνελαιο για το καντήλι.",BigDecimal.valueOf(1.14),BigDecimal.valueOf(1.02),BigDecimal.valueOf(0.34));
+		
+		createXProduct("Αλατισμένες Ελιές σε νερό 0.5kg","Ελιές","Κρήτη","Ποικιλία Θρούμπα μεγάλη σαρκώδης ελιά ιδανική για μεζέδες και κατάλληλο συνοδευτικό για το καθημερινό σας γεύμα. Σε νερό ώστε να μπορέσετε να τις διατηρήσετε για εκτεταμένα χρονικά διαστήματα.",BigDecimal.valueOf(8.11),BigDecimal.valueOf(7.92),BigDecimal.valueOf(2.56));
+		createXProduct("Ξυδάτες Ελιές σε λάδι 0.5kg","Ελιές","Κρητη","Ποικιλία Θρούμπα μεγάλη σαρκώδης ελιά ιδανική για μεζέδες και κατάλληλο συνοδευτικό για το καθημερινό σας γεύμα. Σε ελαιόλαδο Α κατηγορίας.",BigDecimal.valueOf(10.11),BigDecimal.valueOf(9.72),BigDecimal.valueOf(3.22));
+		
+		createXProduct("Θυμάρι 1kg","Μέλι","Κρήτη","Αρωματικό θυμαρίσιο μέλι από τον τόπο μας εξαιρετικής ποιότητας και γεύσης.",BigDecimal.valueOf(14.57),BigDecimal.valueOf(13.11),BigDecimal.valueOf(4.31));
+		createXProduct("Έλατο 1kg","Μέλι","Κρήτη","Μέλι από τα έλατα της Κρήτης. Ιδιαίτερη γεμάτη γεύση που θα ενθουσιάσει τους πάντες.",BigDecimal.valueOf(15.61),BigDecimal.valueOf(14.33),BigDecimal.valueOf(4.7));
+		createXProduct("Ανθόμελο 1kg","Μέλι","Κρήτη","Κλασσικό ανθόμελο από τον τόπο μας.",BigDecimal.valueOf(11.19),BigDecimal.valueOf(10.75),BigDecimal.valueOf(3.53));
+		createXProduct("Ανάμεικτο 1kg","Μέλι","Κρήτη","Ανάμεικτο μέλι ΑΑ ποιότητας.",BigDecimal.valueOf(10.02),BigDecimal.valueOf(9.76),BigDecimal.valueOf(3.25));
+		
+		createXProduct("Πατάτες 1kg","Λαχανικά","Κρήτη","Πατάτες κατάλληλες τόσο για τηγάνι όσο και για το ταψί.",BigDecimal.valueOf(0.60),BigDecimal.valueOf(0.52),BigDecimal.valueOf(0.16));
+		createXProduct("Κρεμύδια(Κόκκινα) 1kg","Λαχανικά","Κρήτη","Κρεμύδια κόκκινα γλυκά κατάλληλα για την χωριάτικη σαλάτα σας με τάκο.",BigDecimal.valueOf(0.35),BigDecimal.valueOf(0.31),BigDecimal.valueOf(0.1));
+		createXProduct("Κρεμύδια(Άσπρα) 1kg","Λαχανικά","Κρήτη","Κρεμύδια για μαγείρεμα. ΑΑ ποιότητα. Δεν συστήνονται για ωμή κατανάλωση.",BigDecimal.valueOf(0.35),BigDecimal.valueOf(0.28),BigDecimal.valueOf(0.08));
+		createXProduct("Τομάτες 1kg","Λαχανικά","Κρήτη","Οι ξεχωριστές τομάτες μας που είναι αδιανόητο να λείπουν από την καθημερινή σαλάτα μας.",BigDecimal.valueOf(1.34),BigDecimal.valueOf(1.22),BigDecimal.valueOf(0.41));
+		
+		createXProduct("Πορτοκάλια 1kg","Φρούτα","Κρήτη"," Πορτοκάλια Valencia ζουμερά ιδανικά για φρέσκους υγιεινούς χυμούς και όχι μόνο.",BigDecimal.valueOf(0.80),BigDecimal.valueOf(0.76),BigDecimal.valueOf(0.25));
+		createXProduct("Μπανάνες 1kg","Φρούτα","Κρήτη","Baby ποικιλία της πατρίδας μας.",BigDecimal.valueOf(1.43),BigDecimal.valueOf(1.27),BigDecimal.valueOf(0.41));
+		createXProduct("Σταφύλι(Φράουλα) 1kg","Φρούτα","Κρήτη","Γλυκό σταφύλι με την χαρακτηριστική κόκκινη ρόγα.",BigDecimal.valueOf(1.45),BigDecimal.valueOf(1.31),BigDecimal.valueOf(0.43));
+		createXProduct("Σταφύλι(Μοσχάτο)","Φρούτα","Κρήτη","Έξτρα αρωματικό και απολαυστικό σταφύλι της γνωστής εκλεκτής ποικιλίας Μοσχάτο.",BigDecimal.valueOf(2.03),BigDecimal.valueOf(1.87),BigDecimal.valueOf(0.92));
+		createXProduct("Σταφίδα 1kg","Φρούτα","Κρήτη","Σταφίδες.",BigDecimal.valueOf(0.61),BigDecimal.valueOf(0.46),BigDecimal.valueOf(0.15));
+		
+		
+		createXProduct("Κόκκινος Γλυκός Οίνος 750ml","Κρασί","Κρήτη","Ερυθρός οίνος 12%Vol σοδιάς 2016 του συνεταιρισμού μας κατάλληλος για κρεατικά.",BigDecimal.valueOf(9.20),BigDecimal.valueOf(8.90),BigDecimal.valueOf(2.67));
+		createXProduct("Λευκός Ξερός Οίνος 750ml","Κρασί","Κρήτη","Λευκός οίνος ξηρός 12%Vol σοδιάς 2016 του συνεταιρισμού μας για την συνοδεία των θαλασσινών γευμάτων σας.",BigDecimal.valueOf(8.87),BigDecimal.valueOf(8.35),BigDecimal.valueOf(2.41));
+		createXProduct("CABERNET ΑΑΑ 750ml","Κρασί","Κρήτη","Βαθύς κόκκινος οίνος 14%Vol με την χαρακτηριστικά γεμάτη γεύση του και το άρωμα του. Για αυτούς που έχουν εκλεκτά γούστα στο κρασί. Σοδειάς 2011 ωριμάζει στα κελάρια μας περιμένοντας σας να τον απολαύσετε στις ξεχωριστές και όχι μόνο στιγμές σας.",BigDecimal.valueOf(13.72),BigDecimal.valueOf(13.07),BigDecimal.valueOf(4.09));
+		createXProduct("Μαυροδάφνη 250ml","Κρασί","Κρήτη","Για αυτούς που προτιμάνε το πιο γλυκό κρασί. Ευκολόπιωτο , ίσως περισσότερο από ότι θα έπρεπε. Συνιστάμε την προσοχή σας αν πρόκειται να οδηγήσετε καθώς είναι 17% Vol",BigDecimal.valueOf(3.15),BigDecimal.valueOf(3.01),BigDecimal.valueOf(1.0));
+		createXProduct("Ρακή 1L","Κρασί","Κρήτη","Για τους εξτρά τολμηρούς. Αν το αντέχεις αποτελεί πολύ καλή συντροφιά. Μερικοί συμπατριώτες μας το χρησιμοποιούν το χειμώνα αντί για πετρέλαιο θέρμανσης...hic!",BigDecimal.valueOf(2.25),BigDecimal.valueOf(2.01),BigDecimal.valueOf(0.67));
+		
+		createXProduct("Λευκό Μαλακό 1kg","Αλεύρι","Κρήτη","Λευκό αλεύρι μαλακό για τα κουλουράκια και γλυκά σας.",BigDecimal.valueOf(1.35),BigDecimal.valueOf(1.22),BigDecimal.valueOf(0.4));
+		createXProduct("Λευκό Σκληρό 1kg","Αλεύρι","Κρήτη","Λευκό αλεύρι σκλήρο για το ψωμί.",BigDecimal.valueOf(1.45),BigDecimal.valueOf(1.31),BigDecimal.valueOf(0.42));
+		createXProduct("Μαύρο 1kg","Αλεύρι","Κρήτη","Ολικής αλέσεως ιδανικό για το χωριάτικο ψωμί της γιαγιάς.",BigDecimal.valueOf(1.27),BigDecimal.valueOf(1.13),BigDecimal.valueOf(0.35));
+		createXProduct("Αραβοσίτου 1kg","Αλεύρι","Κρήτη"," Γλυκό αλεύρι αραβοσίτου απαραίτητο για την περιστασιακή μπομπότα ή για γλυκό ψωμί.",BigDecimal.valueOf(1.39),BigDecimal.valueOf(1.21),BigDecimal.valueOf(0.4));
+		
+	}
+	//===============================Generation of Data==============================
 	
 	public void generate() throws Exception 
 	{
-	insertFirstAdmin();
-	insertSomeCategories();
-	insertExampleProduct();
-	updateExampleProduct();
-	insertExampleMember();
-	insertProductAndAddToCartExample();
-	createMemberCartItemForTesting(300, "Madryoch");
-	createMemberCartItemForTesting(300, "member");
-	makeAllMemberCartItemsVisible();
-	
-	accountService.findAdminAccount();
+		createRoles();
+		createInitialUsers();
+		createInitialProducts();
 	}
-
+	
 }

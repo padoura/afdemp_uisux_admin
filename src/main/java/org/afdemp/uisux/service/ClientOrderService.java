@@ -4,12 +4,11 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
-import org.afdemp.uisux.domain.AbstractSale;
 import org.afdemp.uisux.domain.ClientOrder;
 
 public interface ClientOrderService {
 
-	AbstractSale createClientOrder(ClientOrder clientOrder);
+	ClientOrder createClientOrder(ClientOrder clientOrder);
 	
 	List<ClientOrder> fetchOrdersByPeriod(Timestamp fromTimestamp, Timestamp toTimestamp);
 	

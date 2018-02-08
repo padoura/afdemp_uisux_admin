@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header2 :: common-header" />
+
+<body>
+	<div th:replace="common/header2 :: navbar" ></div>
+<div class="container" id="deleteAfter" >
+  <div class="jumbotron">
+        
+    <p>To see the customer orders please select the starting and ending date of the search</p>
+  						
+  </div>
+     
+</div>
+	
+	
+	<div class="container" id="all">
+		<div class="table-responsive">
+			<table id="clientListTable" class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th>Status</th>
+						<th>Id</th>
+						<th>Submitted Date</th>
+						<th>Shipping Date</th>
+						<th>Shipping Method</th>
+						<th>Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-th-each="client : ${clientOrderList}">
+						<td th:text="${client.orderStatus}"></td>
+						<td th:text="${client.id}"></td>
+						<td th:text="${client.submittedDate}"></td>
+						<td th:text="${client.shippingDate}"></td>
+						<td th:text="${client.shippingMethod}"></td>
+						<td th:text="${client.Total}"></td>
+						
+						
+						
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	
+	</div>
+
+
+
+		<div class="row">
+			<form class="form-horizontal" th:action="@{/sale/search}" method="post"
+				enctype="multipart/form-data">
+				<fieldset>					<!-- title -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="title">Start Date</label>
+
+						<div class="col-md-8">
+							<input type="date" name="fromDate" class="form-control" id="fromDate"
+								th:value="${fromDate}"  placeholder="fromDate" />
+							<span class="help-block">when to start searching</span>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="title">End Date</label>
+
+						<div class="col-md-8">
+							<input type="date" name="toDate" class="form-control" id="toDate"
+								th:value="${toDate}"  placeholder="toDate" />
+							<span class="help-block">end of search</span>
+						</div>
+					</div>
+
+
+
+
+					<div class="form-group">
+						<div class="col-md-2"></div>
+						<div class="col-md-8">
+							<button type="submit" class="btn btn-success">Search</button>
+							<a class="btn btn-danger" th:href="@{/member/memberList}">Cancel</a>
+						</div>
+						
+					</div>
+				</fieldset>
+			</form>
+		</div>
+<!-- 	<button type="button" id="bt1" class="btn btn-info">next</button>
+ -->
+ 		<div class="container" id="seeDiagramms">
+  <div class="jumbotron">
+        
+    <p>If you want to see the results in diagrams, navigate with the buttons below. The diagrams will display the next/previous 20 results.</p>
+  			<div class="col-md-2"></div>
+						<div class="col-md-2">
+							<button type="button" id="btn2" class="btn btn-danger">Previous Diagram</button>
+						</div>
+						<div class="col-md-2">
+							<button type="button" id="btn1" class="btn btn-success">Next Diagram</button>
+						</div>
+			
+  </div>
+     
+</div>
+ 			<div class="row">
+						
+					</div>
+	
+<!--  <button id="btn1">Append text</button><button id="btn2">Previous text</button> -->
+
+<div id="div1">
+</div>
+
+<div class="col-md-8">
+							
+						</div>
+
+	
+	
+	<div th:replace="common/header2 :: body-bottom-scripts" ></div>
+	
+	<script th:inline="javascript">
+	 /*<![CDATA[*/
+
+	 $(document).ready(function(){    
+		 var table= $('#clientListTable').DataTable({
+			   "lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
+				"ordering": false,
+				stateSave: true
+		       
+		    });
+			
+		 
+		 var myStringArray = [[${clientOrderList}]];
+		 var arrayLength = myStringArray.length;
+		 var dats =[];//data sum olla ta antikeimena pou exei to clientorderlist
+		 
+		 var datsChart =[];//edw dimiourgoume to antikeimeno pou tha baloume sto hightable kathe fora
+		 
+		 
+		 var k=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];//mia metabliti me 20 times pou xrisimopoihoume sto iteration
+		var p=[];
+		
+			
+			var step =-1;//the step to see the charts 0 shows the first 20 1 shows the next 20 ect
+			var numberOfSteps=parseInt(arrayLength/20);//how many chart we have 
+			var currentStep=0;
+			var remainder= arrayLength % 20;//if there is a modulo we add one to the number of  charts that can be created
+			
+			if(remainder > 0){
+				numberOfSteps++;
+			}
+		
+			if(arrayLength == 0){
+					 $("#all").remove();
+					 $("#seeDiagramms").remove();
+					 
+				 }
+			//some variables used for iterating
+				 var stepArray=[];
+				 var stepValues=new Array(numberOfSteps);
+				 stepValues.fill(0);
+			var t=0;
+			var stepsArray2=0;
+			
+			 
+			var  katikalo=[];
+			
+			 
+			 for (i = 0; i < 22; i++) { 
+				}
+			 
+		 if(arrayLength > 0){
+			 $("#deleteAfter").remove();
+			 for (var i in myStringArray) {
+		p=[myStringArray[i].submittedDate.substring(0, 10),myStringArray[i].total]
+		 dats.push(p);	
+		 
+		
+			 		
+		
+	
+	}
+			 var narr=0;
+			 for ( var iii in  stepValues) {
+				 stepArray[narr]=[];
+					for (var ii in k) {
+							 
+							 if(dats[t]==null){
+								 
+								 
+							 }
+							 else{
+							stepArray[narr][stepsArray2]=dats[t] ;
+							 }
+							  t++;
+							  stepsArray2++;
+						  }
+					stepsArray2=0;
+					narr++;		
+			 }  
+			 
+			 
+		
+			 
+			 
+			 
+			 
+	$("#btn1").click(function(){
+			     
+		if(numberOfSteps -1 > step)
+			{
+			
+			step++;
+		
+			}
+								
+				myFunction(stepArray[step]);
+					
+					
+					
+					
+			    });
+			 
+			 
+	 
+	$("#btn2").click(function(){
+			    
+					
+		if(step > 0)
+			{
+			
+			step--;
+		
+			}
+		else{
+			step=0;
+		}
+			
+							
+				myFunction(stepArray[step]);
+					
+					
+					
+					
+			    });		 
+			 
+			 
+			 
+	/*]]>*/	 
+			 
+			 
+			 
+			 
+
+
+		 }
+});
+	
+	 
+	 function myFunction(datsChart) {
+			Highcharts.chart('div1', {
+			    chart: {
+			        type: 'column'
+			    },
+			    title: {
+			        text: 'Sales'
+			    },
+			    
+			    xAxis: {
+			        type: 'category',
+			        labels: {
+			            rotation: -45,
+			            style: {
+			                fontSize: '13px',
+			                fontFamily: 'Verdana, sans-serif'
+			            }
+			        }
+			    },
+			    yAxis: {
+			        min: 0,
+			        title: {
+			            text: 'sales (euro)'
+			        }
+			    },
+			    legend: {
+			        enabled: false
+			    },
+			    tooltip: {
+			        pointFormat: 'Sales per day'
+			    },
+			    series: [{
+			        name: 'salesn',
+			        data: datsChart
+			        ,
+			        dataLabels: {
+			            enabled: true,
+			            rotation: -90,
+			            color: '#FFFFFF',
+			            align: 'right',
+			            format: '{point.y:.2f}', // one decimal
+			            y: 10, // 10 pixels down from the top
+			            style: {
+			                fontSize: '13px',
+			                fontFamily: 'Verdana, sans-serif'
+			            }
+			        }
+			    }]
+			});
+		}
+	</script>
+	
+	<div id="container2"></div>
+	<div id="container3"></div>
+	<div id="container4"></div>
+</body>
+</html>

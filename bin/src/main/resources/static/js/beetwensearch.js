@@ -96,12 +96,12 @@ $(document).ready(function() {
 //        }
 //    })
 	
-	$('#deleteSelected').click(function() {
+	$('#deleteSel').click(function() {
 		var idList= $('.checkboxBook');
-		var bookIdList=[];
+		var productIdList=[];
 		for (var i = 0; i < idList.length; i++) {
 			if(idList[i].checked==true) {
-				bookIdList.push(idList[i]['id'])
+				productIdList.push(idList[i]['id'])
 			}
 		}
 		
@@ -112,7 +112,7 @@ $(document).ready(function() {
 	    /*]]>*/
 	    
 	    bootbox.confirm({
-			message: "Are you sure to remove all selected books? It can't be undone.",
+			message: "Are you sure to remove selected products? It can't be undone.",
 			buttons: {
 				cancel: {
 					label:'<i class="fa fa-times"></i> Cancel'
@@ -126,7 +126,7 @@ $(document).ready(function() {
 					$.ajax({
 						type: 'POST',
 						url: path,
-						data: JSON.stringify(bookIdList),
+						data: JSON.stringify(productIdList),
 						contentType: "application/json",
 						success: function(res) {
 							console.log(res); 

@@ -43,7 +43,7 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 	private AccountService accountService;
 	
 	@Override
-	public AbstractSale createClientOrder(ClientOrder clientOrder)
+	public ClientOrder createClientOrder(ClientOrder clientOrder)
 	{
 		
 		

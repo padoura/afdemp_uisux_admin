@@ -113,6 +113,55 @@ public class CartItemServiceImpl implements CartItemService{
 	}
 	
 	@Override
+	public ClientOrder commitAndGetSale(ShoppingCart shoppingCart,CreditCard creditCard, Address billingAddress,Address shippingAddress,String shippingMethod)
+	{
+		AbstractSale abstractSale=new ClientOrder();
+		HashSet<Product> itemsUnavailable=new HashSet<Product>();
+		HashSet<CartItem> itemsInCart=new HashSet<CartItem>();
+		itemsInCart=cartItemRepository.findByShoppingCart(shoppingCart);
+		
+		//Checks if CartItem X in shopping Cart exists in coop's warehouse
+		//and if not then it is removed from itemsInCart about to be passed for sale
+		for(CartItem ci: itemsInCart)
+		{
+			if(cartItemRepository.checkAvailabilityAndUpdate(ci.getProduct(),ci.getQty())==0)
+			{
+				itemsUnavailable.add(ci.getProduct());
+				itemsInCart.remove(ci);
+			}
+		}
+				
+		if(itemsInCart.isEmpty())
+		{
+			return null;
+		}
+		else
+		{
+			BigDecimal total=calculateGrandTotal(itemsInCart);
+			ClientOrder clientOrder=new ClientOrder();
+			clientOrder.setUserRole(shoppingCart.getUserRole());
+			clientOrder.setTotal(total);
+			clientOrder.setBillingAddress(billingAddress);
+			clientOrder.setShippingAddress(shippingAddress);
+			clientOrder.setShippingMethod(shippingMethod);
+			clientOrder.setCreditCard(creditCard);
+			clientOrder=clientOrderService.createClientOrder(clientOrder);
+			abstractSale=clientOrder;
+			for(CartItem ci: itemsInCart)
+			{
+				ci.setShoppingCart(null);
+				ci.setCurrentPrice(ci.getProduct().getOurPrice()); 
+				ci.setAbstractSale(abstractSale);
+				cartItemRepository.save(ci);
+			}
+			transactionService.oneWayTransaction(total, abstractSale);
+			
+			
+			return clientOrder;
+		}
+	}
+	
+	@Override
 	public boolean removeCartItem(Long id,Long shoppingCartId)
 	{
 		if(cartItemRepository.deleteByIdAndShoppingCartId(id,shoppingCartId)>0)
