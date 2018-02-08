@@ -18,12 +18,14 @@ public class ΜailConstructor {
 			String contextPath, Locale locale, String token, User user, String password
 			) {
 		
-		String url = contextPath + "/newUser?token="+token;
-		String message = "\nPlease click on this link to verify your email and edit your personal information. Your password is: \n"+password;
+//		String url = contextPath + "/newUser?token="+token;
+//		String message = "\nPlease click on this link to verify your email and edit your personal information. Your password is: \n"+password;
+		String message = "\nYour password is: \n"+password;
 		SimpleMailMessage email = new SimpleMailMessage();
 		email.setTo(user.getEmail());
 		email.setSubject("Fruit Syndicate's - New Member");
-		email.setText(url+message);
+//		email.setText(url+message);
+		email.setText(message);
 		email.setFrom(env.getProperty("support.email"));
 		return email;
 		

@@ -139,7 +139,7 @@ public class DataGenerator
 		createAdmin();
 		
 		//----Members----
-		createMember("padoura","Μιχάλης","Παντουράκης","2119122391","padoura@coopmail.gr");
+		createMember("padoura","Μιχάλης","Παντουράκης","2119122391","padoura21@hotmail.com");
 		createMember("lefteris","Λευτέρης","Μαλινδρέτος","2107348421","emalindretos@coopmail.gr");
 		createMember("madryoch","Γιώργος","Αθανασόπουλος","2109246187","madryoch@coopmail.gr");
 		createMember("panos123","Παναγιώτης","Οικονόμου","2108761121","panos123@coopmail.gr");
