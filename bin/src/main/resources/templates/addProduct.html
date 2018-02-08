@@ -6,7 +6,7 @@
 <body>
 	<div th:replace="common/header2 :: navbar" />
 <div id="success" >
-<h1>product added successfully</h1>
+
 </div>
 
 
@@ -18,10 +18,14 @@ if(message==null ||message==false){
 	document.getElementById("success").innerHTML = " ";
 	
 }
+if(message!=null ){
+	if(message==true){
+	document.getElementById("success").innerHTML = "<h1>Product added!</h1>";
+	}
+}
 
 
 </script>
-<button onclick="myFunction()">Create new category</button>
 
 	<div class="container" th:with="someVariable=${someValue}">
 		<div class="row">
@@ -58,26 +62,33 @@ if(message==null ||message==false){
 						</div>
 					</div>
 
+<button   type="button" onclick="myFunction()">Create a category</button>
 
 <div class="form-group">
 						<label class="col-md-2 control-label" for="category">*
 							Category</label>
-					
+						<div class="row">
 
 					<div class="col-md-8" id="hi">
 							<select th:value="${type}" id="type" name="type"
 								class="form-control">
 								<option value="" selected="selected" disabled="disabled">Please
-									select an category...</option>
+									select a category...</option>
 								<option th:each="prod : ${categoryList}" th:value="${prod.type}" th:text="${prod.type}"
 									th:selected="(${type}=='${prod.type}'  )"></option></select>
 						</div>
+						</div>
 						
-					<div class="col-md-8" id="hi2">
-									<input type="text" name="type" class="form-control" id="type"
+				<div class="row" id="hi2">
+					
+						<label class="col-md-2 control-label" >Add New Category
+							</label>
+						<div class="col-md-8">
+						<input type="text" name="type" class="form-control " id="type"
 								th:value="${type}"
 								placeholder="type" />	
 					</div>		
+						</div>
 						</div>
 					
 					<script>
@@ -118,11 +129,11 @@ function myFunction() {
 category -->
 					
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="inStockNumber">Number of products in stock</label>
+						<label class="col-md-2 control-label" for="inStockNumber">Number of Products in Stock</label>
 
 						<div class="col-md-8">
 							<input type="number" name="inStockNumber" class="form-control"
-								id="inStockNumber" th:value="${product.inStockNumber}"
+								id="inStockNumber" th:value="${product.inStockNumber}" min="0"
 								placeholder="stock" /> <span class="help-block">Number
 								of products</span>
 						</div>
@@ -159,7 +170,7 @@ category -->
 
 					<!-- our price -->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="ourPrice">priceBought</label>
+						<label class="col-md-2 control-label" for="ourPrice">Buying Price</label>
 						<div class="col-md-8">
 							<div class="input-group">
 								<span class="input-group-addon">&euro;</span> <input
@@ -224,13 +235,13 @@ category -->
 
 $(document).ready(function(){
 	document.getElementById("hi2").style.visibility = 'hidden';
-    $("#btn1").click(function(){
-    	
-    
-    	//$("#hi2").css('display','block');
-    	
-    	    });
-});
+	   
+	var delayInMilliseconds = 6000; //1 second
+
+	setTimeout(function() {
+		$("#success").remove();
+	  //your code to be executed after 1 second
+	}, delayInMilliseconds);});
 
 </script>
 

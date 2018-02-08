@@ -52,28 +52,33 @@ public class MemberCartItemServiceImpl implements MemberCartItemService{
 
 		MemberCartItem memberCartItem;
 		memberCartItem=memberCartItemRepository.findByShoppingCartAndProduct(shoppingCart, product);
-		if(memberCartItem==null)
-		{	
-			memberCartItem=new MemberCartItem();
-			
-			memberCartItem.setShoppingCart(shoppingCart);
-			memberCartItem.setProduct(product);
-			memberCartItem.setQty(qty);
-			memberCartItem.setCurrentPurchasePrice(product.getPriceBought());
-			
-			memberCartItemRepository.save(memberCartItem);
-			
-			return true;
-		}
-		else if (memberCartItem !=null && qty >0)
+		if(qty>0)
 		{
-			memberCartItem.setQty(memberCartItem.getQty()+qty);
-			memberCartItem.setCurrentPurchasePrice(memberCartItem.getProduct().getPriceBought());
-			memberCartItem=memberCartItemRepository.save(memberCartItem);
-			
-			
-			System.out.println("\n\nMemberCartItem modified");
-			return true;
+			if(memberCartItem==null)
+			{	
+				product=productService.findOne(product.getId());
+				memberCartItem=new MemberCartItem();
+				memberCartItem.setShoppingCart(shoppingCart);
+				memberCartItem.setProduct(product);
+				memberCartItem.setQty(qty);
+				memberCartItem.setCurrentPurchasePrice(product.getPriceBought());
+				
+				memberCartItemRepository.save(memberCartItem);
+				
+				LOG.info("\n\nMemberCartItem created.\n");
+				
+				return true;
+			}
+			else if (memberCartItem !=null)
+			{
+				memberCartItem.setQty(memberCartItem.getQty()+qty);
+				memberCartItem.setCurrentPurchasePrice(memberCartItem.getProduct().getPriceBought());
+				memberCartItem=memberCartItemRepository.save(memberCartItem);
+				
+				
+				LOG.info("\n\nMemberCartItem modified.\n");
+				return true;
+			}
 		}
 		return false;
 	
