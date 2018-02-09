@@ -48,7 +48,7 @@ public class MemberCartItemServiceImpl implements MemberCartItemService{
 	}
 
 	@Override
-	public boolean putUpForSale(Product product, int qty, ShoppingCart shoppingCart) {
+	public MemberCartItem putUpForSale(Product product, int qty, ShoppingCart shoppingCart) {
 
 		MemberCartItem memberCartItem;
 		memberCartItem=memberCartItemRepository.findByShoppingCartAndProduct(shoppingCart, product);
@@ -63,11 +63,11 @@ public class MemberCartItemServiceImpl implements MemberCartItemService{
 				memberCartItem.setQty(qty);
 				memberCartItem.setCurrentPurchasePrice(product.getPriceBought());
 				
-				memberCartItemRepository.save(memberCartItem);
+				memberCartItem=memberCartItemRepository.save(memberCartItem);
 				
 				LOG.info("\n\nMemberCartItem created.\n");
 				
-				return true;
+				
 			}
 			else if (memberCartItem !=null)
 			{
@@ -77,10 +77,11 @@ public class MemberCartItemServiceImpl implements MemberCartItemService{
 				
 				
 				LOG.info("\n\nMemberCartItem modified.\n");
-				return true;
+				
 			}
+			return memberCartItem;
 		}
-		return false;
+		return null;
 	
 	}
 

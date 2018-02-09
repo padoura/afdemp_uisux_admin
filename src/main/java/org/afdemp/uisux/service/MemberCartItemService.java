@@ -14,7 +14,7 @@ public interface MemberCartItemService {
 	
 	MemberCartItem findById(Long memberCartItemId);
 	
-	boolean putUpForSale(Product product, int qty, ShoppingCart shoppingCart);
+	MemberCartItem putUpForSale(Product product, int qty, ShoppingCart shoppingCart);
 	
 	boolean fullPurchaseFromMember(MemberCartItem memberCartItem);
 

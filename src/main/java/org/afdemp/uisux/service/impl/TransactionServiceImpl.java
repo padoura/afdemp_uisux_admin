@@ -63,6 +63,30 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
+	public Transaction oneWayPastTransaction(BigDecimal amount, AbstractSale abstractSale) {
+		Account account=accountService.findAdminAccount();
+		long temporalOffset=Timestamp.valueOf(LocalDateTime.now()).getTime()-abstractSale.getSubmittedDate().getTime();
+		if(accountService.deposit(account, amount))
+		{
+			Transaction transaction=new Transaction();
+			transaction.setAbstractSale(abstractSale);
+			transaction.setAmount(amount);
+			transaction.setDateTime(new Timestamp(Timestamp.valueOf(LocalDateTime.now()).getTime()-temporalOffset));
+			transaction.setDepositAccount(account);
+			transaction =transactionRepository.save(transaction);
+			if(transaction!=null)
+			{
+				LOG.info("\n\nSUCCESS:{} Euros have been added to admin's account\n",amount);
+				return transaction;
+			}
+			LOG.info("\n\nFAILURE: Succesfully deposited {} Euros to admin's account but failed to persist the transaction\n\n",amount);
+		}
+		LOG.info("\n\nFAILURE: Unable to deposit to admin's acount");
+		return null;
+	}
+	
+
+	@Override
 	public Transaction twoWayTransaction(BigDecimal amount, Account fromAccount, Account toAccount, AbstractSale abstractSale) {
 
 		if(accountService.withdraw(fromAccount, amount))
@@ -74,6 +98,32 @@ public class TransactionServiceImpl implements TransactionService {
 			transaction.setAbstractSale(abstractSale);
 			transaction.setAmount(amount);
 			transaction.setDateTime(Timestamp.valueOf(LocalDateTime.now()));
+			transaction.setDepositAccount(toAccount);
+			transaction.setWithdrawAccount(fromAccount);
+			transaction=transactionRepository.save(transaction);
+			if(transaction!=null)
+			{
+				LOG.info("\n\nSUCCESS: Transaction Added.");
+				return transaction;
+			}
+		}
+			
+		return null;
+	}
+	
+	@Override
+	public Transaction twoWayPastTransaction(BigDecimal amount, Account fromAccount, Account toAccount, AbstractSale abstractSale) {
+
+		long temporalOffset=Timestamp.valueOf(LocalDateTime.now()).getTime()-abstractSale.getSubmittedDate().getTime();
+		if(accountService.withdraw(fromAccount, amount))
+		{
+			LOG.info("\n\nSUCCESS:{} Euros have been withdrawn from {}'s account.\n",amount,fromAccount.getUserRole().getUser().getUsername());
+			accountService.deposit(toAccount, amount);
+			LOG.info("\n\nSUCCESS:{} Euros have been deposited to {}'s account.\n",amount,toAccount.getUserRole().getUser().getUsername());
+			Transaction transaction=new Transaction();
+			transaction.setAbstractSale(abstractSale);
+			transaction.setAmount(amount);
+			transaction.setDateTime(new Timestamp(Timestamp.valueOf(LocalDateTime.now()).getTime()-temporalOffset));
 			transaction.setDepositAccount(toAccount);
 			transaction.setWithdrawAccount(fromAccount);
 			transaction=transactionRepository.save(transaction);

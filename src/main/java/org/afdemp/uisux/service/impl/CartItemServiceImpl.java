@@ -1,6 +1,7 @@
 package org.afdemp.uisux.service.impl;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
 
@@ -161,6 +162,58 @@ public class CartItemServiceImpl implements CartItemService{
 			return clientOrder;
 		}
 	}
+	
+	@Override
+	public ClientOrder commitPastSale(ShoppingCart shoppingCart,CreditCard creditCard, Address billingAddress,Address shippingAddress,String shippingMethod,Timestamp pastOrderDate)
+	{
+		AbstractSale abstractSale=new ClientOrder();
+		HashSet<CartItem> itemsInCart=new HashSet<CartItem>();
+		itemsInCart=cartItemRepository.findByShoppingCart(shoppingCart);
+		
+		//Checks if CartItem X in shopping Cart exists in coop's warehouse
+		//and if not then it is removed from itemsInCart about to be passed for sale
+		for(CartItem ci: itemsInCart)
+		{
+			if(cartItemRepository.checkAvailabilityAndUpdate(ci.getProduct(),ci.getQty())==0)
+			{
+				itemsInCart.remove(ci);
+			}
+		}
+				
+		if(itemsInCart.isEmpty())
+		{
+			return null;
+		}
+		else
+		{
+			BigDecimal total=calculateGrandTotal(itemsInCart);
+			ClientOrder clientOrder=new ClientOrder();
+			clientOrder.setUserRole(shoppingCart.getUserRole());
+			clientOrder.setTotal(total);
+			clientOrder.setBillingAddress(billingAddress);
+			clientOrder.setShippingAddress(shippingAddress);
+			clientOrder.setShippingMethod(shippingMethod);
+			clientOrder.setCreditCard(creditCard);
+			clientOrder=clientOrderService.createPastClientOrder(clientOrder,pastOrderDate);
+			abstractSale=clientOrder;
+			for(CartItem ci: itemsInCart)
+			{
+				ci.setShoppingCart(null);
+				ci.setCurrentPrice(ci.getProduct().getOurPrice()); 
+				ci.setAbstractSale(abstractSale);
+				cartItemRepository.save(ci);
+			}
+			transactionService.oneWayPastTransaction(total, abstractSale);
+			
+			
+			return clientOrder;
+		}
+	}
+	
+	
+	
+	
+	
 	
 	@Override
 	public boolean removeCartItem(Long id,Long shoppingCartId)
