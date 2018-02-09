@@ -264,6 +264,30 @@ public class DataGenerator
 		clientOrderService.distributePastEarningsToAllMembers(clientOrder.getId());
 	}
 	
+	private void generateRecentClientCartItemsAndSale(UserRole userRole,CreditCard creditCard,Address address)
+	{
+		Random rand=new Random();
+		List<Product> productsList=productService.findAllActive();
+		int productCount=productsList.size();
+		
+		Product products[]=productsList.toArray(new Product[productsList.size()]);
+		int noOfProducts=rand.nextInt(4)+1;
+		
+		for(int i=0;i<noOfProducts;i++)
+		{
+			int productArrayIndex=rand.nextInt(products.length-1);
+			int qty=rand.nextInt(4)+1;
+			cartItemService.addToCart(userRole.getShoppingCart(), products[productArrayIndex], qty);
+		}
+		
+		
+		//Timestamp.valueOf(LocalDateTime.now()).getTime();
+		
+		
+		ClientOrder clientOrder=cartItemService.commitPastSale(userRole.getShoppingCart(), creditCard, address, address, "High like myself atm", new Timestamp(1517436000000L));
+		
+	}
+	
 	
 	
 	
@@ -298,6 +322,40 @@ public class DataGenerator
 		{
 			int clientsRandomIndex=rand.nextInt(clients.length-1);
 			generateClientCartItemsAndSale(clients[clientsRandomIndex],creditCard, address);
+		}
+	}
+	
+	private void generateRecentSales(int salesNumber)
+	{
+		List<UserRole> clientsList=getClientRoles();
+		
+		Address address=new Address();
+		address.setCity("7th Heaven");
+		address.setCountry("Neverland");
+		address.setReceiverName("Test Subject 417");
+		address.setState("Above The Rainbow");
+		address.setStreet1("5th Cloud from the left");
+		address.setZipcode("777");
+		address.setUserRole(userRoleRepository.findFirstByRole(roleRepository.findByName("ROLE_ADMIN")));
+		address=addressService.createAddress(address);
+		
+		CreditCard creditCard=new CreditCard();
+		creditCard.setBillingAddress(address);
+		creditCard.setCardNumber("4000400040004000");
+		creditCard.setCvc(444);
+		creditCard.setExpiryMonth(13);
+		creditCard.setExpiryYear(2222);
+		creditCard.setHolderName("IsThisGod?");
+		creditCard.setType("OneOfAKind");
+		creditCard.setUserRole(address.getUserRole());
+		creditCard=creditCardService.createCreditCard(creditCard);
+		
+		Random rand=new Random();
+		UserRole clients[]=clientsList.toArray(new UserRole[clientsList.size()]);
+		for(int i=0;i<salesNumber;i++)
+		{
+			int clientsRandomIndex=rand.nextInt(clients.length-1);
+			generateRecentClientCartItemsAndSale(clients[clientsRandomIndex],creditCard, address);
 		}
 	}
 	
@@ -411,6 +469,7 @@ public class DataGenerator
 		createInitialProducts();
 		generateSellers();
 		generatePastSales(1000);
+		generateRecentSales(35);
 	}
 	
 }
