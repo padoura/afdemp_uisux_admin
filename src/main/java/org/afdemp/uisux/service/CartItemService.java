@@ -1,5 +1,6 @@
 package org.afdemp.uisux.service;
 
+import java.sql.Timestamp;
 import java.util.HashSet;
 
 import org.afdemp.uisux.domain.Address;
@@ -19,5 +20,8 @@ public interface CartItemService {
 	HashSet<Product> commitSale(ShoppingCart shoppingCart,CreditCard creditCard,Address billingAddress,Address shippingAddress,String shippingMethod);
 	
 	ClientOrder commitAndGetSale(ShoppingCart shoppingCart,CreditCard creditCard, Address billingAddress,Address shippingAddress,String shippingMethod);
+
+	ClientOrder commitPastSale(ShoppingCart shoppingCart, CreditCard creditCard, Address billingAddress,
+			Address shippingAddress, String shippingMethod, Timestamp pastOrderDate);
 	
 }

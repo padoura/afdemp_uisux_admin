@@ -26,4 +26,8 @@ public interface ClientOrderService {
 
 	ClientOrder findOne(Long l);
 
+	ClientOrder createPastClientOrder(ClientOrder clientOrder, Timestamp pastOrderDate);
+
+	void distributePastEarningsToAllMembers(Long clientOrderId);
+
 }

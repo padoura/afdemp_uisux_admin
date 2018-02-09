@@ -18,4 +18,11 @@ public interface TransactionService {
 	
 	Transaction twoWayTransaction(BigDecimal amount, Account fromAccount, Account toAccount, AbstractSale abstractSale);
 
+
+
+	Transaction oneWayPastTransaction(BigDecimal amount, AbstractSale abstractSale);
+
+	Transaction twoWayPastTransaction(BigDecimal amount, Account fromAccount, Account toAccount,
+			AbstractSale abstractSale);
+
 }

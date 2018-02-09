@@ -3,12 +3,11 @@ package org.afdemp.uisux.service.impl;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-import org.afdemp.uisux.domain.AbstractSale;
 import org.afdemp.uisux.domain.ClientOrder;
 import org.afdemp.uisux.domain.security.UserRole;
 import org.afdemp.uisux.repository.ClientOrderRepository;
@@ -48,6 +47,22 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 		
 		
 		clientOrder.setSubmittedDate(Timestamp.valueOf(LocalDateTime.now()));
+		clientOrder.setOrderStatus("Processing");
+		
+		clientOrderRepository.save(clientOrder);
+		return(clientOrder);
+		
+		
+		
+	}
+	
+	@Override
+	public ClientOrder createPastClientOrder(ClientOrder clientOrder,Timestamp pastOrderDate)
+	{
+		
+		Random rand=new Random();
+		clientOrder.setSubmittedDate(pastOrderDate);
+		clientOrder.setShippingDate(new Timestamp(pastOrderDate.getTime()+(Long.valueOf(rand.nextInt(2))+1)*86400000));
 		clientOrder.setOrderStatus("Processing");
 		
 		clientOrderRepository.save(clientOrder);
@@ -147,7 +162,7 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 		ClientOrder clientOrder=clientOrderRepository.findOne(clientOrderId);
 		if (divisor!=0)
 		{
-			BigDecimal amount=clientOrder.getTotal().divide(BigDecimal.valueOf(2)).divide(BigDecimal.valueOf(divisor));
+			BigDecimal amount=clientOrder.getTotal().divide(BigDecimal.valueOf(divisor*2), 2,  BigDecimal.ROUND_HALF_UP);
 			for(UserRole usr:members)
 			{
 				transactionService.twoWayTransaction(amount, accountService.findAdminAccount(), usr.getAccount(), clientOrder);
@@ -157,6 +172,27 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 			clientOrderRepository.save(clientOrder);
 		}
 	}
+	
+	@Override
+	public void distributePastEarningsToAllMembers(Long clientOrderId) {
+
+		ArrayList<UserRole> members=userRoleRepository.findByRole(roleRepository.findByName("ROLE_MEMBER"));
+		int divisor=members.size();
+		ClientOrder clientOrder=clientOrderRepository.findOne(clientOrderId);
+		if (divisor!=0)
+		{
+			BigDecimal amount=clientOrder.getTotal().divide(BigDecimal.valueOf(divisor*2), 2,  BigDecimal.ROUND_HALF_UP);
+			for(UserRole usr:members)
+			{
+				transactionService.twoWayPastTransaction(amount, accountService.findAdminAccount(), usr.getAccount(), clientOrder);
+			}
+			
+			clientOrder.setDistributed(true);
+			clientOrderRepository.save(clientOrder);
+		}
+	}
+	
+	
 
 	@Override
 	public ClientOrder findOne(Long id) {

@@ -13,7 +13,7 @@ public interface ClientOrderRepository extends CrudRepository<ClientOrder, Long>
 	
 	ClientOrder findOne(Long id);
 
-	@Query("SELECT c FROM ClientOrder c WHERE c.submittedDate BETWEEN :from AND :to")
+	@Query("SELECT c FROM ClientOrder c WHERE c.submittedDate BETWEEN :from AND :to ORDER BY c.submittedDate")
     List<ClientOrder> findOrdersFromTo(@Param("from") Timestamp from, @Param("to") Timestamp to);
 	
 	List<ClientOrder> findByDistributedFalse();
