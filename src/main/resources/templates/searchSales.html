@@ -166,22 +166,52 @@
 			
 			 
 			var  katikalo=[];
-			
+			var megethosprin=-1;
 			 
-			 for (i = 0; i < 22; i++) { 
-				}
+			
 			 
 		 if(arrayLength > 0){
 			 $("#deleteAfter").remove();
+			 var  athroisma=0;
+			 var im="asd";
 			 for (var i in myStringArray) {
-		p=[myStringArray[i].submittedDate.substring(0, 10),myStringArray[i].total]
-		 dats.push(p);	
+				 
+				 if(im==myStringArray[i].submittedDate.substring(0, 10))
+		{//alert("isoa");
+		athroisma=dats[megethosprin][1]+myStringArray[i].total;
+		
+		//alert(athroisma);
+		dats.pop();
+		
+		 p=[myStringArray[i].submittedDate.substring(0, 10),athroisma]
+		
+		 dats.push(p);
+		}
+				 else{		 
+					 p=[myStringArray[i].submittedDate.substring(0, 10),myStringArray[i].total]
+		 dats.push(p);
+					 megethosprin++;
+					 im=myStringArray[i].submittedDate.substring(0, 10);
+						
+				 }
+				 
+				 
 		 
 		
 			 		
 		
 	
 	}
+			 megethosprin++;
+			  numberOfSteps=parseInt(megethosprin/20);//how many chart we have 
+				 currentStep=0;
+				 remainder= megethosprin % 20;//if there is a modulo we add one to the number of  charts that can be created
+				
+				if(remainder > 0){
+					numberOfSteps++;
+				}
+			 
+		//	 alert(dats);
 			 var narr=0;
 			 for ( var iii in  stepValues) {
 				 stepArray[narr]=[];
